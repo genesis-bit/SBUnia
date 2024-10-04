@@ -17,7 +17,7 @@ class TipoAcervoController extends Controller
             $tipoacervos = TipoAcervo::all();
             return response()->json($tipoacervos, 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Erro ao buscar tipoacervos', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Erro ao buscar tipo Acervos', 'error' => $e->getMessage()], 500);
         }
     }
 

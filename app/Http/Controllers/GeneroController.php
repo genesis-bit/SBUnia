@@ -49,9 +49,19 @@ class GeneroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Genero $genero)
+    public function show($id)
     {
-        //
+        try {
+            $genero = Genero::find($id);
+
+            if (!$genero) {
+                return response()->json(['message' => 'Gênero não encontrado'], 404);
+            }
+
+            return response()->json($genero, 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Erro ao buscar gênero', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -75,7 +85,7 @@ class GeneroController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update($id, Request $request)
     {
         try {
             $genero = Genero::find($id);
@@ -88,7 +98,7 @@ class GeneroController extends Controller
                 'descricao' => 'required|string|max:30',
             ]);
 
-            $genero->update($validated);
+             $genero->update($validated);
             return response()->json($genero, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar gênero', 'error' => $e->getMessage()], 500);

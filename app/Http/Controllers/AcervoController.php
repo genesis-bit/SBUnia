@@ -12,7 +12,7 @@ class AcervoController extends Controller
     public function index()
     {
         try {
-            $acervos = Acervo::all();
+            $acervos = Acervo::with(['categoria', 'tipoAcervo'])->get();;
             return response()->json($acervos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar acervos', 'error' => $e->getMessage()], 500);
@@ -44,7 +44,7 @@ class AcervoController extends Controller
     public function show($id)
     {
         try {
-            $acervo = Acervo::find($id);
+            $acervo = Acervo::with(['categoria', 'tipoAcervo'])->find($id);
 
             if (!$acervo) {
                 return response()->json(['message' => 'Acervo não encontrado'], 404);
