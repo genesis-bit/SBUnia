@@ -14,7 +14,7 @@ class TipoAcervoController extends Controller
     public function index()
     {
         try {
-            $tipoacervos = TipoAcervo::all();
+            $tipoacervos = TipoAcervo::paginate();
             return response()->json($tipoacervos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipo Acervos', 'error' => $e->getMessage()], 500);

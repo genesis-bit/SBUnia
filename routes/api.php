@@ -16,6 +16,7 @@ use App\Http\Controllers\AcervoController;
 use App\Http\Controllers\PrateleiraAcervoController;
 use App\Http\Controllers\EmprestimoController;
 use App\Http\Controllers\DevolucaoController;
+use App\Http\Controllers\TipoAcervoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,7 @@ Route::apiResource('generos', GeneroController::class);
 Route::apiResource('cursos', CursoController::class);
 Route::apiResource('universidades', UniversidadeController::class);
 Route::apiResource('tipo-clientes', TipoClienteController::class);
+Route::apiResource('tipo-acervos', TipoAcervoController::class);
 Route::apiResource('clientes', ClienteController::class);
 Route::apiResource('bibliotecarios', BibliotecarioController::class);
 Route::apiResource('prateleiras', PrateleiraController::class);

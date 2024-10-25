@@ -14,7 +14,7 @@ class GeneroController extends Controller
     public function index()
     {
         try {
-            $generos = Genero::all();
+            $generos = Genero::paginate();
             return response()->json($generos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar gêneros', 'error' => $e->getMessage()], 500);
@@ -84,7 +84,7 @@ class GeneroController extends Controller
 
     /**
      * Update the specified resource in storage.
-     */
+     */   
     public function update($id, Request $request)
     {
         try {

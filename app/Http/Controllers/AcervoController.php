@@ -12,13 +12,14 @@ class AcervoController extends Controller
     public function index()
     {
         try {
-            $acervos = Acervo::with(['categoria', 'tipoAcervo'])->get();;
+            $acervos = Acervo::with(['categoria', 'tipoAcervo'])->paginate();;
             return response()->json($acervos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar acervos', 'error' => $e->getMessage()], 500);
         }
     }
 
+    
     // Criar um novo acervo
     public function store(Request $request)
     {

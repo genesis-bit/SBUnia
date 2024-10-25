@@ -14,7 +14,7 @@ class CursoController extends Controller
     public function index()
     {
         try {
-            $cursos = Curso::all();
+            $cursos = Curso::paginate();
             return response()->json($cursos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar cursos', 'error' => $e->getMessage()], 500);

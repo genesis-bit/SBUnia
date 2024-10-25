@@ -14,7 +14,7 @@ class TipoClienteController extends Controller
     public function index()
     {
         try {
-            $tipoclientes = TipoCliente::all();
+            $tipoclientes = TipoCliente::paginate();
             return response()->json($tipoclientes, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipos de clientes', 'error' => $e->getMessage()], 500);

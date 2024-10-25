@@ -14,7 +14,7 @@ class UniversidadeController extends Controller
     public function index()
     {
         try {
-            $universidades = Universidade::all();
+            $universidades = Universidade::paginate();
             return response()->json($universidades, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar universidades', 'error' => $e->getMessage()], 500);
@@ -37,6 +37,7 @@ class UniversidadeController extends Controller
         try {
             $validated = $request->validate([
                 'descricao' => 'required|string|max:50',
+                'sigla' => 'required|string|max:20'
             ]);
 
             $universidade = Universidade::create($validated);
@@ -86,6 +87,7 @@ class UniversidadeController extends Controller
 
             $validated = $request->validate([
                 'descricao' => 'required|string|max:50',
+                'sigla' => 'required|string|max:20'
             ]);
 
             $universidade->update($validated);

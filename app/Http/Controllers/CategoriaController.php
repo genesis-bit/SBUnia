@@ -14,7 +14,7 @@ class CategoriaController extends Controller
     public function index()
     {
         try {
-            $categorias = Categoria::all();
+            $categorias = Categoria::paginate();
             return response()->json($categorias, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar categorias', 'error' => $e->getMessage()], 500);

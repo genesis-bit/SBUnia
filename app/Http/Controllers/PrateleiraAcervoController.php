@@ -12,7 +12,7 @@ class PrateleiraAcervoController extends Controller
     public function index()
     {
         try {
-            $prateleiraAcervos = PrateleiraAcervo::with(['prateleira', 'acervo', 'bibliotecario'])->get();
+            $prateleiraAcervos = PrateleiraAcervo::with(['prateleira', 'acervo', 'bibliotecario'])->paginate();
             return response()->json($prateleiraAcervos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleira_acervos', 'error' => $e->getMessage()], 500);

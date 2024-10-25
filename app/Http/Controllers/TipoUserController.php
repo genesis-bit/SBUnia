@@ -14,7 +14,7 @@ class TipoUserController extends Controller
     public function index()
     {
         try {
-            $TipoUsers = TipoUser::all();
+            $TipoUsers = TipoUser::paginate();
             return response()->json($TipoUsers, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar Tipo de Usuario', 'error' => $e->getMessage()], 500);

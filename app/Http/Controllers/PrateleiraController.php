@@ -12,7 +12,7 @@ class PrateleiraController extends Controller
     public function index()
     {
         try {
-            $prateleiras = Prateleira::all();
+            $prateleiras = Prateleira::paginate();
             return response()->json($prateleiras, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleiras', 'error' => $e->getMessage()], 500);

@@ -13,5 +13,6 @@ class Universidade extends Model
 
     protected $fillable = [
         'descricao',
+        'sigla'
     ];
 }

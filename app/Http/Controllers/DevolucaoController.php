@@ -12,7 +12,7 @@ class DevolucaoController extends Controller
     public function index()
     {
         try {
-            $devolucoes = Devolucao::with(['bibliotecario', 'emprestimo'])->get();
+            $devolucoes = Devolucao::with(['bibliotecario', 'emprestimo'])->paginate();
             return response()->json($devolucoes, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar devoluções', 'error' => $e->getMessage()], 500);

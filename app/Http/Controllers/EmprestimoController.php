@@ -12,7 +12,7 @@ class EmprestimoController extends Controller
     public function index()
     {
         try {
-            $emprestimos = Emprestimo::with(['acervo', 'cliente', 'bibliotecario'])->get();
+            $emprestimos = Emprestimo::with(['acervo', 'cliente', 'bibliotecario'])->paginate();
             return response()->json($emprestimos, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar empréstimos', 'error' => $e->getMessage()], 500);

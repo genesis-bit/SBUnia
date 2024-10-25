@@ -12,7 +12,7 @@ class ClienteController extends Controller
     public function index()
     {
         try {
-            $clientes = Cliente::with(['user', 'tipoCliente','genero','universidade','curso'])->get();;
+            $clientes = Cliente::with(['user', 'tipoCliente','genero','universidade','curso'])->paginate();;
             return response()->json($clientes, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar clientes', 'error' => $e->getMessage()], 500);

@@ -12,7 +12,7 @@ class BibliotecarioController extends Controller
     public function index()
     {
         try {
-            $bibliotecarios = Bibliotecario::with(['user', 'genero'])->get();;
+            $bibliotecarios = Bibliotecario::with(['user', 'genero'])->paginate();;
             return response()->json($bibliotecarios, 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Erro ao buscar bibliotecários', 'error' => $e->getMessage()], 500);

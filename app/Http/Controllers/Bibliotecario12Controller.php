@@ -25,7 +25,7 @@ class BibliotecarioController extends Controller
     }
     public function PDF() {
         try{
-              $Bibliotecarios = User::where('tipo_user_id','=','2')->OrderBy('name')->get();
+              $Bibliotecarios = User::where('tipo_user_id','=','2')->OrderBy('name')->paginate();
               $pdf = PDF::loadView('relatorio.bibliotecario',compact('Bibliotecarios'))
             ;
               return $pdf->stream();
