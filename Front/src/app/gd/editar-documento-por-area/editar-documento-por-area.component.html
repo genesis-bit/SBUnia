@@ -1,0 +1,771 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between mb-2">
+    <app-page-title title="Editar Documento Despachado"></app-page-title>
+    <div class="search-box me-2 mb-2 d-inline-block">
+      <a
+        href="/#/gd/documentos-por-area"
+        class="bg-primary d-flex justify-content-center"
+        style="height: 40px; width: 40px; border-radius: 100%"
+      >
+        <i
+          class="bx bx-arrow-back font-size-16 text-white align-middle align-self-center"
+        ></i>
+      </a>
+    </div>
+  </div>
+
+  <form (ngSubmit)="save()" [formGroup]="momentForm" #formDir="ngForm">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Tipo de Documento <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="tipo_documentos"
+                  name="tipo_documento"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="documento.gd_tipo_documento_id"
+                  placeholder="-- seleciona uma opção --"
+                  [(ngModel)]="documento.gd_tipo_documento_id"
+                  formControlName="gd_tipo_documento_id"
+                  value="documento.gd_tipo_documento_id"
+                >
+                </ng-select>
+                <div
+                  *ngIf="gd_tipo_documento_id.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="gd_tipo_documento_id.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Acesso <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="acesso_documentos"
+                  name="tipo_documento"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="documento.gd_documento_acesso_id"
+                  placeholder="-- seleciona uma opção --"
+                  [(ngModel)]="documento.gd_documento_acesso_id"
+                  value="documento.gd_documento_acesso_id"
+                  formControlName="gd_documento_acesso_id"
+                >
+                </ng-select>
+                <div
+                  *ngIf="gd_documento_acesso_id.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="gd_documento_acesso_id.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Prioridade <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="prioridade_documentos"
+                  name="tipo_documento"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="documento.gd_prioridade_documento_id"
+                  placeholder="-- seleciona uma opção --"
+                  [(ngModel)]="documento.gd_prioridade_documento_id"
+                  value="documento.gd_tipo_documento_id"
+                  formControlName="gd_prioridade_documento_id"
+                >
+                </ng-select>
+                <div
+                  *ngIf="
+                    gd_prioridade_documento_id.invalid && formDir.submitted
+                  "
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="gd_prioridade_documento_id.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Via Transmissão <span class="text-danger">*</span></label
+                >
+                <ng-select
+                  [items]="via_tramissao_documentos"
+                  name="tipo_documento"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="documento.gd_documento_via_transmissao_id"
+                  placeholder="-- seleciona uma opção --"
+                  [(ngModel)]="documento.gd_documento_via_transmissao_id"
+                  formControlName="gd_documento_via_transmissao_id"
+                  value="documento.gd_documento_via_transmissao_id"
+                >
+                </ng-select>
+                <div
+                  *ngIf="
+                    gd_documento_via_transmissao_id.invalid && formDir.submitted
+                  "
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="gd_documento_via_transmissao_id.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Remetente <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text "
+                  class="form-control"
+                  placeholder="escreva remetente"
+                  name="remetente"
+                  [(ngModel)]="documento.remetente"
+                  formControlName="remetente"
+                />
+                <div
+                  *ngIf="remetente.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="remetente.errors?.pattern" class="text-error">
+                    O Campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p *ngIf="remetente.errors?.['required']" class="text-error">
+                    Campo obrigatório.
+                  </p>
+
+                  <p *ngIf="remetente.errors?.minlength" class="text-error">
+                    O campo deve conter no mínimo 2 caracteres.
+                  </p>
+
+                  <p *ngIf="remetente.errors?.maxlength" class="text-error">
+                    O campo deve conter no máximo 255 caracteres.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Destinatário <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text "
+                  class="form-control"
+                  placeholder="escreva remetente"
+                  name="destintatario"
+                  [(ngModel)]="documento.destinatario"
+                  formControlName="destinatario"
+                />
+                <div
+                  *ngIf="destinatario.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="destinatario.errors?.pattern" class="text-error">
+                    O campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p
+                    *ngIf="destinatario.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+
+                  <p *ngIf="destinatario.errors?.minlength" class="text-error">
+                    O campo deve conter no mínimo 2 caracteres.
+                  </p>
+
+                  <p *ngIf="destinatario.errors?.maxlength" class="text-error">
+                    O campo deve conter no máximo 255 caracteres.
+                  </p>
+                </div>
+              </div>
+
+              <!-- <div class="col-md-3">
+                <label class="form-label">Classificador </label>
+                <input
+                  type="text "
+                  placeholder="escreva o telefone"
+                  class="form-control"
+                  name="classificador"
+                  [(ngModel)]="documento.classificador"
+                />
+              </div> -->
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Assunto <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text "
+                  placeholder="escreva o assunto"
+                  class="form-control"
+                  name="assunto "
+                  [(ngModel)]="documento.assunto"
+                  formControlName="assunto"
+                />
+                <div
+                  *ngIf="assunto.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="assunto.errors?.pattern" class="text-error">
+                    O Campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p *ngIf="assunto.errors?.['required']" class="text-error">
+                    Campo obrigatório.
+                  </p>
+
+                  <p *ngIf="assunto.errors?.minlength" class="text-error">
+                    O campo deve conter no mínimo 2 caracteres.
+                  </p>
+
+                  <p *ngIf="assunto.errors?.maxlength" class="text-error">
+                    O campo deve conter no máximo 255 caracteres.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Email</label>
+                <input
+                  type="text"
+                  placeholder="escreva o email"
+                  class="form-control"
+                  name="email"
+                  [(ngModel)]="documento.email"
+                  formControlName="email"
+                />
+                <div
+                  *ngIf="email.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="email.errors?.pattern" class="text-error">
+                    O Campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p *ngIf="email.errors?.email" class="text-error">
+                    O campo deve ser do tipo email.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Telefone </label>
+                <input
+                  type="text "
+                  placeholder="escreva o telefone"
+                  class="form-control"
+                  name="telefone"
+                  [(ngModel)]="documento.telefone"
+                  formControlName="telefone"
+                />
+                <div
+                  *ngIf="telefone.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="telefone.errors?.pattern" class="text-error">
+                    O campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p *ngIf="telefone.errors?.maxlength" class="text-error">
+                    O campo deve conter no máximo 255 caracteres.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end select2 -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Nº documento <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text "
+                  class="form-control"
+                  placeholder="escreva o número do documento"
+                  name="numero_documento"
+                  [(ngModel)]="documento.numero_documento"
+                  formControlName="numero_documento"
+                />
+                <div
+                  *ngIf="numero_documento.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="numero_documento.errors?.pattern"
+                    class="text-error"
+                  >
+                    O campo não pode conter apenas espaços em branco.
+                  </p>
+                  <p
+                    *ngIf="numero_documento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+
+                  <p
+                    *ngIf="numero_documento.errors?.minlength"
+                    class="text-error"
+                  >
+                    O campo deve conter no mínimo 2 caracteres.
+                  </p>
+
+                  <p
+                    *ngIf="numero_documento.errors?.maxlength"
+                    class="text-error"
+                  >
+                    O campo deve conter no máximo 255 caracteres.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Origem do documento <span class="text-danger">*</span>
+                </label>
+
+                <select
+                  class="form-select"
+                  name="gd_documento_via_transmissao_id"
+                  [(ngModel)]="documento.origem_documento"
+                  formControlName="origem_documento"
+                >
+                  <option value="" disabled selected>
+                    -- Seleciona uma opção --
+                  </option>
+                  <option value="0">Interno</option>
+                  <option value="1">Externo</option>
+                  <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+                </select>
+                <div
+                  *ngIf="origem_documento.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="origem_documento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label"
+                  >Estado <span class="text-danger">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  name="estado"
+                  [(ngModel)]="documento.estado"
+                  formControlName="estado"
+                >
+                  <option value="" disabled selected>
+                    -- Seleciona uma opção --
+                  </option>
+                  <option value="0">Inactivo</option>
+                  <option value="1">Activo</option>
+                  <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+                </select>
+                <div
+                  *ngIf="estado.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p *ngIf="estado.errors?.['required']" class="text-error">
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-3">
+                <label class="form-label">Data do documento </label>
+                <input
+                  type="date"
+                  placeholder="escreva o telefone"
+                  class="form-control"
+                  name="data_documento"
+                  [(ngModel)]="documento.data_documento"
+                  formControlName="data_documento"
+                />
+                <div
+                  *ngIf="data_documento.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="data_documento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Data de entrada/Saida </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="data_entrada_saida"
+                  [(ngModel)]="documento.data_entrada_saida"
+                  formControlName="data_entrada_saida"
+                />
+                <div
+                  *ngIf="data_entrada_saida.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="data_entrada_saida.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row -->
+          </div>
+        </div>
+        <!-- end select2 -->
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label"
+                  >Periodo de tratamento
+                  <span class="text-danger">*</span></label
+                >
+
+                <select
+                  class="form-select"
+                  name="periodo_tratamento"
+                  [(ngModel)]="documento.periodo_tratamento"
+                  formControlName="periodo_tratamento"
+                >
+                  <option value="" disabled selected>
+                    -- Seleciona uma opção --
+                  </option>
+                  <option value="0">Hoje</option>
+                  <option value="1">1 Dias</option>
+
+                  <option value="2">2 Dias</option>
+                  <option value="3">3 Dias</option>
+
+                  <option value="4">4 Dias</option>
+                  <option value="5">5 Dias</option>
+
+                  <option value="7">7 Dias</option>
+                  <option value="10">10 Dias</option>
+
+                  <option value="15">15 Dias</option>
+                  <option value="20">20 Dias</option>
+                  <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+                </select>
+
+                <div
+                  *ngIf="periodo_tratamento.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="periodo_tratamento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Data de despacho </label>
+                <input
+                  type="date"
+                  class="form-control"
+                  name="data_despacho"
+                  [(ngModel)]="documento.data_despacho"
+                  formControlName="data_despacho"
+                />
+
+                <div
+                  *ngIf="data_despacho.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="data_despacho.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label"
+                  >Natureza da Actividade <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="actividades"
+                  name="actividade_tipo_id"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="actividade_tipo_id"
+                  placeholder="-- seleciona uma opção --"
+                  [multiple]="false"
+                  [(ngModel)]="documento.actividade_tipo_id"
+                  value="actividade_tipo_id"
+                  formControlName="actividade_tipo_id"
+                >
+                </ng-select>
+
+                <div
+                  *ngIf="actividade_tipo_id.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="actividade_tipo_id.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label class="form-label"
+                  >Descricao do despacho
+                  <span class="text-danger">*</span></label
+                >
+
+                <textarea
+                  class="form-control"
+                  placeholder="escreva a descrição"
+                  name="despacho_descricao"
+                  [(ngModel)]="documento.despacho_descricao"
+                  cols="30"
+                  rows="5"
+                  formControlName="despacho_descricao"
+                >
+                </textarea>
+
+                <div
+                  *ngIf="despacho_descricao.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="despacho_descricao.errors?.pattern"
+                    class="text-error"
+                  >
+                    O campo descrição não pode conter apenas espaços em branco.
+                  </p>
+                  <p
+                    *ngIf="despacho_descricao.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+
+                  <p
+                    *ngIf="despacho_descricao.errors?.minlength"
+                    class="text-error"
+                  >
+                    O campo deve conter no mínimo 2 caracteres.
+                  </p>
+
+                  <p
+                    *ngIf="despacho_descricao.errors?.maxlength"
+                    class="text-error"
+                  >
+                    O campo deve conter no máximo 65 535 caracteres.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Departamento/Área a despachar
+                  <span class="text-danger">*</span>
+                </label>
+
+                <ng-select
+                  [items]="areas"
+                  name="area"
+                  bindLabel="nome"
+                  bindValue="id"
+                  placeholder="-- seleciona uma opção --"
+                  [multiple]="true"
+                  [(ngModel)]="documento.base_area_despacho"
+                  value="base_area_despacho"
+                  formControlName="base_area_despacho"
+                >
+                </ng-select>
+
+                <div
+                  *ngIf="base_area_despacho.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="base_area_despacho.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Funcionário a despachar <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="users"
+                  name="area"
+                  bindLabel="email"
+                  bindValue="id"
+                  placeholder="-- seleciona uma opção --"
+                  [multiple]="true"
+                  [(ngModel)]="documento.rh_funcionario_despacho"
+                  value="rh_funcionario_despacho"
+                  formControlName="rh_funcionario_despacho"
+                >
+                </ng-select>
+
+                <div
+                  *ngIf="rh_funcionario_despacho.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="rh_funcionario_despacho.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Departamento/Área para conhecimento
+                  <span class="text-danger">*</span>
+                </label>
+
+                <ng-select
+                  [items]="areas"
+                  name="area"
+                  [multiple]="true"
+                  bindLabel="nome"
+                  bindValue="id"
+                  value="documento.area_despacho_conhecimento"
+                  placeholder="-- seleciona uma opção --"
+                  [(ngModel)]="documento.base_area_conhecimento"
+                  value="base_area_conhecimento"
+                  formControlName="base_area_conhecimento"
+                >
+                </ng-select>
+
+                <div
+                  *ngIf="base_area_conhecimento.invalid && formDir.submitted"
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="base_area_conhecimento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label"
+                  >Funcionário para conhecimento
+                  <span class="text-danger">*</span>
+                </label>
+                <ng-select
+                  [items]="users"
+                  name="area"
+                  bindLabel="email"
+                  bindValue="id"
+                  placeholder="-- seleciona uma opção --"
+                  [multiple]="true"
+                  [(ngModel)]="documento.rh_funcionario_conhecimento"
+                  value="rh_funcionario_conhecimento"
+                  formControlName="rh_funcionario_conhecimento"
+                >
+                </ng-select>
+                <div
+                  *ngIf="
+                    rh_funcionario_conhecimento.invalid && formDir.submitted
+                  "
+                  class="validation-error"
+                >
+                  <p
+                    *ngIf="rh_funcionario_conhecimento.errors?.['required']"
+                    class="text-error"
+                  >
+                    Campo obrigatório.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-end">
+              <button type="submit " class="btn btn-success col-md-3">
+                Salvar
+              </button>
+            </div>
+
+            <!-- Row -->
+          </div>
+        </div>
+        <!-- end select2 -->
+      </div>
+    </div>
+  </form>
+  <!-- end row -->
+</div>

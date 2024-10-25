@@ -1,0 +1,429 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Gerir atividades de ocorrência"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  <div class="row mb-2">
+    <div class="col-sm-4">
+      <div class="search-box me-2 mb-2 d-inline-block"></div>
+      <div class="search-box me-2 mb-2 d-inline-block"></div>
+    </div>
+    <div class="col-sm-8">
+      <div class="text-sm-end">
+        <button
+          type="button"
+          data-bs-toggle="modal"
+          (click)="modalFormulario.show(); ocorrencia_atividade = {}"
+          class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"
+        >
+          <i class="mdi mdi-plus me-1"></i> Nova atividade de Ocorrência
+        </button>
+      </div>
+    </div>
+    <!-- end col-->
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-lg-4 mb-3">
+                <label for="formrow-firstname-input"
+                  >Codigo do documento
+                </label>
+                <input
+                  [(ngModel)]="filtro.name_code"
+                  type="text"
+                  name="codigo"
+                  class="form-control"
+                  id="formrow-firstname-input"
+                  placeholder="codigo do documento"
+                />
+              </div>
+
+              <div class="col-lg-1 mt-4">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="pesquisar()"
+                >
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- end select2 -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <div class="d-flex flex-row-reverse bd-highlight mb-2">
+              <div class="p-0 bd-highlight">
+                <select
+                  (change)="onTableSizeChange($event)"
+                  class="form-select"
+                >
+                  <option *ngFor="let size of tableSizes" [ngValue]="size">
+                    {{ size }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <table class="table table-sm table-bordered table-hover">
+              <thead class="table-info">
+                <tr>
+                  <th>Item</th>
+                  <th>Nome</th>
+                  
+                  <th>Tipo </th>
+                  <th>Estado</th> 
+                  
+                  <th>Acção</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <tr
+                  *ngFor="
+                    let data of ocorrencias_atividades
+                      | paginate
+                        : {
+                            itemsPerPage: filtro.pagesize,
+                            currentPage: filtro.page,
+                            totalItems: filtro.total_itens
+                          }
+                  "
+                >
+                  <td>{{ data?.id }}</td>
+
+                  <td>{{ data?.nome }}</td>
+                
+                  <td>{{ data?.ocorrenciasActividadesTipos?.nome }}</td>
+                  
+                  <td
+                    class="text-white"
+                    [ngStyle]="{
+                      'background-color': data?.gdPrioridadeDocumento?.cor
+                    }"
+                  >
+                    {{ data?.estado ==1 ? "Activo":"Inactivo" }}
+                  </td>
+
+                  <td>
+                    <div dropdown class="dropdown">
+                      <a
+                        dropdownToggle
+                        href="javascript: void(0);"
+                        class="dropdown-toggle card-drop px-2 show"
+                        aria-expanded="true"
+                      >
+                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                      </a>
+                      <ul
+                        *dropdownMenu
+                        class="dropdown-menu dropdown-menu-end show"
+                        style="
+                          position: absolute;
+                          inset: 0px 0px auto auto;
+                          margin: 0px;
+                          transform: translate(0px, 31.25px);
+                        "
+                        placement="bottom-end"
+                      >
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="ImprimirTicket(data)"
+                            class="dropdown-item edit-list"
+                            data-edit-id="8"
+                            ><i
+                              class="bx bxs-file-pdf font-size-16 text-success me-1"
+                            ></i>
+                            codigo</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="editar(data)"
+                            class="dropdown-item edit-list"
+                            data-edit-id="8"
+                            ><i
+                              class="mdi mdi-pencil font-size-16 text-success me-1"
+                            ></i>
+                            Editar</a
+                          >
+                        </li>
+
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="removeUser(data.id)"
+                            class="dropdown-item remove-list"
+                            data-remove-id="8"
+                            ><i
+                              class="mdi mdi-trash-can font-size-16 text-danger me-1"
+                            ></i>
+                            Delete</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="mt-3">
+              Total: <b>{{ filtro.total_itens }}</b>
+            </p>
+
+            <div
+              class="pagination pagination-rounded justify-content-center mt-4"
+            >
+              <pagination-controls
+                [responsive]="true"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                (pageChange)="onTableDataChange($event)"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>
+
+<!-- Modal -->
+<div
+  bsModal
+  #modalFormulario="bs-modal"
+  class="modal fade"
+  id="modalFormulario"
+  tabindex="-1"
+  aria-labelledby="modalFormulario"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newContactModalLabel">
+          Cadastrar atividade de ocorrência
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="modalFormulario.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="save()" [formGroup]="momentForm" #formDir="ngForm">
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label class="form-label"
+                >Nome <span class="text-danger">*</span>
+              </label>
+              <input
+                id="nome"
+                type="text "
+                placeholder="Escreva o nome"
+                class="form-control"
+                name="nome "
+                type=""
+                text
+                [(ngModel)]="ocorrencia_atividade.nome"
+                formControlName="nome"
+              />
+              <div
+                *ngIf="nome.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p *ngIf="nome.errors?.['required']" class="text-error">
+                  Campo obrigatório.
+                </p>
+
+                <p *ngIf="nome.errors?.['minlength']" class="text-error">
+                  O campo deve conter no mínimo 2 caracteres.
+                </p>
+
+                <p *ngIf="nome.errors?.['maxlength']" class="text-error">
+                  O campo deve conter no máximo 255 caracteres.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label"
+                >Tipo de atividade de ocorrência<span class="text-danger"
+                  >*</span
+                >
+              </label>
+              <ng-select
+                [items]="tipo_documentos"
+                name="ocorrencia_atividade_tipo_id"
+                bindLabel="nome"
+                bindValue="id"
+                placeholder="-- seleciona uma opção --"
+                [(ngModel)]="ocorrencia_atividade.ocorrencia_atividade_tipo_id"
+                formControlName="ocorrencia_atividade_tipo_id"
+              >
+              </ng-select>
+              <div
+                *ngIf="
+                  ocorrencia_atividade_tipo_id.invalid && formDir.submitted
+                "
+                class="validation-error"
+              >
+                <p
+                  *ngIf="ocorrencia_atividade_tipo_id.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo obrigatório.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label"
+                >Estado<span class="text-danger">*</span>
+              </label>
+              <ng-select
+                [items]="estadoList"
+                name="estado"
+                bindLabel="nome"
+                bindValue="id"
+                placeholder="-- seleciona uma opção --"
+                [(ngModel)]="ocorrencia_atividade.estado"
+                formControlName="estado"
+              >
+              </ng-select>
+              <div
+                *ngIf="estado.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p *ngIf="estado.errors?.['required']" class="text-error">
+                  Campo obrigatório.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary me-1"
+              (click)="modalFormulario.hide()"
+            >
+              Cancelar
+            </button>
+            <button type="submit" id="addContact-btn" class="btn btn-success">
+              Salvar
+            </button>
+            <!-- end modal-content -->
+          </div>
+
+          <!-- Row -->
+        </form>
+      </div>
+      <!-- end modal body -->
+    </div>
+
+    <!-- end modal-dialog -->
+  </div>
+</div>
+
+<div
+  bsModal
+  #removeItemModal="bs-modal"
+  class="modal fade"
+  id="removeItemModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body px-4 py-5 text-center">
+        <button
+          type="button"
+          class="btn-close position-absolute end-0 top-0 m-3"
+          (click)="removeItemModal.hide()"
+        ></button>
+        <div class="avatar-sm mb-4 mx-auto">
+          <div
+            class="avatar-title bg-primary text-primary bg-opacity-10 font-size-20 rounded-3"
+          >
+            <i class="mdi mdi-trash-can-outline"></i>
+          </div>
+        </div>
+        <p class="text-muted font-size-16 mb-4">
+          Are you Sure You want to Remove this User ?
+        </p>
+
+        <div class="hstack gap-2 justify-content-center mb-0">
+          <button type="button" class="btn btn-danger me-1" id="remove-item">
+            Remove Now
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="removeItemModal.hide()"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+          
+          <div id="print-section" style="width: 100px; height: 60px;">
+           <div>  INAGBE </div>
+           <div>  20240327001000042 </div>
+            
+           <div>
+            <span> 20240327001000042 </span>   Recibo   </div>
+            
+            
+          
+            
+          </div>
+          
+          
+          
+          
+          
+          
+          
+          
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+             
+            
+                  <div class="py-2 mt-3">
+                    <h3 class="font-size-15 fw-bold">Order summary</h3>
+                  </div>
+                 
+                  <div class="d-print-none">
+                    <div class="float-end">
+                      <a href="javascript:window.print()" class="btn btn-success"><i class="fa fa-print"></i></a>
+                      <a href="javascript: void(0);" class="btn btn-primary w-md ms-1">Send</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            -->

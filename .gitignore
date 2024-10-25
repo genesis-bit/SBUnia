@@ -1,19 +1,19 @@
-/.phpunit.cache
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
-.env.production
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
+/back/.phpunit.cache
+/back/node_modules
+/back/public/build
+/back/public/hot
+/back/public/storage
+/back/storage/*.key
+/back/vendor
+/back .env
+/back .env.backup
+/back .env.production
+/back .phpunit.result.cache
+/back Homestead.json
+/back Homestead.yaml
+/back auth.json
+/back npm-debug.log
+/back yarn-error.log
+/back/ .fleet
+/back/ .idea
+/back/ .vscode

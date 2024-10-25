@@ -1,0 +1,383 @@
+<div class="container-fluid">
+    <app-page-title title="Gerir utilizadores" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+
+
+
+    <div class="row mb-2">
+        <div class="col-sm-4">
+            <div class="search-box me-2 mb-2 d-inline-block">
+
+            </div>
+            <div class="search-box me-2 mb-2 d-inline-block">
+
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="text-sm-end">
+                <button type="button" data-bs-toggle="modal" (click)="newForm(newModal)" class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2">
+            <i class="mdi mdi-plus me-1"></i> Nova Entidade
+          </button>
+            </div>
+        </div>
+        <!-- end col-->
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-3 mb-1">
+                                <label for="formrow-firstname-input">Nome, Email, Telefone </label>
+                                <input [(ngModel)]="filtro.name_code" type="text" name="codigo" class="form-control" id="formrow-firstname-input" placeholder="Nome, Email, Telefone ">
+                            </div>
+
+
+
+                            <div class="col-md-3">
+                                <label class="form-label">Estado <span class="text-danger">*</span></label>
+                                <select class="form-control" name="estado" [(ngModel)]="filtro.estado">
+                    <option disabled selected>--Selecione Uma Opção --</option>
+                    <option value="0">Inactivo</option>
+                    <option value="1">Activo</option>
+                  </select>
+                            </div>
+
+                            <div class="col-lg-3 mb-1">
+                                <div class="mb-1">
+                                    <label class="form-label">Tipo De Utilizador</label>
+                                    <ng-select [(ngModel)]="filtro.tipo_utilizador" name="tipo_utilizador" bindLabel="nome" bindValue="id" (change)="changeDataTipoUtilizador()" [items]="tipo_utilizadores"></ng-select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-3 mb-1">
+                                <label for="formrow-firstname-input">Empresa </label>
+
+                                <ng-select [items]="empresas" name="base_empresa_id" bindLabel="empresa" bindValue="id" placeholder="-- Seleciona Uma Opção --" [(ngModel)]="user.base_empresa_id" value="user.base_empresa_id">
+                                </ng-select>
+                            </div>
+
+
+
+                            <div class="col-lg-1 mt-4">
+                                <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+            <!-- end select2 -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive ">
+                        <div class="d-flex flex-row-reverse bd-highlight mb-2">
+                            <div class="p-0 bd-highlight">
+                                <select (change)="onTableSizeChange($event)" class="form-select">
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                            </div>
+
+                        </div>
+
+                        <table class="table  table-bordered   table-hover    mb-0">
+
+                            <thead class="table-info">
+                                <tr>
+                                    <th class="min-w-120px">User</th>
+                                    <th class="min-w-120px">Email</th>
+                                    <th class="min-w-40px">Telefone</th>
+                                    <th class="min-w-40px">Api</th>
+
+                                    <th class="min-w-40px">Source</th>
+                                    <th class="min-w-40px">Data De Cadastro</th>
+
+                                    <th class="min-w-100px  ">Estado</th>
+                                    <th class="min-w-100px ">Acção</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                                <tr *ngFor="   let data of  data_users | paginate : { itemsPerPage: filtro.pagesize,    currentPage: filtro.page,    totalItems: filtro.  total_itens  }   ">
+
+                                    <td>{{data.username }}</td>
+                                    <td>{{data.email}}</td>
+                                    <td>{{data.telefone}} </td>
+                                    <td>{{data.api}} </td>
+                                    <td>{{data.db}} </td>
+                                    <td>{{data.created_at | date:'dd-MM-YYYY'}}</td>
+
+                                    <td>
+
+
+                                        @if(data.estado==1){
+                                        <span class="badge rounded-pill badge-soft-success font-size-12">Activo</span> } @else{
+
+                                        <span class="badge rounded-pill badge-soft-danger font-size-12">Inactivo</span> }
+                                    </td>
+
+                                    <td>
+                                        <ul class="list-inline font-size-20 contact-links mb-0">
+                                            <li class="list-inline-item px-2">
+                                                <a href="javascript:void(0);" tooltip="Message"><i class="bx bx-message-square-dots"></i></a>
+                                            </li>
+                                            <li class="list-inline-item px-2">
+                                                <a href="javascript:void(0);" tooltip="Profile"><i class="bx bx-user-circle"></i></a>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <div dropdown class="dropdown">
+                                                    <a dropdownToggle href="javascript: void(0);" class="dropdown-toggle card-drop px-2 show" aria-expanded="true"> <i class="mdi mdi-dots-horizontal font-size-18"></i> </a>
+                                                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-end show" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 31.25px);" placement="bottom-end">
+                                                        <li><a href="javascript:void(0);" data-bs-toggle="modal" (click)="editForm(newModal,data)" class="dropdown-item edit-list" data-edit-id="8"><i
+                                    class="mdi mdi-pencil font-size-16 text-success me-1"></i> Actualizar</a>
+                                                        </li>
+                                                        <li><a href="javascript:void(0);" data-bs-toggle="@mdo" (click)="resetPasswordForm(senhaModal,data)" class="dropdown-item edit-list" data-edit-id="8"><i class="mdi mdi-close font-size-16 text-success me-1"></i>
+                                  Senha</a>
+                                                        </li>
+                                                        <li><a href="javascript:void(0);" data-bs-toggle="@mdo" (click)="resetPinForm(senhaModal,data)" class="dropdown-item edit-list" data-edit-id="8"><i class="mdi mdi-close font-size-16 text-success me-1"></i>
+                                  Pin</a>
+                                                        </li>
+                                                        <li><a href="javascript:void(0);" (click)="delete(data)" class="dropdown-item remove-list" data-remove-id="8"><i
+                                    class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Eliminar</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <p class=" mt-3">Total: <b>{{ filtro.total_itens}}</b></p>
+
+                        <div class=" pagination pagination-rounded justify-content-center mt-4">
+                            <pagination-controls [responsive]="true" previousLabel="Anterior" nextLabel="Próximo" (pageChange)="onTableDataChange($event)">
+                            </pagination-controls>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+</div>
+
+
+<ng-template #newModal role="document" let-modal class="modal-dialog modal-dialog-centered modal-lg">
+
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="newModal">CADASTRO DE UTILIZADOR</h5>
+            <button type="button" class="btn-close" (click)="modalRef?.hide()"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Digita o Nome" name="nome" [(ngModel)]="user.name" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Username <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="username" name="username" [(ngModel)]="user.username" />
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Escreva um Despacho" name="despacho" [(ngModel)]="user.email" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Telefone <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Escreva um Despacho" name="user" [(ngModel)]="user.telefone" />
+                    </div>
+
+
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label">Grupo  <span class="text-danger">*</span></label>
+                        <select class="form-control" name="acl_group_id" [(ngModel)]="user.acl_group_id">
+                <option disabled selected>--Selecione Uma Opção --</option>
+
+                <option *ngFor="let data of grupos" value={{data.id}}>
+                  {{data.nome}} </option>
+
+              </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Estado <span class="text-danger">*</span></label>
+                        <select class="form-control" name="estado" [(ngModel)]="user.estado">
+                <option disabled selected>--Selecione Uma Opção --</option>
+                <option value="0">Inactivo</option>
+                <option value="1">Activo</option>
+              </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Tipo De Utilizador <span class="text-danger">*</span></label>
+                        <select class="form-control" name="tipo_utilizador" [(ngModel)]="user.tipo_utilizador">
+                <option disabled selected>--Selecione Uma Opção --</option>
+
+                <option *ngFor="let data of tipo_utilizadores" value={{data.id}}>
+                  {{data.nome}} </option>
+
+              </select>
+                    </div>
+
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Chave Pública <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder=" " name="public_key" [(ngModel)]="user.public_key" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Api <span class="text-danger">*</span></label>
+
+                        <select class="form-control" name="api" [(ngModel)]="user.api">
+                <option value="">--Selecione Uma Opção --</option>
+                <option value="http://localhost:4000">Local</option>
+                <option value="https://rovalerp.tecroval.net">Online</option>
+              </select>
+
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Source <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="" name="source" [(ngModel)]="user.db" />
+                    </div>
+
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Senha <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" placeholder="Escreva A Sua Senha" name="password" [(ngModel)]="user.password" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Confirmar Senha <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" placeholder="Confirmar Senha" name="confirm_password" [(ngModel)]="user.confirmar_senha" />
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary me-1" (click)="modalRef?.hide()">
+              Cancelar
+            </button>
+                    <button type="submit" id="addContact-btn" class="btn btn-success" (click)="save()">
+              Salvar
+            </button>
+                    <!-- end modal-content -->
+                </div>
+
+                <!-- Row -->
+            </form>
+        </div>
+        <!-- end modal body -->
+    </div>
+
+    <!-- end modal-dialog -->
+
+
+
+</ng-template>
+<!-- /.modal -->
+
+
+<ng-template #senhaModal role="document" let-modal class="modal-dialog modal-dialog-centered modal-lg">
+
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="senhaModal">Actualizar Senha</h5>
+            <button type="button" class="btn-close" (click)="senhaModal.hide()"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row mb-3">
+
+                    <div class="col-md-4">
+                        <label class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input readonly type="text" class="form-control" placeholder="Digita O Nome" name="nome" [(ngModel)]="user.name" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Username <span class="text-danger">*</span></label>
+                        <input readonly type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="user.username" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Senha <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" placeholder="Escreva A Sua Senha" name="password" [(ngModel)]="user.password" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Confirmar Senha <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" placeholder="Confirmar Senha" name="confirm_password" [(ngModel)]="user.confirmar_senha" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Pin<span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" placeholder="Código Do Utilizador" name="codigo" [(ngModel)]="user.pin" />
+                    </div>
+                </div>
+
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary me-1" (click)="senhaModal.hide()">
+              Cancelar
+            </button>
+                    <button type="submit" id="addContact-btn" class="btn btn-success" (click)="save(); senhaModal.hide()">
+              Salvar
+            </button>
+                    <!-- end modal-content -->
+                </div>
+
+                <!-- Row -->
+            </form>
+        </div>
+        <!-- end modal body -->
+    </div>
+
+    <!-- end modal-dialog -->
+
+
+
+</ng-template>
+<!-- /.modal -->

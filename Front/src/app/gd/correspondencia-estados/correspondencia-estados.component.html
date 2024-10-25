@@ -1,0 +1,254 @@
+<div class="container-fluid">
+    <app-page-title
+      title="VER ESTADO DO DOCUMENTO"
+      [breadcrumbItems]="breadCrumbItems"
+    ></app-page-title>
+  
+    <div class="row mb-2">
+      <div class="col-sm-4">
+        <div class="search-box me-2 mb-2 d-inline-block"></div>
+        <div class="search-box me-2 mb-2 d-inline-block"></div>
+      </div>
+      <div class="col-sm-8">
+        <div class="text-sm-end">
+          
+        </div>
+      </div>
+      <!-- end col-->
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                <label for="formrow-firstname-input"
+                      >Codigo do documento
+                    </label>  
+                  <input
+                    [(ngModel)]="filtro.name_code"
+                    type="text"
+                    name="codigo"
+                    class="form-control"
+                    id="formrow-firstname-input"
+                    placeholder="pesquisar por codigo do documento, assunto email ou telefone"
+                  />
+                </div>
+  
+                
+                <div class="col-lg-1 mt-4">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="pesquisar()"
+                  >
+                    Pesquisar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- end select2 -->
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <div class="d-flex flex-row-reverse bd-highlight mb-2">
+                <div class="p-0 bd-highlight">
+                  <select
+                    (change)="onTableSizeChange($event)"
+                    class="form-select"
+                  >
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+  
+              <table class="table table-sm table-bordered table-hover">
+                <thead class="table-info">
+                  <tr>
+                    <th>Data do Documento</th> 
+                    <th>Data de Despacho </th>
+                    <th>Codigo</th>
+                    <th>Remetente</th>
+                    <th>Assunto</th>
+                    <th>Tipo Documento</th>
+                    <th>Acesso</th>
+                    <th>Via Transferencia</th>
+                    <th>Prioridade</th>
+                    <th>Acção</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <tr
+                    *ngFor="
+                      let data of documentos
+                        | paginate
+                          : {
+                              itemsPerPage: filtro.pagesize,
+                              currentPage: filtro.page,
+                              totalItems: filtro.total_itens
+                            }
+                    "
+                  >
+                  
+                  <td>{{ data?.data_documento | date:'dd-MM-yyyy' }}</td>
+                  <td>{{ data?.data_despacho |date:'dd-MM-yyy'}}</td>
+  
+                    <td>{{ data?.codigo_documento }}</td>
+  
+                    <td>{{ data?.remetente.substring(0, 30) }}</td>
+                    <td>{{ data?.assunto.substring(0, 50) }}</td>
+  
+                    <td>{{ data?.gdTipoDocumento?.nome }}</td>
+                    <td>{{ data?.gdDocumentoAcesso?.nome }}</td>
+                    <td>{{ data?.gdDocumentoViaTransmissoe?.nome }}</td>
+  
+                    <td>{{ data?.gdPrioridadeDocumento?.nome }}</td>
+  
+                    <td>
+                      <div dropdown class="dropdown">
+                        <a
+                          dropdownToggle
+                          href="javascript: void(0);"
+                          class="dropdown-toggle card-drop px-2 show"
+                          aria-expanded="true"
+                        >
+                          <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                        </a>
+                        <ul
+                          *dropdownMenu
+                          class="dropdown-menu dropdown-menu-end show"
+                          style="
+                            position: absolute;
+                            inset: 0px 0px auto auto;
+                            margin: 0px;
+                            transform: translate(0px, 31.25px);
+                          "
+                          placement="bottom-end"
+                        >
+                          <li>
+                            <a
+                              href="gd/tramitar-documento/{{
+                                data.codigo_documento
+                              }}"
+                              class="dropdown-item edit-list"
+                              ><i
+                                class="mdi mdi-pencil font-size-16 text-success me-1"
+                              ></i>
+                              Editar</a
+                            >
+                          </li>
+                          <li>
+                            <a
+                              href="javascript:void(0);"
+                              (click)="removeUser(data.id)"
+                              class="dropdown-item remove-list"
+                              data-remove-id="8"
+                              ><i
+                                class="mdi mdi-trash-can font-size-16 text-danger me-1"
+                              ></i>
+                              Delete</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="mt-3">
+                Total: <b>{{ filtro.total_itens }}</b>
+              </p>
+  
+              <div
+                class="pagination pagination-rounded justify-content-center mt-4"
+              >
+                <pagination-controls
+                  [responsive]="true"
+                  previousLabel="Anterior"
+                  nextLabel="Próximo"
+                  (pageChange)="onTableDataChange($event)"
+                >
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+  </div>
+  
+  <!-- Modal -->
+  <div
+    bsModal
+    #newDocumentModal="bs-modal"
+    class="modal fade"
+    id="newContactModal"
+    tabindex="-1"
+    aria-labelledby="newDocumentModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newContactModalLabel">
+            Pesquisar documento
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="newDocumentModal.hide()"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <!-- <label class="form-label"
+                    >Codigo do Documento <span class="text-danger">*</span></label
+                  > -->
+                <input
+                  type="text "
+                  class="form-control"
+                  placeholder="Código do documento"
+                  name="codigo_documento"
+                  [(ngModel)]="documento.codigo_documento"
+                />
+              </div>
+  
+              <div class="col-md-3">
+                <button
+                  type="submit"
+                  id="addContact-btn"
+                  class="btn btn-success"
+                  (click)="
+                    searchDocumentByCode(documento.codigo_documento);
+                    newDocumentModal.hide()
+                  "
+                >
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+  
+            <!-- Row -->
+          </form>
+        </div>
+        <!-- end modal body -->
+      </div>
+  
+      <!-- end modal-dialog -->
+    </div>
+  </div>
+  

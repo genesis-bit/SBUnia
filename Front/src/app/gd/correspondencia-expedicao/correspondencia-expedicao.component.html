@@ -1,0 +1,418 @@
+<div class="container-fluid">
+  <app-page-title
+    title="EXPEDIÇÃO DOCUMENTO"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <form>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="formrow-firstname-input">Código do documento </label>
+                <input
+                  [(ngModel)]="filtro.name_code"
+                  type="text"
+                  name="codigo"
+                  class="form-control"
+                  id="formrow-firstname-input"
+                  placeholder="Pesquisar por Código do Documento, Assunto, Email ou Telefone"
+                />
+              </div>
+
+              <div class="col-lg-2 d-flex mt-1 align-self-end">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="pesquisar()"
+                >
+                  Pesquisar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- end select2 -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <div class="d-flex flex-row-reverse bd-highlight mb-2">
+              <div class="p-0 bd-highlight">
+                <select
+                  (change)="onTableSizeChange($event)"
+                  class="form-select"
+                >
+                  <option *ngFor="let size of tableSizes" [ngValue]="size">
+                    {{ size }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <table class="table table-sm table-bordered table-hover">
+              <thead class="table-info">
+                <tr> 
+                  <th>Código</th>
+                  <th>Data do Documento</th>
+                  <th>Data de Despacho</th>                 
+                  <th>Remetente</th>
+                  <th>Assunto</th>
+                  <th>Destinatário</th>
+                  <th>Receptor</th>
+                  <th>Remetente</th>
+                  <th>Acção</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <tr
+                  *ngFor="
+                    let data of documentos
+                      | paginate
+                        : {
+                            itemsPerPage: filtro.pagesize,
+                            currentPage: filtro.page,
+                            totalItems: filtro.total_itens
+                          }
+                  "
+                >
+                  <td>{{ data?.codigoDocumento }}</td>
+                  <td>{{ data?.dataDocumento | date : "dd-MM-yyyy" }}</td>
+                  <td>{{ data?.dataDespacho | date : "dd-MM-yyy" }}</td>               
+
+                  <td>{{ data?.remetente.substring(0, 30) }}</td>
+                  <td>{{ data?.assunto.substring(0, 50) }}</td>
+
+                  <td>{{ data?.destinatario }}</td>
+                  <td>{{ data?.receptor }}</td>
+                  <td>{{ data?.remetente }}</td>
+
+                  <td>
+                    <div dropdown class="dropdown">
+                      <a
+                        dropdownToggle
+                        href="javascript: void(0);"
+                        class="dropdown-toggle card-drop px-2 show"
+                        aria-expanded="true"
+                      >
+                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                      </a>
+                      <ul
+                        *dropdownMenu
+                        class="dropdown-menu dropdown-menu-end show"
+                        style="
+                          position: absolute;
+                          inset: 0px 0px auto auto;
+                          margin: 0px;
+                          transform: translate(0px, 31.25px);
+                        "
+                        placement="bottom-end"
+                      >
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="openModal(data)"
+                            class="dropdown-item remove-list"
+                            ><i
+                              class="mdi mdi-pencil font-size-16 text-success me-1"
+                            ></i>
+                            Expedir</a
+                          >
+                        </li>
+                        <!-- <li>
+                          <a
+                            href="javascript:void(0);"
+                            (click)="removeUser(data.id)"
+                            class="dropdown-item remove-list"
+                            data-remove-id="8"
+                            ><i
+                              class="mdi mdi-trash-can font-size-16 text-danger me-1"
+                            ></i>
+                            Delete</a
+                          >
+                        </li> -->
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="mt-3">
+              Total: <b>{{ filtro.total_itens }}</b>
+            </p>
+
+            <div
+              class="pagination pagination-rounded justify-content-center mt-4"
+            >
+              <pagination-controls
+                [responsive]="true"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                (pageChange)="onTableDataChange($event)"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>
+
+<!-- Modal -->
+<div
+  bsModal
+  #newDocumentModal="bs-modal"
+  class="modal fade"
+  id="newContactModal"
+  tabindex="-1"
+  aria-labelledby="newDocumentModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newContactModalLabel">Expedir Documento</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="newDocumentModal.hide()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="save()" [formGroup]="momentForm" #formDir="ngForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Data de Expedição </label>
+              <span class="text-danger">*</span>
+              <input
+                type="date"
+                class="form-control"
+                name="data_expedicao"
+                [min]="documento.data_despacho"
+                [max]="maxDate"
+                [(ngModel)]="documento.data_expedicao"
+                formControlName="data_expedicao"
+              />
+
+              <div
+                *ngIf="data_expedicao.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p
+                  *ngIf="data_expedicao.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo Obrigatório.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label"
+                >Notificação Enviada <span class="text-danger">*</span></label
+              >
+
+              <select
+                class="form-select"
+                name="notificacao_enviada"
+                [(ngModel)]="documento.notificacao_enviada"
+                formControlName="notificacao_enviada"
+              >
+                <option value="" disabled selected>
+                  -- Seleciona uma opção --
+                </option>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+                <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+              </select>
+
+              <div
+                *ngIf="notificacao_enviada.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p
+                  *ngIf="notificacao_enviada.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo Obrigatório.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label class="form-label"
+                >Periodo de Tratamento <span class="text-danger">*</span></label
+              >
+
+              <select
+                disabled=""
+                class="form-select"
+                name="periodo_tratamento"
+                [(ngModel)]="documento.periodo_tratamento"
+                formControlName="periodo_tratamento"
+              >
+                <option value="0">Hoje</option>
+                <option value="1">1 Dias</option>
+
+                <option value="2">2 Dias</option>
+                <option value="3">3 Dias</option>
+
+                <option value="4">4 Dias</option>
+                <option value="5">5 Dias</option>
+
+                <option value="7">7 Dias</option>
+                <option value="10">10 Dias</option>
+
+                <option value="15">15 Dias</option>
+                <option value="20">20 Dias</option>
+                <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+              </select>
+
+              <div
+                *ngIf="periodo_tratamento.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p
+                  *ngIf="periodo_tratamento.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo Obrigatório.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label"
+                >Expedido Email <span class="text-danger">*</span></label
+              >
+
+              <select
+                class="form-select"
+                name="expedido_email"
+                [(ngModel)]="documento.expedido_email"
+                formControlName="expedido_email"
+              >
+                <option value="" disabled selected>
+                  -- Seleciona uma opção --
+                </option>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+                <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+              </select>
+
+              <div
+                *ngIf="expedido_email.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p
+                  *ngIf="expedido_email.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo Obrigatório.
+                </p>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label"
+                >Expedido Físico <span class="text-danger">*</span></label
+              >
+
+              <select
+                class="form-select"
+                name="expedido_fisico"
+                [(ngModel)]="documento.expedido_fisico"
+                formControlName="expedido_fisico"
+              >
+                <option value="" disabled selected>
+                  -- Seleciona uma opção --
+                </option>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+                <!-- Itera sobre os itens do array via_transmissao_documentos e cria uma opção para cada um -->
+              </select>
+
+              <div
+                *ngIf="expedido_fisico.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p
+                  *ngIf="expedido_fisico.errors?.['required']"
+                  class="text-error"
+                >
+                  Campo Obrigatório.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label class="form-label"
+                >Receptor <span class="text-danger">*</span></label
+              >
+
+              <textarea
+                class="form-control"
+                placeholder="Escreva o Nome do Receptor"
+                rows="6"
+                name="Receptor"
+                [(ngModel)]="documento.receptor"
+                formControlName="receptor"
+              >
+              </textarea>
+
+              <div
+                *ngIf="receptor.invalid && formDir.submitted"
+                class="validation-error"
+              >
+                <p *ngIf="receptor.errors?.pattern" class="text-error">
+                  O campo Descrição não Pode Conter Apenas Espaços em Branco.
+                </p>
+                <p *ngIf="receptor.errors?.['required']" class="text-error">
+                  Campo Obrigatório.
+                </p>
+
+                <p *ngIf="receptor.errors?.minlength" class="text-error">
+                  O Campo Ceve Conter no Mínimo 2 Caracteres.
+                </p>
+
+                <p *ngIf="receptor.errors?.maxlength" class="text-error">
+                  O Campo Deve Conter no Máximo 255 Caracteres.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary me-1"
+              (click)="newDocumentModal.hide()"
+            >
+              Cancelar
+            </button>
+            <button type="submit" id="addContact-btn" class="btn btn-success">
+              Salvar
+            </button>
+            <!-- end modal-content -->
+          </div>
+
+          <!-- Row -->
+        </form>
+      </div>
+      <!-- end modal body -->
+    </div>
+
+    <!-- end modal-dialog -->
+  </div>
+</div>

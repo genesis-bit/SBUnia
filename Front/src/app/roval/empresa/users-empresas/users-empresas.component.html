@@ -1,0 +1,368 @@
+<div class="container-fluid">
+  <app-page-title title="Gerir Utilizadores" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row mb-2">
+    <div class="col-sm-4">
+      <div class="search-box me-2 mb-2 d-inline-block">
+      </div>
+      <div class="search-box me-2 mb-2 d-inline-block">
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="text-sm-end">
+        <button type="button" data-bs-toggle="modal" (click)="newContactModal.show()"
+          class="btn btn-success btn-rounded waves-effect waves-light addContact-modal mb-2"><i
+            class="mdi mdi-plus me-1"></i> Novo Utilizador</button>
+      </div>
+    </div><!-- end col-->
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+
+
+          <form>
+            <div class="row">
+              <div class="col-lg-4 mb-3">
+                <label for="formrow-firstname-input">Email ou Telefone </label>
+                <input [(ngModel)]="filtro.name_code" type="text" name="codigo" class="form-control"
+                  id="formrow-firstname-input" placeholder="procurar por email ou telefone">
+              </div>
+
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label class="form-label">Estado</label>
+                  <ng-select [(ngModel)]="filtro.estado" name="estado" bindLabel="nome" bindValue="id"
+                    (change)="carregarLista()" [items]="estados"></ng-select>
+                </div>
+              </div>
+
+              <div class="col-lg-3">
+                <div class="mb-3">
+                  <label class="form-label">Empresa</label>
+                  <ng-select [(ngModel)]="filtro.cliente" name="cliente" [items]="clientes"
+                    [multiple]="true"></ng-select>
+                </div>
+              </div>
+
+              <div class="col-lg-1 mt-4">
+                <button type="button" class="btn btn-primary" (click)="pesquisar()">Pesquisar</button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+      <!-- end select2 -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-sm-10">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <select (change)="onTableSizeChange($event)" class="form-select">
+                  <option *ngFor="let size of tableSizes" [ngValue]="size">
+                    {{ size }}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+            <div class="col-sm-2">
+              <div class="search-box me-2 mb-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" id="searchTableList" placeholder="procurar..."
+                    [(ngModel)]="filtro.name_code">
+                  <i class="bx bx-search-alt search-icon"></i>
+                </div>
+              </div>
+            </div><!-- end col-->
+          </div>
+          <div class="table-responsive ">
+
+            <table class="table  table-bordered table-nowrap table-hover    ">
+
+              <thead class="table-info">
+                <tr>
+                  <th class="min-w-120px">User</th>
+                  <th class="min-w-120px">email</th>
+                  <th class="min-w-40px">Telefone</th>
+                  <th class="min-w-40px">Api</th>
+                  
+                  <th class="min-w-40px">source</th>
+                  <th class="min-w-40px">Data de Cadastro</th>
+
+                  <th class="min-w-100px  ">Estado</th>
+                  <th class="min-w-100px ">Acção</th>
+                </tr>
+              </thead>
+              <tbody class="">
+                <tr
+                  *ngFor="   let data of  data_users | paginate : { itemsPerPage: filtro.pagesize,    currentPage: filtro.page,    totalItems: filtro.  total_itens  }   ">
+
+                  <td>{{data.username }}</td>
+                  <td>{{data.email}}</td>
+                  <td>{{data.telefone}} </td>
+                  <td>{{data.api}} </td>
+                  <td>{{data.db}} </td>
+                  <td>{{data.created_at | date:'dd-MM-YYYY'}}</td>
+
+                  <td>
+
+
+                    @if(data.estado){
+                    <span class="badge rounded-pill badge-soft-success font-size-12">Disponível</span>
+                    }
+                    @else{
+
+                    <span class="badge rounded-pill badge-soft-danger font-size-12">Usada</span>
+
+                    }
+                  </td>
+
+                  <td>
+                    <ul class="list-inline font-size-20 contact-links mb-0">
+                      <li class="list-inline-item px-2">
+                        <a href="javascript:void(0);" tooltip="Message"><i class="bx bx-message-square-dots"></i></a>
+                      </li>
+                      <li class="list-inline-item px-2">
+                        <a href="javascript:void(0);" tooltip="Profile"><i class="bx bx-user-circle"></i></a>
+                      </li>
+                      <li class="list-inline-item">
+                        <div dropdown class="dropdown">
+                          <a dropdownToggle href="javascript: void(0);" class="dropdown-toggle card-drop px-2 show"
+                            aria-expanded="true"> <i class="mdi mdi-dots-horizontal font-size-18"></i> </a>
+                          <ul *dropdownMenu class="dropdown-menu dropdown-menu-end show"
+                            style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 31.25px);"
+                            placement="bottom-end">
+                            <li><a href="javascript:void(0);" (click)="editUser($index)" class="dropdown-item edit-list"
+                                data-edit-id="8"><i class="mdi mdi-pencil font-size-16 text-success me-1"></i> Edit</a>
+                            </li>
+                            <li><a href="javascript:void(0);" (click)="removeUser(data.id)"
+                                class="dropdown-item remove-list" data-remove-id="8"><i
+                                  class="mdi mdi-trash-can font-size-16 text-danger me-1"></i> Delete</a></li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </td>
+
+              </tbody>
+            </table>
+            <p class=" mt-3">Total: <b>{{ filtro.total_itens}}</b></p>
+
+            <div class=" pagination pagination-rounded justify-content-center mt-4">
+              <pagination-controls [responsive]="true" previousLabel="Anterior" nextLabel="Próximo"
+                (pageChange)="onTableDataChange($event)">
+              </pagination-controls>
+            </div>
+
+
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end row -->
+</div>
+
+
+
+
+<!-- Modal -->
+<div bsModal #newContactModal="bs-modal" class="modal fade" id="newContactModal" tabindex="-1"
+  aria-labelledby="newContactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newContactModalLabel">Add Contact</h5>
+        <button type="button" class="btn-close" (click)="newContactModal.hide()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveUser()" [formGroup]="createContactForm" autocomplete="off"
+          class="needs-validation createContact-form" id="createContact-form" novalidate>
+          <div class="row">
+            <div class="col-lg-12">
+              <input type="hidden" class="form-control" id="userid-input">
+              <div class="text-center mb-4">
+                <div class="position-relative d-inline-block">
+                  <div class="position-absolute bottom-0 end-0">
+                    <label for="member-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right"
+                      title="Select Member Image">
+                      <div class="avatar-xs">
+                        <div class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                          <i class="bx bxs-image-alt"></i>
+                        </div>
+                      </div>
+                    </label>
+                    <input class="form-control d-none" value="" id="member-image-input" type="file"
+                      accept="image/png, image/gif, image/jpeg" (change)="fileChange($event)">
+                  </div>
+                  <div class="avatar-lg">
+                    <div class="avatar-title bg-light rounded-circle">
+                      <img src="assets/images/users/user-dummy-img.jpg" id="member-img"
+                        class="avatar-md rounded-circle h-auto" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="username-input" class="form-label">User Name</label>
+                <input type="text" id="username-input" class="form-control" placeholder="Enter name"
+                  formControlName="name" required />
+                <div class="invalid-feedback">Please enter a name.</div>
+              </div>
+              <div class="mb-3">
+                <label for="designation-input" class="form-label">Designation</label>
+                <input type="text" id="designation-input" class="form-control" placeholder="Enter Designation"
+                  formControlName="position" required />
+                <div class="invalid-feedback">Please enter a designation.</div>
+              </div>
+              <div class="mb-3">
+                <label for="email-input" class="form-label">Email</label>
+                <input type="email" id="email-input" class="form-control" placeholder="Enter email"
+                  formControlName="email" required />
+                <div class="invalid-feedback">Please enter email.</div>
+              </div>
+              <div class="mb-3">
+                <label for="tag-input" class="form-label">Tags</label>
+                <select class="select2 form-control select2-multiple" id="tag-input" multiple="multiple"
+                  formControlName="tags" data-placeholder="Choose ...">
+                  <option value="Photoshop">Photoshop</option>
+                  <option value="illustrator">illustrator</option>
+                  <option value="Html">Html</option>
+                  <option value="Css">Css</option>
+                  <option value="Javascript">Javascript</option>
+                  <option value="Php">Php</option>
+                  <option value="Java">Java</option>
+                  <option value="Ruby">Ruby</option>
+                  <option value="Python">Python</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <div class="text-end">
+                <button type="button" class="btn btn-outline-secondary me-1"
+                  (click)="newContactModal.hide()">Cancel</button>
+                <button type="submit" id="addContact-btn" class="btn btn-success">Add Customer</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- end modal body -->
+    </div>
+    <!-- end modal-content -->
+  </div>
+  <!-- end modal-dialog -->
+</div>
+
+<!-- removeItemModal -->
+<div bsModal #removeItemModal="bs-modal" class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-body px-4 py-5 text-center">
+        <button type="button" class="btn-close position-absolute end-0 top-0 m-3"
+          (click)="removeItemModal.hide()"></button>
+        <div class="avatar-sm mb-4 mx-auto">
+          <div class="avatar-title bg-primary text-primary bg-opacity-10 font-size-20 rounded-3">
+            <i class="mdi mdi-trash-can-outline"></i>
+          </div>
+        </div>
+        <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this User ?</p>
+
+        <div class="hstack gap-2 justify-content-center mb-0">
+          <button type="button" class="btn btn-danger me-1" id="remove-item" (click)="confirmDelete(deleteId)">Remove
+            Now</button>
+          <button type="button" class="btn btn-secondary" (click)="removeItemModal.hide()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end removeItemModal -->
+
+
+<ng-template #newModal role="document" let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="modalRef?.hide()"></button>
+  </div>
+  <div class="modal-body">
+
+
+    <div class="row row-sm">
+      <div class="col-lg-4">
+        <div class="form-group has-success mg-b-0">
+          <label class="control-label">Dispositivos *</label>
+
+
+          <select class="form-control" name="agente" id="" [(ngModel)]="licenca.dispositivo">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">6</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="20">10 a 20</option>
+            <option value="50">20 a 50</option>
+            <option value="100">50 a 99</option>
+          </select>
+
+
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group has-success mg-b-0">
+          <label class="control-label">Período *</label>
+
+          <select id="placement" required="" name="time" class="form-control" [(ngModel)]="licenca.time">
+
+            <option value="30">1 Mes</option>
+            <option value="61">2 Meses</option>
+            <option value="91">3 Meses</option>
+            <option value="121">4 Meses </option>
+            <option value="151">5 Mes</option>
+            <option value="181">6 Meses</option>
+            <option value="211">7 Meses</option>
+            <option value="241">8 Meses </option>
+            <option value="271">9 Meses </option>
+            <option value="301"> 10 Meses</option>
+            <option value="331">11 Meses</option>
+            <option value="365">12 Meses</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="form-group has-success mg-b-0">
+          <label class="control-label">Quantidade *</label>
+
+          <select id="placement" required="" name="time" class="form-control" [(ngModel)]="licenca.quantidade">
+
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="modalRef?.hide()">Sair</button>
+    <button type="button" class="btn btn-primary" (click)="salvar()">Salvar</button>
+  </div>
+</ng-template>

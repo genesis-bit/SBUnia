@@ -1,0 +1,157 @@
+<div class="container-fluid">
+    <app-page-title
+      title="Historico de Tarefa das Actividades"
+      [breadcrumbItems]="breadCrumbItems"
+    ></app-page-title>
+  
+    <div class="d-flex justify-content-end mb-2">     
+      <div class="search-box me-2 mb-2 d-inline-block">
+        <a
+          href="/#/actividade/tarefas"
+          class="bg-primary d-flex justify-content-center"
+          style="height: 40px; width: 40px; border-radius: 100%"
+        >
+          <i
+            class="bx bx-arrow-back font-size-16 text-white align-middle align-self-center"
+          ></i>
+        </a>
+      </div>
+    </div>
+    
+
+    <div class="d-flex flex-row bd-highlight mb-2">
+                <div class="p-0 bd-highlight">
+                  <select
+                    (change)="onTableSizeChange($event)"
+                    class="form-select"
+                  >
+                    <option *ngFor="let size of tableSizes" [ngValue]="size">
+                      {{ size }}
+                    </option>
+                  </select>
+                </div>
+    </div>
+    
+    <div class="row">            
+                <div class="col-lg-12" *ngFor=" let data of tarefa_historicos
+                     | paginate
+                            : {
+                                itemsPerPage: filtro.pagesize,
+                                currentPage: filtro.page,
+                                totalItems: filtro.total_itens
+                              }
+                      "
+                  >
+                  <div class="card">                    
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <label>Nome </label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.nome}}  
+                          </span>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Anexo </label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.anexo?.nome}}
+                          </span>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Responsavel </label>
+                          <br />
+                          <span class="title-item">
+                           {{data?.responsavelUser?.email}}
+                          </span>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Duração</label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.duracao}}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <label>Actividade </label>
+                          <br />
+                          <span class="title-item"> {{data?.actividade?.nome}}</span>
+                        </div>
+                        <div class="col-md-3">
+                          <label>Tarefa Actividade </label>
+                          <br />
+                          <span class="title-item"> {{data?.tarefa?.nome}} </span>
+                        </div>            
+                        <div class="col-md-3">
+                          <label>Estado da Tarefa </label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.tarefa_estado?.nome}}
+                          </span>
+                        </div>            
+                        <div class="col-md-3">
+                          <label>Tipo da Tarefa</label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.tarefa_tipo?.nome}}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-md-3">
+                          <label>Data de Inicio </label>
+                          <br />
+                          <span class="title-item">
+                            {{data?.data_inicio.substring(0, 10) | date:"dd-MM-yyyy" }}
+                          </span>
+                        </div>            
+                        <div class="col-md-3">
+                          <label>Data Fim </label>
+                          <br />
+                          <span class="title-item"> {{data?.data_fim.substring(0, 10) | date:"dd-MM-yyyy" }} </span>
+                        </div>
+                        <div class="col-md-6">
+                          <label>Descrição</label>
+                          <br />
+                          <span class="title-item"> {{data?.descricao}} </span>
+                        </div>                   
+                      </div>
+            
+                      <!-- Row -->
+                    </div>
+                  </div>
+                  <!-- end select2 -->
+                </div>                         
+    </div>
+    <!-- end row -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <p class="mt-3">
+              Total: <b>{{ filtro.total_itens }}</b>
+            </p>
+
+            <div
+              class="pagination pagination-rounded justify-content-center mt-4"
+            >
+              <pagination-controls
+                [responsive]="true"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                (pageChange)="onTableDataChange($event)"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  
+ 
+  

@@ -1,0 +1,263 @@
+<div class="container-fluid">
+
+ 
+  <app-page-title title="VISÃO GERAL" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+ 
+  <div class="row">
+    <div class="col-lg-6">
+        <div class="card border border-primary ">
+            <div class="card-body">
+                <div class="row">
+               
+                    <div class="col-lg-12  mb-10">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                              <br>
+                                <img src="assets/images/inema.jpg" alt="" class="avatar-md rounded-circle img-thumbnail">
+                            </div>
+                            <div class="flex-grow-1 align-self-center">
+                              
+                                <div class="text-muted">
+                                  <br>
+                                    <p class="mb-2">Bem vindo | Dasboard </p>
+                                    
+                                    <h5 class="mb-1">INSTITUTO NACIONAL DE EMERGENCIAS MEDICAS</h5>
+                                    <p class="mb-0">Monitoramento E gestão de atendimentos </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<br><br><br><br><br><br><br><br> 
+                    <div class="col-lg-12 align-self-cente mb-10">
+                        <div class="text-lg-center mt-4 mt-lg-0">
+                            <div class="row  mb-10">
+                             
+                                <div class="col-6">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2"> CHAMADAS DE EMPRESAS   </p>
+                                        <h5 class="mb-0">{{info_dashboard?.ocorrencias_natureza?.empresa }}</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <p class="text-muted text-truncate mb-2">CHAMADAS DE PARTICULARES</p>
+                                        <h5 class="mb-0">{{info_dashboard?.ocorrencias_natureza?.particular }}</h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--  -->
+                <br><br><br><br> 
+               
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="card border border-primary ">
+              <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="avatar-xs me-3">
+                          <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-18">
+                              <i class="bx bx-archive-in"></i>
+                          </span>
+                      </div>
+                      <h5 class="font-size-14 mb-0 text-primary fw-bold">CHAMADAS INICIADAS</h5>
+                  </div>
+                  <div class="text-muted mt-4">
+                      <h4>{{info_dashboard?.ocorrencias_estados?.[0]?.total }}<i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+
+        <div class="col-sm-4">
+                   <div class="card border border-success ">
+              <div class="card-body border border-success ">
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="avatar-xs me-3">
+                          <span class="avatar-title rounded-circle bg-primary-subtle text-success font-size-18">
+                              <i class="bx bx-archive-in"></i>
+                          </span>
+                      </div>
+                      <h5 class="font-size-14 mb-0 text-success fw-bold ">CHAMADAS ATENDIDAS</h5>
+                  </div>
+                  <div class="text-muted mt-4">
+                      <h4>{{info_dashboard?.ocorrencias_estados?.[1]?.total }}<i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
+                     
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+          <div class="col-sm-4">
+              <div class="card border border-warning ">
+           
+                  <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                          <div class="avatar-xs me-3">
+                              <span class="avatar-title rounded-circle bg-warning-subtle text-warning font-size-18">
+                                  <i class="bx bx-archive-in"></i>
+                              </span>
+                          </div>
+                          <h5 class="font-size-14 mb-0 text-warning fw-bold">  NÃO ATENDIDADAS </h5>
+                      </div>
+                      <div class="text-muted mt-4">
+                          <h4>{{info_dashboard?.ocorrencias_estados?.[3]?.total }}<i class="mdi mdi-chevron-up ms-1 text-danger"></i></h4>
+                         
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card border border-danger ">
+                  <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                          <div class="avatar-xs me-3">
+                              <span class="avatar-title rounded-circle bg-danger-subtle text-danger font-size-18">
+                                  <i class="bx bx-purchase-tag-alt"></i>
+                              </span>
+                          </div>
+                          <h5 class="font-size-14 mb-0  text-danger fw-bold ">CHAMADAS FALSAS</h5>
+                      </div>
+                      <div class="text-muted mt-4">
+                          <h4>{{info_dashboard?.ocorrencias_estados?.[2]?.total }} <i class="mdi mdi-chevron-down ms-1 text-danger"></i></h4>
+
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card border border-info ">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-xs me-3">
+                            <span class="avatar-title rounded-circle bg-info-subtle text-info font-size-18">
+                                <i class="bx bx-purchase-tag-alt"></i>
+                            </span>
+                        </div>
+                        <h5 class="font-size-14 mb-0 text-info fw-bold "> TOTAL DE CHAMADAS </h5>
+                    </div>
+                    <div class="text-muted mt-4">
+                        <h4>{{info_dashboard?.ocorrencias_natureza?.total  }} <i class="mdi mdi-chevron-down ms-1 text-success"></i></h4>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+                   <div class="card border border-success ">
+              <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                      <div class="avatar-xs me-3">
+                          <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-18">
+                              
+                          </span>
+                      </div> 
+                  </div>
+                  <div class="text-muted mt-4">
+                    
+                    <h4>  <i class="mdi mdi-chevron-down ms-1 text-danger"></i></h4>
+
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+      <!-- end row -->
+  </div>
+</div>
+
+
+    <!-- end row --> 
+  <div class="row">
+
+
+    <div class="col-lg-8">
+
+               <div class="card border border-success ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Ocorrencia Por Provincias</h4> 
+          <apx-chart class="apex-charts" dir="ltr" [series]="basicColumChartProvincias?.series" [chart]="basicColumChartProvincias?.chart"
+            [plotOptions]="basicColumChartProvincias?.plotOptions" [yaxis]="basicColumChartProvincias?.yaxis" [grid]="basicColumChartProvincias?.grid"
+            [tooltip]="basicColumChartProvincias?.tooltip" [stroke]="basicColumChartProvincias?.stroke"
+            [dataLabels]="basicColumChartProvincias?.dataLabels" [xaxis]="basicColumChartProvincias?.xaxis" [colors]="basicColumChartProvincias?.colors"
+            [fill]="basicColumChartProvincias?.fill">
+          </apx-chart>
+        </div>
+   
+      <!--end card-->
+    </div>
+
+
+  
+      <!--end card-->
+    </div>
+    <div class="col-lg-4">
+               <div class="card border border-success ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Origem da Chamadas</h4>
+          <apx-chart class="apex-charts" dir="ltr" [series]="barChart_origem?.series" [chart]="barChart_origem?.chart"
+            [plotOptions]="barChart_origem?.plotOptions" [dataLabels]="barChart_origem?.dataLabels" [xaxis]="barChart_origem?.xaxis"
+            [colors]="barChart_origem?.colors" [grid]="barChart_origem?.grid"></apx-chart>
+        </div>
+      </div>
+      <!--end card-->
+    </div>
+  </div>
+  
+
+  <div class="row">
+
+    <div class="col-lg-8">
+               <div class="card border border-success ">
+        <div class="card-body">
+          <h4 class="card-title mb-4">Ocorrencias Por Mêses(Ano) e Estados</h4> 
+          <apx-chart class="apex-charts" dir="ltr" [series]="basicColumChart?.series" [chart]="basicColumChart?.chart"
+            [plotOptions]="basicColumChart?.plotOptions" [yaxis]="basicColumChart?.yaxis" [grid]="basicColumChart?.grid"
+            [tooltip]="basicColumChart?.tooltip" [stroke]="basicColumChart?.stroke"
+            [dataLabels]="basicColumChart?.dataLabels" [xaxis]="basicColumChart?.xaxis" [colors]="basicColumChart?.colors"
+            [fill]="basicColumChart?.fill">
+          </apx-chart>
+        </div>
+      </div>
+ 
+  </div>
+  <div class="col-lg-4">
+             <div class="card border border-success ">
+      <div class="card-body">
+        <h4 class="card-title mb-4">Quadro Clinico de Ocorrencias</h4>
+        <apx-chart class="apex-charts" dir="ltr" [series]="barChart_tipos?.series" [chart]="barChart_tipos?.chart"
+        [plotOptions]="barChart_tipos?.plotOptions" [dataLabels]="barChart_tipos?.dataLabels" [xaxis]="barChart_tipos?.xaxis"
+        [colors]="barChart_tipos?.colors" [grid]="barChart_tipos?.grid"></apx-chart>
+         </div>
+    </div>
+    <!--end card-->
+  </div>
+
+ 
+
+    </div>
+
+ 
+ 
+  <!-- end row -->
+
+  <!-- end row --> 
+</div> <!-- container-fluid -->
+
+
