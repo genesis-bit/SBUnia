@@ -90,10 +90,6 @@ import { GraficoLogsService } from "./core/services/graficos/graficoLogs.service
 import { FuncionariosModule } from "./funcionarios/funcionarios.module";
 import { AreasComponent } from './base/areas/areas.component';
 import { ExcelService } from "./core/services/excel.service";
-import { PatrimonioModule } from "./patrimonio/patrimonio.module";
-import { VisitaModule } from "./visita/visita.module";
-import { CorrespondenciaModule } from "./correspondencia/correspondencia.module";
-
 import { AutenticarModule } from "./autenticar/autenticar.module";
 import { HomeModule } from "./home/home.module";
 import { TemplateModule } from "./template/template.module";
@@ -133,10 +129,6 @@ export function createTranslateLoader(http: HttpClient): any {
     AngularFireAuthModule,
     NgxPaginationModule,
     NgxSpinnerModule,
-
-    PatrimonioModule,
-    VisitaModule,
-    CorrespondenciaModule,
 
     AutenticarModule,
     HomeModule,

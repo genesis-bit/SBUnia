@@ -34,21 +34,7 @@ const routes: Routes = [
     loadChildren: () =>
       import("./home/home.module").then((m) => m.HomeModule),
     canActivate: [AuthGuard],
-  },
-  {
-    path: "visita",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./visita/visita.module").then((m) => m.VisitaModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "correspondencia",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./correspondencia/correspondencia.module").then((m) => m.CorrespondenciaModule),
-    canActivate: [AuthGuard],
-  },
+  },  
   {
     path: "dashboard",
     component: LayoutComponent,
@@ -90,13 +76,6 @@ const routes: Routes = [
       import("./inema/inema.module").then((m) => m.InemaModule),
     canActivate: [AuthGuard],
   },
-    {
-    path: "patrimonio",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./patrimonio/patrimonio.module").then((m) => m.PatrimonioModule),
-    canActivate: [AuthGuard],
-  },
   {
     path: "funcionarios",
     component: LayoutComponent,
@@ -104,13 +83,6 @@ const routes: Routes = [
       import("./funcionarios/funcionarios.module").then(
         (m) => m.FuncionariosModule
       ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "portal",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./portal/portal.module").then((m) => m.PortalModule),
     canActivate: [AuthGuard],
   },
   {
