@@ -87,7 +87,6 @@ import { BairrosComponent } from "./endereco/bairros/bairros.component";
 import { RuasComponent } from "./endereco/ruas/ruas.component";
 import { GraficoLogsService } from "./core/services/graficos/graficoLogs.service";
 
-import { FuncionariosModule } from "./funcionarios/funcionarios.module";
 import { AreasComponent } from './base/areas/areas.component';
 import { ExcelService } from "./core/services/excel.service";
 import { AutenticarModule } from "./autenticar/autenticar.module";

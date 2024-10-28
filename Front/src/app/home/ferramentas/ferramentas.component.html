@@ -14,7 +14,7 @@
         <div class="card-body p-4">
           <div class="text-center mb-3">
             <img src="{{data.image}}" alt="" class="avatar-sm">
-            <a routerLink="/jobs/details" class="text-body">
+            <a class="text-body" href="javascript: void(0);" (click)="alterDisplay(data.title)">
               <h5 class="mt-4 mb-2 font-size-15">{{data.title}}</h5>
             </a>
             <p class="mb-0 text-muted">{{data.brand}}</p>
@@ -25,27 +25,48 @@
             <p class="mb-0 text-muted"><b>{{data.vacancy}}</b> Vacancy</p>
           </div>
         </div>
-      </div><!--end card-->
+       </div><!--end card-->
     </div>}<!--end col-->
 
   </div><!--end row-->
-  <div class="row">
+  <div class="row"  [ngClass]="{'d-none': display != 'Universidades'}" >
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">UNIVERSIDADES</h5>
+          <h5 class="card-title">{{labelUniversidade}}</h5>
           <p class="card-title-desc">Adicionar Universidades</p>
-          <form (ngSubmit)="salvarUniversidade()">
+          <form (ngSubmit)="salvarUniversidade()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" name="descricao" [(ngModel)]="universidade.descricao" id="floatingnameInput" placeholder="Digite o nome" />
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="universidade.descricao"
+               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
+              <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="formUni['descricao'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres
+                </span>
+                <span *ngIf="formUni['descricao'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" name="sigla" [(ngModel)]="universidade.sigla" id="floatingemailInput" placeholder="Digite a Sigla" />
+              <input type="text" class="form-control" name="sigla" formControlName="sigla" [(ngModel)]="universidade.sigla" 
+              [ngClass]="{'is-invalid': submitted && formUni['sigla'].errors}" id="floatingemailInput" placeholder="Digite a Sigla" />
               <label for="floatingemailInput">Sigla</label>
+              <div *ngIf="formUni['sigla'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['sigla'].errors?.['required']">Campo obrigatório</span>
+                <span *ngIf="formUni['sigla'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres!
+                </span>
+                <span *ngIf="formUni['sigla'].errors?.['maxlength']">
+                  O campo não deve exceder 20 caracteres!
+                </span>
+              </div>
             </div>
-            <div>
+            <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparUniversidade()" *ngIf="labelUniversidade == 'Editar Universidade'">Novo</button>
             </div>
           </form>
         </div>
@@ -59,19 +80,19 @@
           <div class="row mb-md-2">
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length" id="tickets-table_length"><label
-                  class="d-inline-flex align-items-center">Show
+                  class="d-inline-flex align-items-center">Mostrar
                   <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
                     class="form-control form-control-sm mx-2">
                     <option [ngValue]="10">10</option>
                     <option [ngValue]="25">25</option>
                     <option [ngValue]="50">50</option>
                     <option [ngValue]="100">100</option>
-                  </select> entries</label></div>
+                  </select> </label></div>
             </div>
             <!-- Search -->
             <div class="col-sm-12 col-md-6">
               <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
-                  class="d-inline-flex align-items-center">Search:
+                  class="d-inline-flex align-items-center">Pesquisar:
                   <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
                     aria-controls="tickets-table"></label></div>
             </div>
@@ -80,18 +101,18 @@
           <!-- Table -->
           <div class="table-responsive">
             <table id="basic-datatable"
-              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
+              class="table table-bordered dt-responsive nowrap datatables no-footer table-hover">
               <thead>
                 <tr>
                   <th></th>
                   <th sortable="name">Nome</th>
                   <th sortable="position">Sigla</th>
-                  <th>Actions</th>
+                  <th>Acção</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="
-                    let data of universidades                 
+                    let data of universidades                
                   ">
                   <td>{{data?.id}}</td>
                   <td>{{data?.descricao}} </td>
@@ -100,10 +121,12 @@
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                        <a class="dropdown-item" href="javascript: void(0);"><i class="mdi mdi-plus"></i>Add</a>
-                        <a class="dropdown-item" href="javascript: void(0);" (click)="EditarUniversidade(data)"><i
-                            class="mdi mdi-account-edit"></i>Edit</a>
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="EditarUniversidade(data)">
+                          <i class="bx bx-edit-alt"></i> Editar</a>
+                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarUniversidade(data)">
+                            <i class="bx bx-trash"></i> Deletar
+                          </a>
                       </div>
                     </div>
                   </td>
@@ -114,17 +137,15 @@
           <!-- End table -->
           <div class="row justify-content-md-between align-items-md-center mt-2">
             <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
-                1 to
-                5 of 10
-                entries
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Mostrando
+                {{propriedadeTabela.inicio}} - {{propriedadeTabela.fim}} de {{propriedadeTabela.total}}
               </div>
             </div>
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                <!-- <pagination [totalItems]="total$ | async" [(ngModel)]="service.page">
-                        </pagination> -->
+                 <pagination>
+                        </pagination> 
               </div>
             </div>
             <!-- End Pagination -->
@@ -133,280 +154,262 @@
       </div>
     </div>
   </div>
-  <div class="d-none row">
+  <div class="row" [ngClass]="{'d-none': display != 'Cursos da Instituição'}">
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">UNIVERSIDADES</h5>
-          <p class="card-title-desc">Adicionar Universidades</p>
-          <form>
+          <h5 class="card-title">{{labelCurso}}</h5>
+          <p class="card-title-desc">Adicionar Cursos da Instituições</p>
+          <form (ngSubmit)="salvarCurso()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingnameInput" placeholder="Enter Name"
-                value="Maria Laird">
-              <label for="floatingnameInput">Name</label>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingemailInput" placeholder="Enter Email address"
-                    value="name@example.com">
-                  <label for="floatingemailInput">Email address</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating mb-3">
-                  <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                  <label for="floatingSelectGrid">Works with selects</label>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="floatingCheck">
-                <label class="form-check-label" for="floatingCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
-            <div>
-              <button type="submit" class="btn btn-primary w-md">Submit</button>
-            </div>
-          </form>
-        </div>
-        <!-- end card body -->
-      </div>
-    </div>
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Lista de Universidades</h4>
-          <div class="row mb-md-2">
-            <div class="col-sm-12 col-md-6">
-              <div class="dataTables_length" id="tickets-table_length"><label
-                  class="d-inline-flex align-items-center">Show
-                  <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
-                    class="form-control form-control-sm mx-2">
-                    <option [ngValue]="10">10</option>
-                    <option [ngValue]="25">25</option>
-                    <option [ngValue]="50">50</option>
-                    <option [ngValue]="100">100</option>
-                  </select> entries</label></div>
-            </div>
-            <!-- Search -->
-            <div class="col-sm-12 col-md-6">
-              <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
-                  class="d-inline-flex align-items-center">Search:
-                  <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
-                    aria-controls="tickets-table"></label></div>
-            </div>
-            <!-- End search -->
-          </div>
-          <!-- Table -->
-          <div class="table-responsive">
-            <table id="basic-datatable"
-              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th sortable="name">Nome</th>
-                  <th sortable="position">Sigla</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              @for(table of tables$ | async;track $index){
-              <tbody>
-                <tr>
-                  <td>{{table?.name}}</td>
-                  <td>{{table?.position}} </td>
-                  <td>{{table?.office}}</td>
-                  <td>
-                    <div class="dropdown" dropdown placement="bottom-left">
-                      <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
-                        aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                        <a class="dropdown-item" href="javascript: void(0);"><i class="mdi mdi-plus"></i>Add</a>
-                        <a class="dropdown-item" href="javascript: void(0);"><i
-                            class="mdi mdi-account-edit"></i>Edit</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>}
-            </table>
-          </div>
-          <!-- End table -->
-          <div class="row justify-content-md-between align-items-md-center mt-2">
-            <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
-                1 to
-                5 of 10
-                entries
-              </div>
-            </div>
-            <!-- Pagination -->
-            <div class="col-sm-12 col-md-5">
-              <div class="text-md-right float-md-end pagination-rounded">
-                <!-- <pagination [totalItems]="total$ | async" [(ngModel)]="service.page">
-                        </pagination> -->
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="d-none row">
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">UNIVERSIDADES</h5>
-          <p class="card-title-desc">Adicionar Universidades</p>
-          <form>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingnameInput" placeholder="Enter Name"
-                value="Maria Laird">
-              <label for="floatingnameInput">Name</label>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-floating mb-3">
-                  <input type="email" class="form-control" id="floatingemailInput" placeholder="Enter Email address"
-                    value="name@example.com">
-                  <label for="floatingemailInput">Email address</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-floating mb-3">
-                  <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                  <label for="floatingSelectGrid">Works with selects</label>
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="floatingCheck">
-                <label class="form-check-label" for="floatingCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
-            <div>
-              <button type="submit" class="btn btn-primary w-md">Submit</button>
-            </div>
-          </form>
-        </div>
-        <!-- end card body -->
-      </div>
-    </div>
-    <div class="col-sm-8">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Lista de Universidades</h4>
-          <div class="row mb-md-2">
-            <div class="col-sm-12 col-md-6">
-              <div class="dataTables_length" id="tickets-table_length"><label
-                  class="d-inline-flex align-items-center">Show
-                  <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
-                    class="form-control form-control-sm mx-2">
-                    <option [ngValue]="10">10</option>
-                    <option [ngValue]="25">25</option>
-                    <option [ngValue]="50">50</option>
-                    <option [ngValue]="100">100</option>
-                  </select> entries</label></div>
-            </div>
-            <!-- Search -->
-            <div class="col-sm-12 col-md-6">
-              <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
-                  class="d-inline-flex align-items-center">Search:
-                  <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
-                    aria-controls="tickets-table"></label></div>
-            </div>
-            <!-- End search -->
-          </div>
-          <!-- Table -->
-          <div class="table-responsive">
-            <table id="basic-datatable"
-              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th sortable="name">Nome</th>
-                  <th sortable="position">Sigla</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              @for(table of tables$ | async;track $index){
-              <tbody>
-                <tr>
-                  <td>{{table?.name}}</td>
-                  <td>{{table?.position}} </td>
-                  <td>{{table?.office}}</td>
-                  <td>
-                    <div class="dropdown" dropdown placement="bottom-left">
-                      <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
-                        aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                        <a class="dropdown-item" href="javascript: void(0);"><i class="mdi mdi-plus"></i>Add</a>
-                        <a class="dropdown-item" href="javascript: void(0);"><i
-                            class="mdi mdi-account-edit"></i>Edit</a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>}
-            </table>
-          </div>
-          <!-- End table -->
-          <div class="row justify-content-md-between align-items-md-center mt-2">
-            <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
-                1 to
-                5 of 10
-                entries
-              </div>
-            </div>
-            <!-- Pagination -->
-            <div class="col-sm-12 col-md-5">
-              <div class="text-md-right float-md-end pagination-rounded">
-                <!-- <pagination [totalItems]="total$ | async" [(ngModel)]="service.page">
-                        </pagination> -->
-              </div>
-            </div>
-            <!-- End Pagination -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="d-none row">
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Prateleiras</h5>
-          <p class="card-title-desc">Adicionar Prateleiras</p>
-          <form>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingnameInput" placeholder="Enter Name"
-                value="Maria Laird">
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="curso.descricao"
+               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
+              <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="formUni['descricao'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres
+                </span>
+                <span *ngIf="formUni['descricao'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
+            </div>
+            <div class="d-flex">
+              <button type="submit" class="btn btn-primary w-md">Salvar</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparCurso()" *ngIf="labelCurso == 'Editar Curso'">Novo</button>
+            </div>
+          </form>
+        </div>
+        <!-- end card body -->
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Lista dos Cursos</h4>
+          <div class="row mb-md-2">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Mostrar
+                  <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
+                    class="form-control form-control-sm mx-2">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="25">25</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select> </label></div>
+            </div>
+            <!-- Search -->
+            <div class="col-sm-12 col-md-6">
+              <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
+                  class="d-inline-flex align-items-center">Pesquisar:
+                  <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                    aria-controls="tickets-table"></label></div>
+            </div>
+            <!-- End search -->
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable"
+              class="table table-bordered dt-responsive nowrap datatables no-footer table-hover">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th sortable="name">Nome</th>
+                  <th>Acção</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                    let data of cursos                
+                  ">
+                  <td>{{data?.id}}</td>
+                  <td>{{data?.descricao}}</td>
+                  <td>
+                    <div class="dropdown" dropdown placement="bottom-left">
+                      <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
+                        aria-expanded="true"></i>
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="EditarCurso(data)">
+                          <i class="bx bx-edit-alt"></i> Editar</a>
+                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCurso(data)">
+                            <i class="bx bx-trash"></i> Deletar
+                          </a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- End table -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Mostrando
+                {{propriedadeTabela.inicio}} - {{propriedadeTabela.fim}} de {{propriedadeTabela.total}}
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-end pagination-rounded">
+                 <pagination>
+                        </pagination> 
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" [ngClass]="{'d-none': display != 'Categorias de Livro'}">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{labelCategoria}}</h5>
+          <p class="card-title-desc">Adicionar Categoria dos Livros</p>
+          <form (ngSubmit)="salvarCategoria()" [formGroup]="momentForm">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="categoria.descricao"
+               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <label for="floatingnameInput">Nome</label>
+              <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="formUni['descricao'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres
+                </span>
+                <span *ngIf="formUni['descricao'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
+            </div>
+            <div class="d-flex">
+              <button type="submit" class="btn btn-primary w-md">Salvar</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparCategoria()" *ngIf="labelCategoria == 'Editar Categoria'">Novo</button>
+            </div>
+          </form>
+        </div>
+        <!-- end card body -->
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Lista dos Categorias</h4>
+          <div class="row mb-md-2">
+            <div class="col-sm-12 col-md-6">
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Mostrar
+                  <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
+                    class="form-control form-control-sm mx-2">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="25">25</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select> </label></div>
+            </div>
+            <!-- Search -->
+            <div class="col-sm-12 col-md-6">
+              <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
+                  class="d-inline-flex align-items-center">Pesquisar:
+                  <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
+                    aria-controls="tickets-table"></label></div>
+            </div>
+            <!-- End search -->
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable"
+              class="table table-bordered dt-responsive nowrap datatables no-footer table-hover">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th sortable="name">Nome</th>
+                  <th>Acção</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="
+                    let data of categorias                
+                  ">
+                  <td>{{data?.id}}</td>
+                  <td>{{data?.descricao}}</td>
+                  <td>
+                    <div class="dropdown" dropdown placement="bottom-left">
+                      <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
+                        aria-expanded="true"></i>
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="EditarCategoria(data)">
+                          <i class="bx bx-edit-alt"></i> Editar</a>
+                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCategoria(data)">
+                            <i class="bx bx-trash"></i> Deletar
+                          </a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- End table -->
+          <div class="row justify-content-md-between align-items-md-center mt-2">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Mostrando
+                {{propriedadeTabela.inicio}} - {{propriedadeTabela.fim}} de {{propriedadeTabela.total}}
+              </div>
+            </div>
+            <!-- Pagination -->
+            <div class="col-sm-12 col-md-5">
+              <div class="text-md-right float-md-end pagination-rounded">
+                 <pagination>
+                        </pagination> 
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" [ngClass]="{'d-none': display != 'Prateleiras'}">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{labelPrateleira}}</h5>
+          <p class="card-title-desc">Adicionar Prateleiras</p>
+          <form (ngSubmit)="salvarPrateleira()" [formGroup]="momentForm">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="prateleira.descricao"
+               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <label for="floatingnameInput">Nome</label>
+              <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="formUni['descricao'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres
+                </span>
+                <span *ngIf="formUni['descricao'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
             </div>
             <div class="form-floating mb-3">
-              <textarea class="form-control" rows="2" id="observacaoInput" placeholder="Observação"></textarea>
-              <label for="observacaoInput">Descrição</label>
+              <textarea rows="3" class="form-control" name="observacao" formControlName="observacao" [(ngModel)]="prateleira.observacao" 
+              [ngClass]="{'is-invalid': submitted && formUni['observacao'].errors}" id="floatingemailInput" placeholder="Digite uma observação" >
+              </textarea>
+              <label for="floatingemailInput">Observação</label>
+              <div *ngIf="formUni['observacao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="formUni['observacao'].errors?.['minlength']">
+                  O campo deve conter no minimo 2 caracteres!
+                </span>
+                <span *ngIf="formUni['observacao'].errors?.['maxlength']">
+                  O campo não deve exceder 200 caracteres!
+                </span>
+              </div>
             </div>
-            <div>
+            <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparPrateleira()" *ngIf="labelPrateleira == 'Editar Prateleira'">Novo</button>
             </div>
           </form>
         </div>
@@ -420,19 +423,19 @@
           <div class="row mb-md-2">
             <div class="col-sm-12 col-md-6">
               <div class="dataTables_length" id="tickets-table_length"><label
-                  class="d-inline-flex align-items-center">Show
+                  class="d-inline-flex align-items-center">Mostrar
                   <select name="tickets-table_length" aria-controls="tickets-table" name="pageSize"
                     class="form-control form-control-sm mx-2">
                     <option [ngValue]="10">10</option>
                     <option [ngValue]="25">25</option>
                     <option [ngValue]="50">50</option>
                     <option [ngValue]="100">100</option>
-                  </select> entries</label></div>
+                  </select> </label></div>
             </div>
             <!-- Search -->
             <div class="col-sm-12 col-md-6">
               <div id="tickets-table_filter" class="dataTables_filter text-md-end"><label
-                  class="d-inline-flex align-items-center">Search:
+                  class="d-inline-flex align-items-center">Pesquisar:
                   <input type="text" name="searchTerm" class="form-control form-control-sm ms-2"
                     aria-controls="tickets-table"></label></div>
             </div>
@@ -441,50 +444,51 @@
           <!-- Table -->
           <div class="table-responsive">
             <table id="basic-datatable"
-              class="table table-bordered dt-responsive nowrap datatables no-footer dtr-inline">
+              class="table table-bordered dt-responsive nowrap datatables no-footer table-hover">
               <thead>
                 <tr>
                   <th></th>
                   <th sortable="name">Nome</th>
-                  <th sortable="position">Sigla</th>
-                  <th>Actions</th>
+                  <th sortable="position">Observação</th>
+                  <th>Acção</th>
                 </tr>
               </thead>
-              @for(table of tables$ | async;track $index){
               <tbody>
-                <tr>
-                  <td>{{table?.name}}</td>
-                  <td>{{table?.position}} </td>
-                  <td>{{table?.office}}</td>
+                <tr *ngFor="
+                    let data of prateleiras                
+                  ">
+                  <td>{{data?.id}}</td>
+                  <td>{{data?.descricao}} </td>
+                  <td>{{data?.observacao}}</td>
                   <td>
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                        <a class="dropdown-item" href="javascript: void(0);"><i class="mdi mdi-plus"></i>Add</a>
-                        <a class="dropdown-item" href="javascript: void(0);"><i
-                            class="mdi mdi-account-edit"></i>Edit</a>
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="EditarPrateleira(data)">
+                          <i class="bx bx-edit-alt"></i> Editar</a>
+                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarPrateleira(data)">
+                            <i class="bx bx-trash"></i> Deletar
+                          </a>
                       </div>
                     </div>
                   </td>
                 </tr>
-              </tbody>}
+              </tbody>
             </table>
           </div>
           <!-- End table -->
           <div class="row justify-content-md-between align-items-md-center mt-2">
             <div class="col-sm-12 col-md-5">
-              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
-                1 to
-                5 of 10
-                entries
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Mostrando
+                {{propriedadeTabela.inicio}} - {{propriedadeTabela.fim}} de {{propriedadeTabela.total}}
               </div>
             </div>
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                <!-- <pagination [totalItems]="total$ | async" [(ngModel)]="service.page">
-                        </pagination> -->
+                 <pagination>
+                        </pagination> 
               </div>
             </div>
             <!-- End Pagination -->

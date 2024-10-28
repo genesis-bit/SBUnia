@@ -42,6 +42,7 @@ export class EstadoComponent implements OnInit {
   };
   name: any;
   momentForm!: FormGroup;
+  
 
   createContactForm!: UntypedFormGroup;
   recoverOrRemoveItem: "remove" | "recover";
@@ -76,6 +77,7 @@ export class EstadoComponent implements OnInit {
       { label: "Gerir Estados", active: true },
     ];
 
+    
     const noWhitespaceValidator = Validators.pattern(/^(?!\s*$).+/);
 
     this.momentForm = new FormGroup({

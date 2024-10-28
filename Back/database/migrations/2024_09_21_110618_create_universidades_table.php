@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('universidades', function (Blueprint $table) {
             $table->id();
             $table->string('descricao',50);
+            $table->string('sigla',20);
             $table->softDeletes('deleted_at', precision: 0);
             $table->timestamps();
         });

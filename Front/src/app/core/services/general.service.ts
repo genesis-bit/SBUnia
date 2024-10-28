@@ -19,7 +19,7 @@ export class GeneralService {
     private _http: HttpClient,
     private router: Router,
     private _AuthService: Auth2Service
-  ) {}
+  ) { }
 
   onLogout(e: any) {
     //  e.preventDefault();
@@ -56,22 +56,28 @@ export class GeneralService {
 
     let url = `${environment.baseUrl}/${resource}`;
 
-    //url = `${url}?app_=NYUMUIH9j.2SADd3-n983hoiw`   // tecroval
-    url = `${url}?app_=Bid3ojd7JDyf99DNaxeDI9399379289`; // inagbe
-
-    // url = `${url}?app_=frvdt7JDyf9vdgbfFGE9342429`  //  inema
-
-    // url = `${url}?app_=5FDV67JFGHDGWDSF86433323`  //  delivery
-
-
-     
 
     if (params) url = url + "&" + params;
     // metodo para retonar dados da api com get
     if (operacao === GeneralConstants.CRUD_OPERATIONS.READ) {
       return this._http.get<any>(url, { headers }).pipe();
-    } else if (operacao === GeneralConstants.CRUD_OPERATIONS.INSERT) {
-      return this._http.post<any>(url, body, { headers });
+    }
+    else {
+      if (operacao === GeneralConstants.CRUD_OPERATIONS.INSERT) {
+        return this._http.post<any>(url, body, { headers });
+      }
+      else {
+        if (operacao === GeneralConstants.CRUD_OPERATIONS.UPDATE) {
+          url = url + "/" + body?.id;
+          return this._http.put<any>(url, body, { headers });
+        }
+        else {
+          if (operacao === GeneralConstants.CRUD_OPERATIONS.DELETE) {
+            url = url + "/" + body?.id;
+            return this._http.delete<any>(url, { headers });
+          }
+        }
+      }
     }
 
     if (typeof body?.get === "function") {
@@ -81,8 +87,8 @@ export class GeneralService {
     const id = body?.id
       ? body.id
       : operacao === GeneralConstants.CRUD_OPERATIONS.INSERT_OR_UPDATE
-      ? undefined
-      : "";
+        ? undefined
+        : "";
 
     if (operacao === GeneralConstants.CRUD_OPERATIONS.GET) {
       if (_blank != "") {
@@ -132,8 +138,8 @@ export class GeneralService {
     const id = body?.id
       ? body.id
       : operacao === GeneralConstants.CRUD_OPERATIONS.INSERT_OR_UPDATE
-      ? undefined
-      : "";
+        ? undefined
+        : "";
 
     let url_id =
       id != ""
@@ -193,8 +199,8 @@ export class GeneralService {
     const id = body?.id
       ? body.id
       : operacao === GeneralConstants.CRUD_OPERATIONS.INSERT_OR_UPDATE
-      ? undefined
-      : "";
+        ? undefined
+        : "";
 
     let url_id =
       id != ""
