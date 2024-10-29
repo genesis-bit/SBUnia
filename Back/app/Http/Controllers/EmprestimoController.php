@@ -14,7 +14,7 @@ class EmprestimoController extends Controller
         try {
             $emprestimos = Emprestimo::with(['acervo', 'cliente', 'bibliotecario'])->paginate();
             return response()->json($emprestimos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar empréstimos', 'error' => $e->getMessage()], 500);
         }
     }
@@ -32,7 +32,7 @@ class EmprestimoController extends Controller
 
             $emprestimo = Emprestimo::create($validated);
             return response()->json($emprestimo, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar empréstimo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -48,7 +48,7 @@ class EmprestimoController extends Controller
             }
 
             return response()->json($emprestimo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar empréstimo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -72,7 +72,7 @@ class EmprestimoController extends Controller
 
             $emprestimo->update($validated);
             return response()->json($emprestimo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar empréstimo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -89,7 +89,7 @@ class EmprestimoController extends Controller
 
             $emprestimo->delete();
             return response()->json(['message' => 'Empréstimo deletado com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar empréstimo', 'error' => $e->getMessage()], 500);
         }
     }

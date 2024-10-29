@@ -16,7 +16,7 @@ class CursoController extends Controller
         try {
             $cursos = Curso::paginate();
             return response()->json($cursos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar cursos', 'error' => $e->getMessage()], 500);
         }
     }
@@ -41,7 +41,7 @@ class CursoController extends Controller
 
             $curso = Curso::create($validated);
             return response()->json($curso, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar curso', 'error' => $e->getMessage()], 500);
         }
     }
@@ -59,7 +59,7 @@ class CursoController extends Controller
             }
 
             return response()->json($curso, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar curso', 'error' => $e->getMessage()], 500);
         }
     }
@@ -90,7 +90,7 @@ class CursoController extends Controller
 
             $curso->update($validated);
             return response()->json($curso, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar curso', 'error' => $e->getMessage()], 500);
         }
     }
@@ -109,7 +109,7 @@ class CursoController extends Controller
 
             $curso->delete();
             return response()->json(['message' => 'Curso deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar curso', 'error' => $e->getMessage()], 500);
         }
     }

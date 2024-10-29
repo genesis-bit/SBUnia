@@ -143,7 +143,7 @@ export class FerramentasComponent {
       icon: 'success',
       title: sms,
       showConfirmButton: false,
-      timer: 1500
+      timer: 2000
     });
   }
   tables$: any;

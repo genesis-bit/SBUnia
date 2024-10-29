@@ -14,7 +14,7 @@ class PrateleiraAcervoController extends Controller
         try {
             $prateleiraAcervos = PrateleiraAcervo::with(['prateleira', 'acervo', 'bibliotecario'])->paginate();
             return response()->json($prateleiraAcervos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleira_acervos', 'error' => $e->getMessage()], 500);
         }
     }
@@ -34,7 +34,7 @@ class PrateleiraAcervoController extends Controller
 
             $prateleiraAcervo = PrateleiraAcervo::create($validated);
             return response()->json($prateleiraAcervo, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar prateleira_acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -50,7 +50,7 @@ class PrateleiraAcervoController extends Controller
             }
 
             return response()->json($prateleiraAcervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleira_acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -76,7 +76,7 @@ class PrateleiraAcervoController extends Controller
 
             $prateleiraAcervo->update($validated);
             return response()->json($prateleiraAcervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar prateleira_acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -93,7 +93,7 @@ class PrateleiraAcervoController extends Controller
 
             $prateleiraAcervo->delete();
             return response()->json(['message' => 'Prateleira Acervo deletado com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar prateleira_acervo', 'error' => $e->getMessage()], 500);
         }
     }

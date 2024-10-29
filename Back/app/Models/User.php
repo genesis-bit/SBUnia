@@ -48,13 +48,13 @@ class User extends Authenticatable
     {
        return $this->hasOne(TipoUser::class, 'id', 'tipo_user_id');
     }
-    public function Docente()
-    {
-        return $this->belongsTo(Docente::class, 'id', 'id');
-    }
-    public function Estudante()
-    {
-        return $this->belongsTo(Estudante::class, 'id', 'id');
-    }
+    // public function Docente()
+    // {
+    //     return $this->belongsTo(Docente::class, 'id', 'id');
+    // }
+    // public function Estudante()
+    // {
+    //     return $this->belongsTo(Estudante::class, 'id', 'id');
+    // }
 }
 

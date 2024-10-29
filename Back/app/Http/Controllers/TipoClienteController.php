@@ -16,7 +16,7 @@ class TipoClienteController extends Controller
         try {
             $tipoclientes = TipoCliente::paginate();
             return response()->json($tipoclientes, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipos de clientes', 'error' => $e->getMessage()], 500);
         }
     }
@@ -41,7 +41,7 @@ class TipoClienteController extends Controller
 
             $tipocliente = TipoCliente::create($validated);
             return response()->json($tipocliente, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar tipocliente', 'error' => $e->getMessage()], 500);
         }
     }
@@ -59,7 +59,7 @@ class TipoClienteController extends Controller
             }
 
             return response()->json($tipocliente, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipocliente', 'error' => $e->getMessage()], 500);
         }
     }
@@ -90,7 +90,7 @@ class TipoClienteController extends Controller
 
             $tipocliente->update($validated);
             return response()->json($tipocliente, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar tipocliente', 'error' => $e->getMessage()], 500);
         }
     }
@@ -109,7 +109,7 @@ class TipoClienteController extends Controller
 
             $tipocliente->delete();
             return response()->json(['message' => 'TipoCliente deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar tipocliente', 'error' => $e->getMessage()], 500);
         }
     }

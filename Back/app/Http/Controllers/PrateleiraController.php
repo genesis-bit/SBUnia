@@ -14,7 +14,7 @@ class PrateleiraController extends Controller
         try {
             $prateleiras = Prateleira::paginate();
             return response()->json($prateleiras, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleiras', 'error' => $e->getMessage()], 500);
         }
     }
@@ -30,7 +30,7 @@ class PrateleiraController extends Controller
 
             $prateleira = Prateleira::create($validated);
             return response()->json($prateleira, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar prateleira', 'error' => $e->getMessage()], 500);
         }
     }
@@ -46,7 +46,7 @@ class PrateleiraController extends Controller
             }
 
             return response()->json($prateleira, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleira', 'error' => $e->getMessage()], 500);
         }
     }
@@ -68,7 +68,7 @@ class PrateleiraController extends Controller
 
             $prateleira->update($validated);
             return response()->json($prateleira, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar prateleira', 'error' => $e->getMessage()], 500);
         }
     }
@@ -85,7 +85,7 @@ class PrateleiraController extends Controller
 
             $prateleira->delete();
             return response()->json(['message' => 'Prateleira deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar prateleira', 'error' => $e->getMessage()], 500);
         }
     }

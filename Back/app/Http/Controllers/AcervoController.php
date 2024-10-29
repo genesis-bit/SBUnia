@@ -14,7 +14,7 @@ class AcervoController extends Controller
         try {
             $acervos = Acervo::with(['categoria', 'tipoAcervo'])->paginate();;
             return response()->json($acervos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar acervos', 'error' => $e->getMessage()], 500);
         }
     }
@@ -36,7 +36,7 @@ class AcervoController extends Controller
 
             $acervo = Acervo::create($validated);
             return response()->json($acervo, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -52,7 +52,7 @@ class AcervoController extends Controller
             }
 
             return response()->json($acervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -79,7 +79,7 @@ class AcervoController extends Controller
 
             $acervo->update($validated);
             return response()->json($acervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar acervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -96,7 +96,7 @@ class AcervoController extends Controller
 
             $acervo->delete();
             return response()->json(['message' => 'Acervo deletado com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar acervo', 'error' => $e->getMessage()], 500);
         }
     }

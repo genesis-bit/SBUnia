@@ -14,7 +14,7 @@ class DevolucaoController extends Controller
         try {
             $devolucoes = Devolucao::with(['bibliotecario', 'emprestimo'])->paginate();
             return response()->json($devolucoes, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar devoluções', 'error' => $e->getMessage()], 500);
         }
     }
@@ -31,7 +31,7 @@ class DevolucaoController extends Controller
 
             $devolucao = Devolucao::create($validated);
             return response()->json($devolucao, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar devolução', 'error' => $e->getMessage()], 500);
         }
     }
@@ -47,7 +47,7 @@ class DevolucaoController extends Controller
             }
 
             return response()->json($devolucao, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar devolução', 'error' => $e->getMessage()], 500);
         }
     }
@@ -69,7 +69,7 @@ class DevolucaoController extends Controller
 
             $devolucao->update($validated);
             return response()->json($devolucao, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar devolução', 'error' => $e->getMessage()], 500);
         }
     }
@@ -86,7 +86,7 @@ class DevolucaoController extends Controller
 
             $devolucao->delete();
             return response()->json(['message' => 'Devolução deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar devolução', 'error' => $e->getMessage()], 500);
         }
     }

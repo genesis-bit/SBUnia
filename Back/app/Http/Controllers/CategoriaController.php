@@ -16,7 +16,7 @@ class CategoriaController extends Controller
         try {
             $categorias = Categoria::paginate();
             return response()->json($categorias, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar categorias', 'error' => $e->getMessage()], 500);
         }
     }
@@ -41,7 +41,7 @@ class CategoriaController extends Controller
 
             $categoria = Categoria::create($validated);
             return response()->json($categoria, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar categoria', 'error' => $e->getMessage()], 500);
         }
     }
@@ -59,7 +59,7 @@ class CategoriaController extends Controller
             }
 
             return response()->json($categoria, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar categoria', 'error' => $e->getMessage()], 500);
         }
     }
@@ -90,7 +90,7 @@ class CategoriaController extends Controller
 
             $categoria->update($validated);
             return response()->json($categoria, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar categoria', 'error' => $e->getMessage()], 500);
         }
     }
@@ -109,7 +109,7 @@ class CategoriaController extends Controller
 
             $categoria->delete();
             return response()->json(['message' => 'Categoria deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar categoria', 'error' => $e->getMessage()], 500);
         }
     }

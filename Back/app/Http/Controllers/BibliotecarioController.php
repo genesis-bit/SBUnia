@@ -14,7 +14,7 @@ class BibliotecarioController extends Controller
         try {
             $bibliotecarios = Bibliotecario::with(['user', 'genero'])->paginate();;
             return response()->json($bibliotecarios, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar bibliotecários', 'error' => $e->getMessage()], 500);
         }
     }
@@ -34,7 +34,7 @@ class BibliotecarioController extends Controller
 
             $bibliotecario = Bibliotecario::create($validated);
             return response()->json($bibliotecario, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar bibliotecário', 'error' => $e->getMessage()], 500);
         }
     }
@@ -50,7 +50,7 @@ class BibliotecarioController extends Controller
             }
 
             return response()->json($bibliotecario, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar bibliotecário', 'error' => $e->getMessage()], 500);
         }
     }
@@ -76,7 +76,7 @@ class BibliotecarioController extends Controller
 
             $bibliotecario->update($validated);
             return response()->json($bibliotecario, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar bibliotecário', 'error' => $e->getMessage()], 500);
         }
     }
@@ -93,7 +93,7 @@ class BibliotecarioController extends Controller
 
             $bibliotecario->delete();
             return response()->json(['message' => 'Bibliotecário deletado com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar bibliotecário', 'error' => $e->getMessage()], 500);
         }
     }

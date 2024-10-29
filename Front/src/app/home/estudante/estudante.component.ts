@@ -10,6 +10,8 @@ import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
 
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
+import { Estudante } from '../model/estudante';
+
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-estudante',
@@ -28,10 +30,16 @@ export class EstudanteComponent implements OnInit {
 
   modalRef?: BsModalRef;
 
-  submitted= false;
+  submitted = false;
 
   cursos: any;
   universidades: any;
+  generos: any;
+  estudantes: any;
+
+  estudante = new Estudante();
+
+  labelEstudante = 'Adicionar Estudante';
 
   momentForm!: FormGroup;
 
@@ -39,10 +47,20 @@ export class EstudanteComponent implements OnInit {
 
 
   openModal(content: any) {
-    //this.submitted = false;
+    this.submitted = false;
+    this.labelEstudante = 'Adicionar Estudante';
+    this.estudante = new Estudante();
     this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
   }
- 
+
+  openModalEditar(data: any, content: any) {
+    this.submitted = false;
+    this.momentForm.get('email').disable();
+    this.labelEstudante = 'Editar Estudante';
+    this.estudante = data;
+    this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
+  }
+
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'Home' }, { label: 'Estudantes', active: true }];
@@ -56,7 +74,9 @@ export class EstudanteComponent implements OnInit {
 
     this.validacao();
     this.ListaCurso();
-    this.ListaUniveridade();
+    this.ListaUniversidade();
+    this.ListaEstudante();
+    this.ListaGenero();
   }
 
   validacao() {
@@ -77,8 +97,44 @@ export class EstudanteComponent implements OnInit {
     return this.momentForm.controls;
   }
 
-  salvarEstudante(){
+  salvarEstudante() {
+
     this.submitted = true;
+    if (this.momentForm.invalid) {
+      return;
+    }
+    this.estudante.tipo_cliente_id = 1;
+    //this.estudante.ndi = this.estudante.bilhete;
+    this.generalService.execute('clientes', this.estudante.id ? GeneralConstants.CRUD_OPERATIONS.UPDATE : GeneralConstants.CRUD_OPERATIONS.INSERT, this.estudante).
+      subscribe({
+        next: (data: any) => {
+          console.log("resposta", data)
+          this.mensagem(this.estudante.id ? 'Estudante Editado com sucesso' : 'Estudante Adicionado com sucesso')
+          this.labelEstudante = 'Adicionar Estudante';
+          this.estudante = new Estudante();
+          this.modalService.hide();
+          this.ListaEstudante();
+        },
+        error: (erro) => { console.log("erro", erro)}
+      });
+    this.submitted = false;
+  }
+
+  mensagem(sms: string) {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: sms,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }
+
+  ListaEstudante() {
+    this.generalService.execute('clientes', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.estudantes = data.data;
+      });
   }
 
   ListaCurso() {
@@ -87,7 +143,13 @@ export class EstudanteComponent implements OnInit {
         this.cursos = data.data;
       });
   }
-  ListaUniveridade() {
+  ListaGenero() {
+    this.generalService.execute('generos', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.generos = data.data;
+      });
+  }
+  ListaUniversidade() {
     this.generalService.execute('universidades', GeneralConstants.CRUD_OPERATIONS.READ).
       subscribe((data: any) => {
         this.universidades = data.data;

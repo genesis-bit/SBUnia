@@ -16,7 +16,7 @@ class TipoAcervoController extends Controller
         try {
             $tipoacervos = TipoAcervo::paginate();
             return response()->json($tipoacervos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipo Acervos', 'error' => $e->getMessage()], 500);
         }
     }
@@ -41,7 +41,7 @@ class TipoAcervoController extends Controller
 
             $tipoacervo = TipoAcervo::create($validated);
             return response()->json($tipoacervo, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar tipoacervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -59,7 +59,7 @@ class TipoAcervoController extends Controller
             }
 
             return response()->json($tipoacervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar tipoacervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -90,7 +90,7 @@ class TipoAcervoController extends Controller
 
             $tipoacervo->update($validated);
             return response()->json($tipoacervo, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar tipoacervo', 'error' => $e->getMessage()], 500);
         }
     }
@@ -109,7 +109,7 @@ class TipoAcervoController extends Controller
 
             $tipoacervo->delete();
             return response()->json(['message' => 'TipoAcervo deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar tipoacervo', 'error' => $e->getMessage()], 500);
         }
     }

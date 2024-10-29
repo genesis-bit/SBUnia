@@ -16,7 +16,7 @@ class GeneroController extends Controller
         try {
             $generos = Genero::paginate();
             return response()->json($generos, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar gêneros', 'error' => $e->getMessage()], 500);
         }
     }
@@ -41,7 +41,7 @@ class GeneroController extends Controller
 
             $genero = Genero::create($validated);
             return response()->json($genero, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar gênero', 'error' => $e->getMessage()], 500);
         }
     }
@@ -59,7 +59,7 @@ class GeneroController extends Controller
             }
 
             return response()->json($genero, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar gênero', 'error' => $e->getMessage()], 500);
         }
     }
@@ -77,7 +77,7 @@ class GeneroController extends Controller
             }
 
             return response()->json($genero, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar gênero', 'error' => $e->getMessage()], 500);
         }
     }
@@ -100,7 +100,7 @@ class GeneroController extends Controller
 
              $genero->update($validated);
             return response()->json($genero, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar gênero', 'error' => $e->getMessage()], 500);
         }
     }
@@ -119,7 +119,7 @@ class GeneroController extends Controller
 
             $genero->delete();
             return response()->json(['message' => 'Gênero deletado com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar gênero', 'error' => $e->getMessage()], 500);
         }
     }

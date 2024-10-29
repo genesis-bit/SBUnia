@@ -20,7 +20,7 @@
               <div class="text-sm-end">
                 <button (click)="openModal(EstudanteModal)" class="btn btn-primary btn-rounded"><i
                     class="mdi mdi-plus me-1"></i> Novo</button>
-                <!-- <a routerLink="/projects/create" class="btn btn-success " id="addProject-btn"> Add New Project</a> -->
+                <!-- <a routerLink="/data?s/create" class="btn btn-success " id="addProject-btn"> Add New Project</a> -->
               </div>
             </div>
             <!-- end col -->
@@ -44,39 +44,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @for(project of projectlist;track $index){
+                  @for(data of estudantes;track $index){
                   <tr>
                     <td>
-                      <img src="{{project.image}}" alt class="avatar-sm" />
+                      {{data?.id}}
                     </td>
                     <td>
                       <h5 class="text-truncate font-size-14">
-                        <a href="javascript: void(0);" class="text-dark">{{project.text}}</a>
+                        <a href="javascript: void(0);" class="text-dark">{{data?.bilhete}}</a>
                       </h5>
-                      <p class="text-muted mb-0">{{project.subtext}}</p>
+                      <!-- <p class="text-muted mb-0">{{data?.subtext}}</p> -->
                     </td>
-                    <td>{{project.date}}</td>
+                    <td>{{data?.nome}}</td>
                     <td>
-                      <span class="badge" [ngClass]="{ 'bg-success': project.status === 'Completed',
-                      'bg-warning': project.status === 'Pending',
-                      'bg-danger': project.status === 'Delay' }">{{project.status}}</span>
+                      {{data?.tipo_cliente?.descricao}}
                     </td>
                     <td>
                       <div class="avatar-group">
-                        <div class="avatar-group-item">
-                          <a href="javascript: void(0);" class="d-inline-block">
-                            <img src="{{project.users[0]}}" class="rounded-circle avatar-xs" alt />
-                          </a>
-                        </div>
-                        @if(project.users[1]){
-                        <div class="avatar-group-item">
-                          <a href="javascript: void(0);" class="d-inline-block">
-                            <img src="{{project.users[1]}}" class="rounded-circle avatar-xs" alt />
-                          </a>
-                        </div>
-                        }
+                        {{data?.universidade?.sigla}}
                       </div>
                     </td>
+                    <td>
+                      {{data?.curso?.descricao}}
+                    </td>
+                    <td>{{data?.telefone}}</td>
                     <td>
                       <div class="dropdown" dropdown placement="bottom-right">
                         <a href="javascript: void(0);" class="dropdown-toggle card-drop" dropdownToggle>
@@ -84,8 +75,8 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                           <a class="dropdown-item" href="javascript: void(0);">Action</a>
-                          <a class="dropdown-item" href="javascript: void(0);">Another action</a>
-                          <a class="dropdown-item" href="javascript: void(0);">Something else here</a>
+                          <a class="dropdown-item" (click)="openModalEditar(data,EstudanteModal)"
+                            href="javascript: void(0);">Editar</a>
                         </div>
                       </div>
                     </td>
@@ -112,7 +103,7 @@
 
   <ng-template #EstudanteModal role="document" let-modal>
     <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Novo Estudante</h5>
+      <h5 class="modal-title" id="exampleModalLabel">{{labelEstudante}}</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
         (click)="modalRef?.hide()"></button>
     </div>
@@ -122,9 +113,8 @@
           <div class="col-md-12 p-1">
             <div class="form-floating">
               <input type="text" class="form-control form-control-invalid" formControlName="nome" name="nome"
-                id="floatingnameInput" placeholder="Digite o nome"
+                id="floatingnameInput" placeholder="Digite o nome" [(ngModel)]="estudante.nome"
                 [ngClass]="{'is-invalid': submitted && form['nome'].errors}" />
-              <!-- [(ngModel)]="prateleira.descricao"  /> -->
               <label for="floatingnameInput">Nome</label>
               <div *ngIf="form['nome'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="form['nome'].errors?.['required']">Campo obrigatório.</span>
@@ -142,9 +132,8 @@
           <div class="col-md-4 p-1">
             <div class="form-floating">
               <input type="email" class="form-control form-control-invalid" formControlName="email" name="email"
-                id="floatingnameInput" placeholder="Digite o Email"
+                id="floatingnameInput" placeholder="Digite o Email" [(ngModel)]="estudante.email"
                 [ngClass]="{'is-invalid': submitted && form['email'].errors}" />
-              <!-- [(ngModel)]="prateleira.descricao"  /> -->
               <label for="floatingnameInput">Email</label>
               <div *ngIf="form['email'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="form['email'].errors?.['required']">Campo obrigatório.</span>
@@ -162,8 +151,8 @@
           </div>
           <div class="col-md-4 p-1">
             <div class="form-floating">
-              <input type="text" class="form-control form-control-invalid" formControlName="bilhete" name="bilhete"
-                id="floatingnameInput" placeholder="Digite o numero do bilhete"
+              <input type="text" class="form-control form-control-invalid" [(ngModel)]="estudante.bilhete"
+                formControlName="bilhete" name="bilhete" id="floatingnameInput" placeholder="Digite o numero do bilhete"
                 [ngClass]="{'is-invalid': submitted && form['bilhete'].errors}" />
               <!-- [(ngModel)]="prateleira.descricao" [ngClass]="{'is-invalid': submitted && form['descricao'].errors}" /> -->
               <label for="floatingnameInput">Numero de Identificação</label>
@@ -180,10 +169,9 @@
           </div>
           <div class="col-md-4 p-1">
             <div class="form-floating">
-              <input type="text" mask="000-000-000" class="form-control form-control-invalid" formControlName="telefone" name="telefone"
-                id="floatingnameInput" placeholder="Digite o numero do telefone"
-                [ngClass]="{'is-invalid': submitted && form['telefone'].errors}" />
-              <!-- [(ngModel)]="prateleira.descricao"  /> -->
+              <input type="text" mask="000-000-000" class="form-control form-control-invalid" formControlName="telefone"
+                name="telefone" id="floatingnameInput" placeholder="Digite o numero do telefone"
+                [(ngModel)]="estudante.telefone" [ngClass]="{'is-invalid': submitted && form['telefone'].errors}" />
               <label for="floatingnameInput">Telefone</label>
               <div *ngIf="form['telefone'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="form['telefone'].errors?.['required']">Campo obrigatório.</span>
@@ -201,10 +189,9 @@
           <div class="col-md-4 p-1">
             <div class="form-floating">
               <select class="form-select" id="floatingSelectGrid"
-                [ngClass]="{'is-invalid': submitted && form['genero'].errors}" formControlName="genero"
-                aria-label="Floating label select example">
-                <option>Masculino</option>
-                <option value="1">Femenino</option>
+                [ngClass]="{'is-invalid': submitted && form['genero'].errors}" [(ngModel)]="estudante.genero_id"
+                formControlName="genero" aria-label="Floating label select example">
+                <option *ngFor="let data of generos" value="{{data?.id}}">{{data?.descricao}}</option>
               </select>
               <label for="floatingSelectGrid">Genero</label>
               <div *ngIf="form['genero'].errors && submitted" class="invalid-tooltip">
@@ -216,8 +203,9 @@
             <div class="form-floating">
               <select class="form-select" id="floatingSelectGrid"
                 [ngClass]="{'is-invalid': submitted && form['instituicao'].errors}" formControlName="instituicao"
-                aria-label="Floating label select example">
-                <option *ngFor="let data of universidades" value="{{data?.id}}">{{data?.sigla}}-{{data?.descricao}}</option>
+                aria-label="Floating label select example" [(ngModel)]="estudante.universidade_id">
+                <option *ngFor="let data of universidades" value="{{data?.id}}">{{data?.sigla}}-{{data?.descricao}}
+                </option>
               </select>
               <label for="floatingSelectGrid">Instituição</label>
               <div *ngIf="form['instituicao'].errors && submitted" class="invalid-tooltip">
@@ -229,7 +217,7 @@
             <div class="form-floating">
               <select class="form-select" id="floatingSelectGrid"
                 [ngClass]="{'is-invalid': submitted && form['curso'].errors}" formControlName="curso"
-                aria-label="Floating label select example">
+                aria-label="Floating label select example" [(ngModel)]="estudante.curso_id">
                 <option *ngFor="let data of cursos" value="{{data?.id}}">{{data?.descricao}}</option>
               </select>
               <label for="floatingSelectGrid">Curso</label>
@@ -244,7 +232,7 @@
       <div class="modal-footer">
         <div class="hstack gap-2 justify-content-end">
           <button type="submit" class="btn btn-primary w-md">Salvar</button>
-          <button class="btn btn-info w-md mx-1">Limpar</button>
+          <button type="button" class="btn btn-danger w-md mx-1" (click)="modalRef?.hide()">Cancelar</button>
         </div>
       </div>
     </form>

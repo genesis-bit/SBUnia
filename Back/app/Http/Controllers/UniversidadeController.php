@@ -16,7 +16,7 @@ class UniversidadeController extends Controller
         try {
             $universidades = Universidade::paginate();
             return response()->json($universidades, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar universidades', 'error' => $e->getMessage()], 500);
         }
     }
@@ -42,7 +42,7 @@ class UniversidadeController extends Controller
 
             $universidade = Universidade::create($validated);
             return response()->json($universidade, 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao criar universidade', 'error' => $e->getMessage()], 500);
         }
     }
@@ -60,7 +60,7 @@ class UniversidadeController extends Controller
             }
 
             return response()->json($universidade, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar universidade', 'error' => $e->getMessage()], 500);
         }
     }
@@ -92,7 +92,7 @@ class UniversidadeController extends Controller
 
             $universidade->update($validated);
             return response()->json($universidade, 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao atualizar universidade', 'error' => $e->getMessage()], 500);
         }
     }
@@ -111,7 +111,7 @@ class UniversidadeController extends Controller
 
             $universidade->delete();
             return response()->json(['message' => 'Universidade deletada com sucesso'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar universidade', 'error' => $e->getMessage()], 500);
         }
     }
