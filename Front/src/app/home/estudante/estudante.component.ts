@@ -98,7 +98,6 @@ export class EstudanteComponent implements OnInit {
   }
 
   salvarEstudante() {
-
     this.submitted = true;
     if (this.momentForm.invalid) {
       return;
@@ -154,6 +153,27 @@ export class EstudanteComponent implements OnInit {
       subscribe((data: any) => {
         this.universidades = data.data;
       });
+  }
+
+  DeletarEstudante(estudante: Estudante) {
+    Swal.fire({
+      title: 'Deletar ' + estudante.nome + '?',
+      //text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#34c38f',
+      cancelButtonColor: '#f46a6a',
+      confirmButtonText: 'Confirmar!'
+    }).then(result => {
+      if (result.value) {
+        this.generalService.execute('clientes', GeneralConstants.CRUD_OPERATIONS.DELETE, estudante).
+          subscribe((data: any) => {
+            this.ListaEstudante();
+            this.mensagem('Estudante Eliminado com sucesso')
+          });
+        //Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
   }
 
   pageChanged(event: PageChangedEvent): void {

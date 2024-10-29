@@ -74,9 +74,11 @@
                           <i class="mdi mdi-dots-horizontal font-size-18"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                          <a class="dropdown-item" href="javascript: void(0);">Action</a>
                           <a class="dropdown-item" (click)="openModalEditar(data,EstudanteModal)"
                             href="javascript: void(0);">Editar</a>
+                          <a class="dropdown-item" href="javascript: void(0);"
+                            (click)="DeletarEstudante(data)">Deletar</a>
+
                         </div>
                       </div>
                     </td>
