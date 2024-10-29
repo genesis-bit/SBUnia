@@ -1,104 +1,346 @@
 <div class="container-fluid">
-    <app-page-title title="Projects List" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-  
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card bg-transparent">
-          <div class=" card-body">
-            <div class=" row mb-2">
-              <div class="col-sm">
-                <div class="search-box me-2 d-inline-block">
-                  <div class="position-relative">
-                    <input type="text" class="form-control" autocomplete="off" id="searchTableList" placeholder="Search...">
-                    <i class="bx bx-search-alt search-icon"></i>
-                  </div>
+  <app-page-title title="Gerir Estudantes" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card bg-transparent">
+        <div class=" card-body">
+          <div class=" row mb-2">
+            <div class="col-sm">
+              <div class="search-box me-2 d-inline-block">
+                <div class="position-relative">
+                  <input type="text" class="form-control" autocomplete="off" id="searchTableList"
+                    placeholder="Search...">
+                  <i class="bx bx-search-alt search-icon"></i>
                 </div>
               </div>
-              <!-- end col -->
-              <div class="col-sm-auto">
-                <div class="text-sm-end">
-                  <a routerLink="/projects/create" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Project</a>
-                </div>
-              </div>
-              <!-- end col -->
             </div>
-            <!-- end row -->
-            <div class>
-              <div class="table-responsive">
-                <table class="table project-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="projectList-table">
-                  <thead>
-                    <tr>
-                      <th scope="col" style="width: 100px">#</th>
-                      <th scope="col">Projects</th>
-                      <th scope="col">Due Date</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Team</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for(project of projectlist;track $index){
-                    <tr>
-                      <td>
-                        <img src="{{project.image}}" alt class="avatar-sm" />
-                      </td>
-                      <td>
-                        <h5 class="text-truncate font-size-14">
-                          <a href="javascript: void(0);" class="text-dark">{{project.text}}</a>
-                        </h5>
-                        <p class="text-muted mb-0">{{project.subtext}}</p>
-                      </td>
-                      <td>{{project.date}}</td>
-                      <td>
-                        <span class="badge" [ngClass]="{ 'bg-success': project.status === 'Completed',
+            <!-- end col -->
+            <div class="col-sm-auto">
+              <div class="text-sm-end">
+                <button (click)="openModal(EstudanteModal)" class="btn btn-primary btn-rounded"><i
+                    class="mdi mdi-plus me-1"></i> Novo</button>
+                <!-- <a routerLink="/projects/create" class="btn btn-success " id="addProject-btn"> Add New Project</a> -->
+              </div>
+            </div>
+            <!-- end col -->
+          </div>
+          <!-- end row -->
+          <div>
+            <div class="table-responsive">
+              <table
+                class="table project-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless"
+                id="projectList-table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 100px">#</th>
+                    <th scope="col">Nº Identificação</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Tipo de Usuario</th>
+                    <th scope="col">Instituição</th>
+                    <th scope="col">Curso</th>
+                    <th scope="col">Contacto</th>
+                    <th scope="col">Acção</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for(project of projectlist;track $index){
+                  <tr>
+                    <td>
+                      <img src="{{project.image}}" alt class="avatar-sm" />
+                    </td>
+                    <td>
+                      <h5 class="text-truncate font-size-14">
+                        <a href="javascript: void(0);" class="text-dark">{{project.text}}</a>
+                      </h5>
+                      <p class="text-muted mb-0">{{project.subtext}}</p>
+                    </td>
+                    <td>{{project.date}}</td>
+                    <td>
+                      <span class="badge" [ngClass]="{ 'bg-success': project.status === 'Completed',
                       'bg-warning': project.status === 'Pending',
                       'bg-danger': project.status === 'Delay' }">{{project.status}}</span>
-                      </td>
-                      <td>
-                        <div class="avatar-group">
-                          <div class="avatar-group-item">
-                            <a href="javascript: void(0);" class="d-inline-block">
-                              <img src="{{project.users[0]}}" class="rounded-circle avatar-xs" alt />
-                            </a>
-                          </div>
-                          @if(project.users[1]){
-                          <div class="avatar-group-item">
-                            <a href="javascript: void(0);" class="d-inline-block">
-                              <img src="{{project.users[1]}}" class="rounded-circle avatar-xs" alt />
-                            </a>
-                          </div>
-                          }
-                        </div>
-                      </td>
-                      <td>
-                        <div class="dropdown" dropdown placement="bottom-right">
-                          <a href="javascript: void(0);" class="dropdown-toggle card-drop" dropdownToggle>
-                            <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                    </td>
+                    <td>
+                      <div class="avatar-group">
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="{{project.users[0]}}" class="rounded-circle avatar-xs" alt />
                           </a>
-                          <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-                            <a class="dropdown-item" href="javascript: void(0);">Action</a>
-                            <a class="dropdown-item" href="javascript: void(0);">Another action</a>
-                            <a class="dropdown-item" href="javascript: void(0);">Something else here</a>
-                          </div>
                         </div>
-                      </td>
-                    </tr>}
-                  </tbody>
-                </table>
+                        @if(project.users[1]){
+                        <div class="avatar-group-item">
+                          <a href="javascript: void(0);" class="d-inline-block">
+                            <img src="{{project.users[1]}}" class="rounded-circle avatar-xs" alt />
+                          </a>
+                        </div>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <div class="dropdown" dropdown placement="bottom-right">
+                        <a href="javascript: void(0);" class="dropdown-toggle card-drop" dropdownToggle>
+                          <i class="mdi mdi-dots-horizontal font-size-18"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
+                          <a class="dropdown-item" href="javascript: void(0);">Action</a>
+                          <a class="dropdown-item" href="javascript: void(0);">Another action</a>
+                          <a class="dropdown-item" href="javascript: void(0);">Something else here</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+      <div class="row">
+        <div class="col-lg-12">
+          <ul class="pagination pagination-rounded justify-content-center mt-2 mb-5">
+            <pagination class="pagination-wrap hstack gap-2" [totalItems]="returnedArray?.length" [itemsPerPage]="6"
+              (pageChanged)="pageChanged($event)"></pagination>
+          </ul>
+        </div>
+      </div>
+      <!-- end row -->
+
+    </div>
+  </div>
+
+  <ng-template #EstudanteModal role="document" let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Novo Estudante</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modalRef?.hide()"></button>
+    </div>
+    <form [formGroup]="momentForm" (ngSubmit)="salvarEstudante()">
+      <div class="modal-body">
+        <div class="row mb-1">
+          <div class="col-md-12 p-1">
+            <div class="form-floating">
+              <input type="text" class="form-control form-control-invalid" formControlName="nome" name="nome"
+                id="floatingnameInput" placeholder="Digite o nome"
+                [ngClass]="{'is-invalid': submitted && form['nome'].errors}" />
+              <!-- [(ngModel)]="prateleira.descricao"  /> -->
+              <label for="floatingnameInput">Nome</label>
+              <div *ngIf="form['nome'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['nome'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['nome'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['nome'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
               </div>
             </div>
           </div>
         </div>
-        <!-- end row -->
-        <div class="row">
-          <div class="col-lg-12">
-            <ul class="pagination pagination-rounded justify-content-center mt-2 mb-5">
-              <pagination class="pagination-wrap hstack gap-2" [totalItems]="returnedArray?.length" [itemsPerPage]="6" (pageChanged)="pageChanged($event)"></pagination>
-            </ul>
+        <div class="row mb-1">
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <input type="email" class="form-control form-control-invalid" formControlName="email" name="email"
+                id="floatingnameInput" placeholder="Digite o Email"
+                [ngClass]="{'is-invalid': submitted && form['email'].errors}" />
+              <!-- [(ngModel)]="prateleira.descricao"  /> -->
+              <label for="floatingnameInput">Email</label>
+              <div *ngIf="form['email'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['email'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['email'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['email'].errors?.['email']">
+                  O campo deve ser do tipo email.
+                </span>
+                <span *ngIf="form['email'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <input type="text" class="form-control form-control-invalid" formControlName="bilhete" name="bilhete"
+                id="floatingnameInput" placeholder="Digite o numero do bilhete"
+                [ngClass]="{'is-invalid': submitted && form['bilhete'].errors}" />
+              <!-- [(ngModel)]="prateleira.descricao" [ngClass]="{'is-invalid': submitted && form['descricao'].errors}" /> -->
+              <label for="floatingnameInput">Numero de Identificação</label>
+              <div *ngIf="form['bilhete'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['bilhete'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['bilhete'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['bilhete'].errors?.['maxlength']">
+                  O campo não deve exceder 20 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <input type="text" mask="000-000-000" class="form-control form-control-invalid" formControlName="telefone" name="telefone"
+                id="floatingnameInput" placeholder="Digite o numero do telefone"
+                [ngClass]="{'is-invalid': submitted && form['telefone'].errors}" />
+              <!-- [(ngModel)]="prateleira.descricao"  /> -->
+              <label for="floatingnameInput">Telefone</label>
+              <div *ngIf="form['telefone'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['telefone'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['telefone'].errors?.['minlength']">
+                  O campo deve conter no minimo 9 digitos
+                </span>
+                <span *ngIf="form['telefone'].errors?.['maxlength']">
+                  O campo não deve exceder 20 digitos
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- end row -->
-  
+        <div class="row mb-1">
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelectGrid"
+                [ngClass]="{'is-invalid': submitted && form['genero'].errors}" formControlName="genero"
+                aria-label="Floating label select example">
+                <option>Masculino</option>
+                <option value="1">Femenino</option>
+              </select>
+              <label for="floatingSelectGrid">Genero</label>
+              <div *ngIf="form['genero'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['genero'].errors?.['required']">Campo obrigatório.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelectGrid"
+                [ngClass]="{'is-invalid': submitted && form['instituicao'].errors}" formControlName="instituicao"
+                aria-label="Floating label select example">
+                <option *ngFor="let data of universidades" value="{{data?.id}}">{{data?.sigla}}-{{data?.descricao}}</option>
+              </select>
+              <label for="floatingSelectGrid">Instituição</label>
+              <div *ngIf="form['instituicao'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['instituicao'].errors?.['required']">Campo obrigatório.</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 p-1">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelectGrid"
+                [ngClass]="{'is-invalid': submitted && form['curso'].errors}" formControlName="curso"
+                aria-label="Floating label select example">
+                <option *ngFor="let data of cursos" value="{{data?.id}}">{{data?.descricao}}</option>
+              </select>
+              <label for="floatingSelectGrid">Curso</label>
+              <div *ngIf="form['curso'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['curso'].errors?.['required']">Campo obrigatório.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
-    </div>
-  </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="submit" class="btn btn-primary w-md">Salvar</button>
+          <button class="btn btn-info w-md mx-1">Limpar</button>
+        </div>
+      </div>
+    </form>
+    <!-- <form (ngSubmit)="saveUser()" [formGroup]="jobListForm">
+        <div class="modal-body">
+          <input type="hidden" name="id" value="" formControlName="id" />
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Jobs Title</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required formControlName="title" [ngClass]="{ 'is-invalid': submitted && form['title'].errors }" />
+            @if(submitted && form['title'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['title'].errors['required']){
+              <div>Jobs Title is required</div>
+              }
+            </div>
+            }
+          </div>
+    
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Company Name</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required formControlName="name" [ngClass]="{ 'is-invalid': submitted && form['name'].errors }" />
+            @if(submitted && form['name'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['name'].errors['required']){
+              <div>Company Name is required</div>}
+            </div>}
+          </div>
+    
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Location</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="Enter Location" required formControlName="location" [ngClass]="{ 'is-invalid': submitted && form['location'].errors }" />
+            @if(submitted && form['location'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['location'].errors['required']){
+              <div>Location is required</div>}
+            </div>}
+          </div>
+    
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Experience</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="Enter Experience" required formControlName="experience" [ngClass]="{ 'is-invalid': submitted && form['experience'].errors }" />
+            @if(submitted && form['experience'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['experience'].errors['required']){
+              <div>Experience is required</div>}
+            </div>}
+          </div>
+    
+          <div class="mb-3">
+            <label for="customername-field" class="form-label">Position</label>
+            <input type="text" id="customername-field" class="form-control" placeholder="Enter Position" required formControlName="position" [ngClass]="{ 'is-invalid': submitted && form['position'].errors }" />
+            @if(submitted && form['position'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['position'].errors['required']){
+              <div>Position is required</div>}
+            </div>}
+          </div>
+    
+          <div class="mb-3">
+            <label for="payment-field" class="form-label">Type</label>
+            <select class="form-control" data-trigger name="payment-method" id="payment-field" formControlName="type" [ngClass]="{ 'is-invalid': submitted && form['type'].errors }">
+              <option value="">Type</option>
+              <option value="Full Time">Full Time</option>
+              <option value="Part Time">Part Time</option>
+            </select>
+            @if(submitted && form['type'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['type'].errors['required']){
+              <div>Type is required</div>
+              }
+            </div>}
+          </div>
+    
+          <div class="mb-3">
+            <label for="payment-field" class="form-label">Status</label>
+            <select class="form-control" data-trigger name="payment-method" id="payment-field" formControlName="status" [ngClass]="{ 'is-invalid': submitted && form['status'].errors }">
+              <option value="">Status</option>
+              <option value="Active">Active</option>
+              <option value="New">New</option>
+              <option value="Close">Close</option>
+            </select>
+            @if(submitted && form['status'].errors){
+            <div class="invalid-feedback" align="left">
+              @if(form['status'].errors['required']){
+              <div>Status is required</div>}
+            </div>}
+          </div>
+    
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)=" modalRef?.hide()">Close</button>
+            <button type="submit" class="btn btn-success" id="add-btn">Add Order</button>
+          </div>
+        </div>
+      </form> -->
+  </ng-template>
+
+</div>

@@ -32,6 +32,8 @@ import { UiModule } from '../pages/ui/ui.module';
 import { LivroComponent } from './livro/livro.component';
 import { BibliotecarioComponent } from './bibliotecario/bibliotecario.component';
 
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+
 @NgModule({  
   declarations: [HomeComponent, FerramentasComponent, EstudanteComponent, EmprestimoComponent, LivroComponent, BibliotecarioComponent],
   imports: [
@@ -39,6 +41,9 @@ import { BibliotecarioComponent } from './bibliotecario/bibliotecario.component'
     PaginationModule.forRoot(),
     CollapseModule.forRoot(),
     UIModule,
+
+    NgxMaskDirective,
+    NgxMaskPipe,
 
     HomeRoutingModule,
     CommonModule,
@@ -55,6 +60,6 @@ import { BibliotecarioComponent } from './bibliotecario/bibliotecario.component'
     SimplebarAngularModule,
     ModalModule.forRoot()
   ],
-  providers: [BsDropdownConfig],
+  providers: [BsDropdownConfig, provideNgxMask()],
 })
 export class HomeModule { }

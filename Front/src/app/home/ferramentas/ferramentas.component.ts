@@ -55,23 +55,27 @@ export class FerramentasComponent {
     dados != 'Universidades'?this.momentForm.get('sigla').disable(): this.momentForm.get("sigla").enable();
     dados != 'Prateleiras'?this.momentForm.get('observacao').disable(): this.momentForm.get("observacao").enable();
     this.submitted = false;
-    switch (dados) {
-      case 'Universidades': this.ListaUniversidade();  break;      
-      case 'Cursos da Instituição': this.ListaCurso(); break;
-      case 'Categorias de Livro': this.ListaCategoria(); break;
-      case 'Prateleiras': this.ListaPrateleira(); break;
-      default: console.log("invalido"); break;
-    }    
+    // switch (dados) {
+    //   case 'Universidades': this.ListaUniversidade();  break;      
+    //   case 'Cursos da Instituição': this.ListaCurso(); break;
+    //   case 'Categorias de Livro': this.ListaCategoria(); break;
+    //   case 'Prateleiras': this.ListaPrateleira(); break;
+    //   default: console.log("invalido"); break;
+    // }    
   }
 
   constructor(private generalService: GeneralService) { }
 
   ngOnInit(): void {
     this._fetchData();
-    this.validacaoUniversidade();
+    this.validacao();
+    this.ListaCategoria();
+    this.ListaCurso();
+    this.ListaPrateleira();
+    this.ListaUniversidade();
   }
 
-  validacaoUniversidade() {
+  validacao() {
     const noWhitespaceValidator = Validators.pattern(/^(?!\s*$).+/);
     this.momentForm = new FormGroup({
       id: new FormControl(""),

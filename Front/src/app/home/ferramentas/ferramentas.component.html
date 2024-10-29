@@ -25,11 +25,11 @@
             <p class="mb-0 text-muted"><b>{{data.vacancy}}</b> Vacancy</p>
           </div>
         </div>
-       </div><!--end card-->
+      </div><!--end card-->
     </div>}<!--end col-->
 
   </div><!--end row-->
-  <div class="row"  [ngClass]="{'d-none': display != 'Universidades'}" >
+  <div class="row" [ngClass]="{'d-none': display != 'Universidades'}">
     <div class="col-sm-4">
       <div class="card">
         <div class="card-body">
@@ -37,8 +37,9 @@
           <p class="card-title-desc">Adicionar Universidades</p>
           <form (ngSubmit)="salvarUniversidade()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="universidade.descricao"
-               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao"
+                [(ngModel)]="universidade.descricao" id="floatingnameInput" placeholder="Digite o nome"
+                [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
               <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
@@ -51,8 +52,9 @@
               </div>
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" name="sigla" formControlName="sigla" [(ngModel)]="universidade.sigla" 
-              [ngClass]="{'is-invalid': submitted && formUni['sigla'].errors}" id="floatingemailInput" placeholder="Digite a Sigla" />
+              <input type="text" class="form-control" name="sigla" formControlName="sigla"
+                [(ngModel)]="universidade.sigla" [ngClass]="{'is-invalid': submitted && formUni['sigla'].errors}"
+                id="floatingemailInput" placeholder="Digite a Sigla" />
               <label for="floatingemailInput">Sigla</label>
               <div *ngIf="formUni['sigla'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="formUni['sigla'].errors?.['required']">Campo obrigatório</span>
@@ -66,7 +68,8 @@
             </div>
             <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
-              <button class="btn btn-info w-md mx-1" (click)="LimparUniversidade()" *ngIf="labelUniversidade == 'Editar Universidade'">Novo</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparUniversidade()"
+                *ngIf="labelUniversidade == 'Editar Universidade'">Novo</button>
             </div>
           </form>
         </div>
@@ -121,12 +124,12 @@
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                         <a class="dropdown-item" href="javascript: void(0);" (click)="EditarUniversidade(data)">
                           <i class="bx bx-edit-alt"></i> Editar</a>
-                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarUniversidade(data)">
-                            <i class="bx bx-trash"></i> Deletar
-                          </a>
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarUniversidade(data)">
+                          <i class="bx bx-trash"></i> Deletar
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -144,8 +147,8 @@
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                 <pagination>
-                        </pagination> 
+                <pagination>
+                </pagination>
               </div>
             </div>
             <!-- End Pagination -->
@@ -162,8 +165,9 @@
           <p class="card-title-desc">Adicionar Cursos da Instituições</p>
           <form (ngSubmit)="salvarCurso()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="curso.descricao"
-               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao"
+                [(ngModel)]="curso.descricao" id="floatingnameInput" placeholder="Digite o nome"
+                [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
               <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
@@ -177,7 +181,8 @@
             </div>
             <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
-              <button class="btn btn-info w-md mx-1" (click)="LimparCurso()" *ngIf="labelCurso == 'Editar Curso'">Novo</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparCurso()"
+                *ngIf="labelCurso == 'Editar Curso'">Novo</button>
             </div>
           </form>
         </div>
@@ -230,12 +235,12 @@
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                         <a class="dropdown-item" href="javascript: void(0);" (click)="EditarCurso(data)">
                           <i class="bx bx-edit-alt"></i> Editar</a>
-                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCurso(data)">
-                            <i class="bx bx-trash"></i> Deletar
-                          </a>
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCurso(data)">
+                          <i class="bx bx-trash"></i> Deletar
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -253,8 +258,8 @@
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                 <pagination>
-                        </pagination> 
+                <pagination>
+                </pagination>
               </div>
             </div>
             <!-- End Pagination -->
@@ -271,8 +276,9 @@
           <p class="card-title-desc">Adicionar Categoria dos Livros</p>
           <form (ngSubmit)="salvarCategoria()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="categoria.descricao"
-               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao"
+                [(ngModel)]="categoria.descricao" id="floatingnameInput" placeholder="Digite o nome"
+                [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
               <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
@@ -286,7 +292,8 @@
             </div>
             <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
-              <button class="btn btn-info w-md mx-1" (click)="LimparCategoria()" *ngIf="labelCategoria == 'Editar Categoria'">Novo</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparCategoria()"
+                *ngIf="labelCategoria == 'Editar Categoria'">Novo</button>
             </div>
           </form>
         </div>
@@ -339,12 +346,12 @@
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                         <a class="dropdown-item" href="javascript: void(0);" (click)="EditarCategoria(data)">
                           <i class="bx bx-edit-alt"></i> Editar</a>
-                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCategoria(data)">
-                            <i class="bx bx-trash"></i> Deletar
-                          </a>
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarCategoria(data)">
+                          <i class="bx bx-trash"></i> Deletar
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -362,8 +369,8 @@
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                 <pagination>
-                        </pagination> 
+                <pagination>
+                </pagination>
               </div>
             </div>
             <!-- End Pagination -->
@@ -380,8 +387,9 @@
           <p class="card-title-desc">Adicionar Prateleiras</p>
           <form (ngSubmit)="salvarPrateleira()" [formGroup]="momentForm">
             <div class="form-floating mb-3">
-              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao" [(ngModel)]="prateleira.descricao"
-               id="floatingnameInput" placeholder="Digite o nome" [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
+              <input type="text" class="form-control form-control-invalid" formControlName="descricao" name="descricao"
+                [(ngModel)]="prateleira.descricao" id="floatingnameInput" placeholder="Digite o nome"
+                [ngClass]="{'is-invalid': submitted && formUni['descricao'].errors}" />
               <label for="floatingnameInput">Nome</label>
               <div *ngIf="formUni['descricao'].errors && submitted" class="invalid-tooltip">
                 <span *ngIf="formUni['descricao'].errors?.['required']">Campo obrigatório.</span>
@@ -394,8 +402,10 @@
               </div>
             </div>
             <div class="form-floating mb-3">
-              <textarea rows="3" class="form-control" name="observacao" formControlName="observacao" [(ngModel)]="prateleira.observacao" 
-              [ngClass]="{'is-invalid': submitted && formUni['observacao'].errors}" id="floatingemailInput" placeholder="Digite uma observação" >
+              <textarea rows="3" class="form-control" name="observacao" formControlName="observacao"
+                [(ngModel)]="prateleira.observacao"
+                [ngClass]="{'is-invalid': submitted && formUni['observacao'].errors}" id="floatingemailInput"
+                placeholder="Digite uma observação">
               </textarea>
               <label for="floatingemailInput">Observação</label>
               <div *ngIf="formUni['observacao'].errors && submitted" class="invalid-tooltip">
@@ -409,7 +419,8 @@
             </div>
             <div class="d-flex">
               <button type="submit" class="btn btn-primary w-md">Salvar</button>
-              <button class="btn btn-info w-md mx-1" (click)="LimparPrateleira()" *ngIf="labelPrateleira == 'Editar Prateleira'">Novo</button>
+              <button class="btn btn-info w-md mx-1" (click)="LimparPrateleira()"
+                *ngIf="labelPrateleira == 'Editar Prateleira'">Novo</button>
             </div>
           </form>
         </div>
@@ -464,12 +475,12 @@
                     <div class="dropdown" dropdown placement="bottom-left">
                       <i class="mdi mdi-dots-vertical dropdown-toggle" dropdownToggle data-toggle="dropdown"
                         aria-expanded="true"></i>
-                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>                       
+                      <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
                         <a class="dropdown-item" href="javascript: void(0);" (click)="EditarPrateleira(data)">
                           <i class="bx bx-edit-alt"></i> Editar</a>
-                          <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarPrateleira(data)">
-                            <i class="bx bx-trash"></i> Deletar
-                          </a>
+                        <a class="dropdown-item" href="javascript: void(0);" (click)="DeletarPrateleira(data)">
+                          <i class="bx bx-trash"></i> Deletar
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -487,8 +498,8 @@
             <!-- Pagination -->
             <div class="col-sm-12 col-md-5">
               <div class="text-md-right float-md-end pagination-rounded">
-                 <pagination>
-                        </pagination> 
+                <pagination>
+                </pagination>
               </div>
             </div>
             <!-- End Pagination -->

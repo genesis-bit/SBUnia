@@ -9,7 +9,7 @@ export const vacancyData = [
         vacancy: 8
     },
     {
-        image: 'assets/images/companies/mailchimp.svg',
+        image: 'assets/images/companies/4333.svg',
         title: 'Cursos da Instituição',
         brand: 'Gerir Cursos da Instituição',
         location: 'Danemark',
@@ -23,7 +23,7 @@ export const vacancyData = [
         vacancy: 25
     },
     {
-        image: 'assets/images/companies/amazon.svg',
+        image: 'assets/images/companies/prateleira.svg',
         title: 'Prateleiras',
         brand: 'Gerir Prateleiras da biblioteca',
         location: 'Hong-Kong',

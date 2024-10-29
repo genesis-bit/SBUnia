@@ -66,6 +66,7 @@ export class EmprestimoComponent implements OnInit{
   openViewModal(content: any) {
     this.modalRef = this.modalService.show(content);
   }
+  
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll(ev: any) {
