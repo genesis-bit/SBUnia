@@ -1,69 +1,225 @@
 <div class="container-fluid">
 
-    <!-- start page title -->
-    <app-page-title title="Bibliotecarios" [breadcrumbItems]="breadCrumbItems"></app-page-title>
-    <!-- end page title -->
+  <!-- start page title -->
+  <app-page-title title="Bibliotecarios" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <!-- end page title -->
 
-    <div class="col-lg-12">
-      <div class="d-flex">
-        <h4 class="card-title mb-4 flex-grow-1"></h4>
-        <div>
-          <a routerLink="/jobs/list" class="btn btn-primary btn-sm m-1">View All <i class="bx bx-right-arrow-alt"></i></a>
+  <div class="col-lg-12">
+    <div class="d-flex">
+      <!-- <h4 class="card-title mb-4 flex-grow-1"></h4> -->
+      <div>
+        <div class="text-sm-end mb-2">
+          <button (click)="openModal(EstudanteModal)" class="btn btn-primary btn-rounded"><i
+              class="mdi mdi-plus me-1"></i> Novo</button>
+          <!-- <a routerLink="/data?s/create" class="btn btn-success " id="addProject-btn"> Add New Project</a> -->
         </div>
       </div>
-    </div><!--end col-->
-  
-    <div class="row">
-      @for(list of invoicelists;track $index){
-      <div class="col-xl-4 col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-4">
-                <div class="text-lg-center">
-                  @if(list.image){
-                  <img src="{{list.image}}" class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none rounded-circle" alt="img">
-                  }@else{
-                  <div class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none">
-                    <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-16">
-                      {{ list.name.charAt(0)}}
-                    </span>
-                  </div>}
-  
-                  <h5 class="mb-1 font-size-15 text-truncate">{{ list.name }}</h5>
-                  <a href="javascript: void(0);" class="text-muted">&#64;Skote</a>
-                </div>
+    </div>
+  </div><!--end col-->
+
+  <div class="row">
+    @for(list of invoicelists;track $index){
+    <div class="col-xl-4 col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="text-lg-center">
+                @if(list.image){
+                <img src="{{list.image}}"
+                  class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none rounded-circle" alt="img">
+                }@else{
+                <div class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none">
+                  <span class="avatar-title rounded-circle bg-primary-subtle text-primary font-size-16">
+                    {{ list.name.charAt(0)}}
+                  </span>
+                </div>}
+
+                <h5 class="mb-1 font-size-15 text-truncate">{{ list.name }}</h5>
+                <a href="javascript: void(0);" class="text-muted">&#64;Skote</a>
               </div>
-  
-              <div class="col-lg-8">
-                <div>
-                  <a routerLink="/invoices/detail" class="d-block text-primary text-decoration-underline mb-2">Invoice {{ list.id }}</a>
-                  <h5 class="text-truncate mb-4 mb-lg-5">{{ list.title }}</h5>
-                  <ul class="list-inline mb-0">
-                    <li class="list-inline-item me-3">
-                      <h5 class="font-size-14" placement="top" tooltip="Amount">
-                        <i class="bx bx-money me-1 text-muted"></i>{{list.amount}}
-                      </h5>
-                    </li>
-                    <li class="list-inline-item">
-                      <h5 class="font-size-14" placement="top" tooltip="Due Date"><i class="bx bx-calendar me-1 text-muted"></i> {{list.date}}</h5>
-                    </li>
-                  </ul>
-                </div>
+            </div>
+
+            <div class="col-lg-8">
+              <div>
+                <a routerLink="/invoices/detail" class="d-block text-primary text-decoration-underline mb-2">Invoice {{
+                  list.id }}</a>
+                <h5 class="text-truncate mb-4 mb-lg-5">{{ list.title }}</h5>
+                <ul class="list-inline mb-0">
+                  <li class="list-inline-item me-3">
+                    <h5 class="font-size-14" placement="top" tooltip="Amount">
+                      <i class="bx bx-money me-1 text-muted"></i>{{list.amount}}
+                    </h5>
+                  </li>
+                  <li class="list-inline-item">
+                    <h5 class="font-size-14" placement="top" tooltip="Due Date"><i
+                        class="bx bx-calendar me-1 text-muted"></i> {{list.date}}</h5>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-      </div>}
+      </div>
+    </div>}
+  </div>
+  <!-- end row -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="text-center my-3">
+        <a href="javascript:void(0);" class="text-success"><i
+            class="bx bx-loader bx-spin font-size-18 align-middle me-1"></i> Load more </a>
+      </div>
+    </div> <!-- end col-->
+  </div>
+
+  <ng-template #EstudanteModal role="document" let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Adicionar Bibliotecário</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+        (click)="modalRef?.hide()"></button>
     </div>
-    <!-- end row -->
-  
-    <div class="row">
-      <div class="col-12">
-        <div class="text-center my-3">
-          <a href="javascript:void(0);" class="text-success"><i class="bx bx-loader bx-spin font-size-18 align-middle me-1"></i> Load more </a>
+    <form [formGroup]="momentForm" (ngSubmit)="salvarBibliotecario()">
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <div class="position-relative d-inline-block">
+            <div class="position-absolute bottom-0 end-0">
+              <label for="member-image-input" class="mb-0" data-bs-toggle="tooltip" data-bs-placement="right"
+                title="Select Member Image">
+                <div class="avatar-xs">
+                  <div class="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
+                    <i class="bx bxs-image-alt"></i>
+                  </div>
+                </div>
+              </label>
+              <input class="form-control d-none" value="" id="member-image-input" type="file"
+                accept="image/png, image/gif, image/jpeg" (change)="fileChange($event)">
+            </div>
+            <div class="avatar-lg">
+              <div class="avatar-title bg-light rounded-circle">
+                <img src="assets/images/users/user-dummy-img.jpg" id="member-img"
+                  class="avatar-md rounded-circle h-auto" />
+              </div>
+            </div>
+          </div>
         </div>
-      </div> <!-- end col-->
-    </div>
-  
-  </div> <!-- container-fluid -->
+        <div class="row mb-1">
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <input type="text" class="form-control form-control-invalid" formControlName="nome" name="nome"
+                id="floatingnameInput" placeholder="Digite o nome" [(ngModel)]="bibliotecario.nome"
+                [ngClass]="{'is-invalid': submitted && form['nome'].errors}" />
+              <label for="floatingnameInput">Nome</label>
+              <div *ngIf="form['nome'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['nome'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['nome'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['nome'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <input type="text" class="form-control form-control-invalid" [(ngModel)]="bibliotecario.ndi"
+                formControlName="bilhete" name="ndi" id="floatingnameInput" placeholder="Digite o numero do processo"
+                [ngClass]="{'is-invalid': submitted && form['bilhete'].errors}" />
+              <label for="floatingnameInput">Numero do Processo</label>
+              <div *ngIf="form['ndi'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['ndi'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['ndi'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['ndi'].errors?.['maxlength']">
+                  O campo não deve exceder 20 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <input type="email" class="form-control form-control-invalid" formControlName="email" name="email"
+                id="floatingnameInput" placeholder="Digite o Email" [(ngModel)]="bibliotecario.email"
+                [ngClass]="{'is-invalid': submitted && form['email'].errors}" />
+              <label for="floatingnameInput">Email</label>
+              <div *ngIf="form['email'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['email'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['email'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['email'].errors?.['email']">
+                  O campo deve ser do tipo email.
+                </span>
+                <span *ngIf="form['email'].errors?.['maxlength']">
+                  O campo não deve exceder 50 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <input type="text" class="form-control form-control-invalid" [(ngModel)]="bibliotecario.bilhete"
+                formControlName="bilhete" name="bilhete" id="floatingnameInput" placeholder="Digite o numero do bilhete"
+                [ngClass]="{'is-invalid': submitted && form['bilhete'].errors}" />
+              <label for="floatingnameInput">Numero de Identificação</label>
+              <div *ngIf="form['bilhete'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['bilhete'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['bilhete'].errors?.['minlength']">
+                  O campo deve conter no minimo 4 caracteres
+                </span>
+                <span *ngIf="form['bilhete'].errors?.['maxlength']">
+                  O campo não deve exceder 20 caracteres
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-1">
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <input type="text" mask="000-000-000" class="form-control form-control-invalid" formControlName="telefone"
+                name="telefone" id="floatingnameInput" placeholder="Digite o numero do telefone"
+                [(ngModel)]="bibliotecario.telefone" [ngClass]="{'is-invalid': submitted && form['telefone'].errors}" />
+              <label for="floatingnameInput">Telefone</label>
+              <div *ngIf="form['telefone'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['telefone'].errors?.['required']">Campo obrigatório.</span>
+                <span *ngIf="form['telefone'].errors?.['minlength']">
+                  O campo deve conter no minimo 9 digitos
+                </span>
+                <span *ngIf="form['telefone'].errors?.['maxlength']">
+                  O campo não deve exceder 20 digitos
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 p-1">
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelectGrid"
+                [ngClass]="{'is-invalid': submitted && form['genero'].errors}" [(ngModel)]="bibliotecario.genero_id"
+                formControlName="genero" aria-label="Floating label select example">
+                <option *ngFor="let data of generos" value="{{data?.id}}">{{data?.descricao}}</option>
+              </select>
+              <label for="floatingSelectGrid">Genero</label>
+              <div *ngIf="form['genero'].errors && submitted" class="invalid-tooltip">
+                <span *ngIf="form['genero'].errors?.['required']">Campo obrigatório.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="hstack gap-2 justify-content-end">
+          <button type="submit" class="btn btn-primary w-md">Salvar</button>
+          <button type="button" class="btn btn-danger w-md mx-1" (click)="modalRef?.hide()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+</div> <!-- container-fluid -->
