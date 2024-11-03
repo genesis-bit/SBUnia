@@ -12,7 +12,7 @@ class EmprestimoController extends Controller
     public function index()
     {
         try {
-            $emprestimos = Emprestimo::with(['acervo', 'cliente', 'bibliotecario'])->paginate();
+            $emprestimos = Emprestimo::with(['acervo', 'cliente', 'bibliotecario','devolucao'])->paginate();
             return response()->json($emprestimos, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar empréstimos', 'error' => $e->getMessage()], 500);
@@ -26,10 +26,9 @@ class EmprestimoController extends Controller
             $validated = $request->validate([
                 'acervo_id' => 'required|exists:prateleira_acervos,acervo_id',
                 'cliente_id' => 'required|exists:clientes,id',
-                'bibliotecario_id' => 'required|exists:bibliotecarios,id',
                 'dataPrevistaEntrega' => 'required|date',
             ]);
-
+            $validated['bibliotecario_id'] = 11;
             $emprestimo = Emprestimo::create($validated);
             return response()->json($emprestimo, 201);
         } catch (\Exception $e) {
@@ -41,7 +40,7 @@ class EmprestimoController extends Controller
     public function show($id)
     {
         try {
-            $emprestimo = Emprestimo::with(['acervo', 'cliente', 'bibliotecario'])->find($id);
+            $emprestimo = Emprestimo::with(['acervo', 'cliente', 'bibliotecario', 'devolucao'])->find($id);
 
             if (!$emprestimo) {
                 return response()->json(['message' => 'Empréstimo não encontrado'], 404);

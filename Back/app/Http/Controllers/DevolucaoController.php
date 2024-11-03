@@ -25,10 +25,10 @@ class DevolucaoController extends Controller
         try {
             $validated = $request->validate([
                 'id' => 'required|exists:emprestimos,id',
-                'bibliotecario_id' => 'required|exists:bibliotecarios,id',
+               // 'bibliotecario_id' => 'required|exists:bibliotecarios,id',
                 'observacao' => 'nullable|string',
             ]);
-
+            $validated['bibliotecario_id'] = 11;
             $devolucao = Devolucao::create($validated);
             return response()->json($devolucao, 201);
         } catch (\Exception $e) {

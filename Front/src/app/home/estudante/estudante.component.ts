@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { Store } from '@ngrx/store';
-import { fetchprojectData } from 'src/app/store/ProjectsData/project.actions';
-import { selectData } from 'src/app/store/ProjectsData/project-selector';
 
 import { GeneralService } from 'src/app/core/services/general.service';
 import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
@@ -43,7 +40,7 @@ export class EstudanteComponent implements OnInit {
 
   momentForm!: FormGroup;
 
-  constructor(public store: Store, private modalService: BsModalService, private generalService: GeneralService) { }
+  constructor(private modalService: BsModalService, private generalService: GeneralService) { }
 
 
   openModal(content: any) {
@@ -64,13 +61,6 @@ export class EstudanteComponent implements OnInit {
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'Home' }, { label: 'Estudantes', active: true }];
-
-    this.store.dispatch(fetchprojectData());
-    this.store.select(selectData).subscribe(data => {
-      this.projectlist = data
-      this.returnedArray = data
-      this.projectlist = this.returnedArray.slice(0, 6);
-    });
 
     this.validacao();
     this.ListaCurso();

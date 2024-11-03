@@ -21,7 +21,7 @@ class Emprestimo extends Model
     /**
      * Relação com o modelo PrateleiraAcervo (um empréstimo pertence a um acervo em uma prateleira).
      */
-    public function acervo()
+    public function prateleiraDetalhes()
     {
         return $this->belongsTo(PrateleiraAcervo::class, 'acervo_id', 'id');
     }
@@ -33,6 +33,17 @@ class Emprestimo extends Model
     {
         return $this->belongsTo(Cliente::class);
     }
+    public function acervo()
+    {
+        return $this->hasOneThrough(
+            Acervo::class,
+            PrateleiraAcervo::class,
+            'id',         // Chave estrangeira no PrateleiraAcervo
+            'id',         // Chave estrangeira no Acervo
+            'acervo_id',  // Chave local em Emprestimo
+            'acervo_id'   // Chave local em PrateleiraAcervo
+        );
+    }
 
     /**
      * Relação com o modelo Bibliotecario (um empréstimo é gerido por um bibliotecário).
@@ -40,6 +51,10 @@ class Emprestimo extends Model
     public function bibliotecario()
     {
         return $this->belongsTo(Bibliotecario::class);
+    }
+    public function devolucao()
+    {
+        return $this->belongsTo(Devolucao::class,'id','id');
     }
 }
 

@@ -1,12 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+
+
+import { GeneralService } from 'src/app/core/services/general.service';
+import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
+
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+
+import { Emprestimo } from '../model/emprestimo';
 
 import Swal from 'sweetalert2';
 import { Store } from '@ngrx/store';
 import { addJoblist, fetchJoblistData, updateJoblist } from 'src/app/store/Job/job.action';
 import { selectData } from 'src/app/store/Job/job-selector';
+import { Acervo } from '../model/acervo';
+import { Devolucao } from '../model/devolucao';
+import { dataTool } from 'echarts';
 @Component({
   selector: 'app-emprestimo',
   templateUrl: './emprestimo.component.html',
@@ -19,7 +29,6 @@ export class EmprestimoComponent implements OnInit{
   page: any = 1;
   // bread crumb items
   breadCrumbItems: Array<{}>;
-  jobListForm!: UntypedFormGroup;
   submitted: boolean = false;
   endItem: any;
   term: any
@@ -30,25 +39,57 @@ export class EmprestimoComponent implements OnInit{
   currentPage: any;
   joblist: any;
   searchResults: any;
-  constructor(private modalService: BsModalService, private formBuilder: UntypedFormBuilder, public store: Store) {
+
+  momentForm!: FormGroup;
+
+  emprestimo = new Emprestimo();
+  devolucao = new Devolucao();
+  bilhete? : string;// guarda o valor do bilhete selecionado
+  acervoSelected ={categoria:'', autor:'',ano:'',editora:''};
+  emprestimos: any;
+  clientes: any;
+  acervos: any;
+  hoje = new Date().toISOString().substring(0,10);
+
+  validacao() {
+    this.momentForm = new FormGroup({
+      id: new FormControl(""),
+      dataPrevistaEntrega: new FormControl("", [Validators.required]),
+      cliente_id: new FormControl("", [Validators.required]),
+      acervo_id: new FormControl("", [Validators.required]),
+      bilhete: new FormControl("", [Validators.required])
+    });
+  }
+
+  get form() {
+    return this.momentForm.controls;
+  }
+
+  salvarEmprestimo() {
+    this.submitted = true;
+    if (this.momentForm.invalid) {
+      return;
+    }
+    this.generalService.execute('emprestimos', this.emprestimo.id ? GeneralConstants.CRUD_OPERATIONS.UPDATE : GeneralConstants.CRUD_OPERATIONS.INSERT, this.emprestimo).
+      subscribe({
+        next: (data: any) => {
+          console.log("resposta", data)
+          this.mensagem(this.emprestimo.id ? 'Solicitação Editado com sucesso' : 'Solicitação Adicionado com sucesso')
+          
+          this.emprestimo = new Emprestimo();
+          this.modalService.hide();
+          this.ListaEmprestimo();
+        },
+        error: (erro) => { console.log("erro", erro)}
+      });
+    this.submitted = false;
+  }
+
+  constructor(private modalService: BsModalService, public store: Store, private generalService: GeneralService) {
   }
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Jobs' }, { label: 'Jobs List', active: true }];
-
-    /**
-     * Form Validation
-     */
-    this.jobListForm = this.formBuilder.group({
-      id: [''],
-      title: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-      location: ['', [Validators.required]],
-      experience: ['', [Validators.required]],
-      position: ['', [Validators.required]],
-      type: ['', [Validators.required]],
-      status: ['', [Validators.required]]
-    });
 
     // store data
     this.store.dispatch(fetchJoblistData());
@@ -56,6 +97,21 @@ export class EmprestimoComponent implements OnInit{
       this.lists = data
       this.joblist = data;
       this.lists = this.joblist.slice(0, 8)
+    });
+
+    this.validacao();
+    this.ListaAcervo();
+    this.ListaEmprestimo();
+    this.ListaCliente();
+  }
+
+  mensagem(sms: string) {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: sms,
+      showConfirmButton: false,
+      timer: 2000
     });
   }
 
@@ -66,6 +122,33 @@ export class EmprestimoComponent implements OnInit{
   openViewModal(content: any) {
     this.modalRef = this.modalService.show(content);
   }
+
+  UpdateBilhete(){
+    let bilhete = this.clientes.filter((data)=>data.id == this.emprestimo.cliente_id)[0].bilhete;
+    this.bilhete = bilhete;
+  }
+
+  ListaEmprestimo() {
+    this.generalService.execute('emprestimos', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.emprestimos = data.data;
+        console.log("emprestimos", data)
+      });
+  }
+
+  ListaCliente() {
+    this.generalService.execute('clientes', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.clientes = data.data;
+      });
+  }
+
+  ListaAcervo() {
+    this.generalService.execute('acervos', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.acervos = data.data;
+      });
+  }
   
 
   // The master checkbox will check/ uncheck all items
@@ -74,7 +157,7 @@ export class EmprestimoComponent implements OnInit{
   }
 
   // Delete Data
-  delete(event: any) {
+  Adddevolucao(data: any) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: 'btn btn-success',
@@ -85,31 +168,24 @@ export class EmprestimoComponent implements OnInit{
 
     swalWithBootstrapButtons
       .fire({
-        title: 'Are you sure?',
-        text: 'You won\'t be able to revert this!',
-        icon: 'warning',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
+        title: 'Devolução '+data?.acervo?.titulo,
+        input:'textarea',
+        inputPlaceholder:'Observação...',
+        //text: 'You won\'t be able to revert this!',
+        //icon: 'warning',
+        confirmButtonText: 'Confirmar Devolução!',
+        cancelButtonText: 'Cancelar!',
         showCancelButton: true
       })
       .then(result => {
-        if (result.value) {
-          swalWithBootstrapButtons.fire(
-            'Deleted!',
-            'Your file has been deleted.',
-            'success'
-          );
-          event.target.closest('tr')?.remove();
-        } else if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
-          swalWithBootstrapButtons.fire(
-            'Cancelled',
-            'Your imaginary file is safe :)',
-            'error'
-          );
-        }
+        if (result.isConfirmed) {
+          this.devolucao.id = data.id;
+          this.devolucao.observacao = result.value;
+          this.generalService.execute("devolucoes", GeneralConstants.CRUD_OPERATIONS.INSERT, this.devolucao)
+          .subscribe((res)=>{
+            this.ListaEmprestimo();
+          });
+        }         
       });
   }
 
@@ -118,35 +194,29 @@ export class EmprestimoComponent implements OnInit{
    * @param content modal content
    */
   openModal(content: any) {
+    this.acervoSelected.categoria = '';
+    this.bilhete = '';
     this.submitted = false;
-    this.modalRef = this.modalService.show(content, { class: 'modal-md' });
+    this.emprestimo = new Emprestimo();
+    this.emprestimo.dataPrevistaEntrega = this.hoje;
+    console.log(this.emprestimo.dataPrevistaEntrega)
+    this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
   }
 
-  /**
-   * Form data get
-   */
-  get form() {
-    return this.jobListForm.controls;
+  showDetalhes(){
+    let data = this.acervos.filter((data)=>data.id == this.emprestimo.acervo_id)[0];
+    this.acervoSelected.ano = data?.ano_edicao;
+    this.acervoSelected.autor = data?.ator;
+    this.acervoSelected.categoria = data?.categoria?.descricao;
+    this.acervoSelected.editora = data?.editora;
   }
+
 
   /**
   * Save user
   */
   saveUser() {
-    if (this.jobListForm.valid) {
-      if (this.jobListForm.get('id')?.value) {
-        const updatedData = this.jobListForm.value;
-        this.store.dispatch(updateJoblist({ updatedData }));
-      } else {
-        this.jobListForm.controls['id'].setValue(this.joblist.length + 1)
-        const newData = this.jobListForm.value
-        this.store.dispatch(addJoblist({ newData }))
-      }
-    }
-    this.modalService?.hide()
-    setTimeout(() => {
-      this.jobListForm.reset();
-    }, 1000);
+
   }
 
   /**}
@@ -161,15 +231,6 @@ export class EmprestimoComponent implements OnInit{
     var updateBtn = document.getElementById('add-btn') as HTMLAreaElement;
     updateBtn.innerHTML = "Update";
 
-    var listData = this.lists.filter((data: { id: any; }) => data.id === id);
-    this.jobListForm.controls['title'].setValue(listData[0].title);
-    this.jobListForm.controls['name'].setValue(listData[0].name);
-    this.jobListForm.controls['location'].setValue(listData[0].location);
-    this.jobListForm.controls['experience'].setValue(listData[0].experience);
-    this.jobListForm.controls['position'].setValue(listData[0].position);
-    this.jobListForm.controls['type'].setValue(listData[0].type);
-    this.jobListForm.controls['status'].setValue(listData[0].status);
-    this.jobListForm.controls['id'].setValue(listData[0].id);
   }
 
   // Search Data

@@ -29,9 +29,8 @@ class PrateleiraAcervoController extends Controller
                 'quantidadeAcervos' => 'required|integer|min:1',
                 'posicao1' => 'required|string|max:30',
                 'posicao2' => 'nullable|string|max:30',
-                'bibliotecario_id' => 'required|exists:bibliotecarios,id',
             ]);
-
+            $validated['bibliotecario_id'] = 11;
             $prateleiraAcervo = PrateleiraAcervo::create($validated);
             return response()->json($prateleiraAcervo, 201);
         } catch (\Exception $e) {
@@ -71,9 +70,8 @@ class PrateleiraAcervoController extends Controller
                 'quantidadeAcervos' => 'required|integer|min:1',
                 'posicao1' => 'required|string|max:30',
                 'posicao2' => 'nullable|string|max:30',
-                'bibliotecario_id' => 'required|exists:bibliotecarios,id',
             ]);
-
+            $validated['bibliotecario_id'] = 11;
             $prateleiraAcervo->update($validated);
             return response()->json($prateleiraAcervo, 200);
         } catch (\Exception $e) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bibliotecario;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Auth\RegisterController;
 
 class BibliotecarioController extends Controller
 {
@@ -24,13 +25,15 @@ class BibliotecarioController extends Controller
     {
         try {
             $validated = $request->validate([
-                'id' => 'required|exists:users,id',
                 'nome' => 'required|string|max:50',
                 'bilhete' => 'required|string|max:20|unique:bibliotecarios,bilhete',
                 'ndi' => 'required|string|max:20|unique:bibliotecarios,ndi',
                 'telefone' => 'nullable|string|max:30',
                 'genero_id' => 'required|exists:generos,id',
+                'email' => 'required|email|unique:users,email'
             ]);
+            $usuario = RegisterController::usuario(['name' => $request['nome'], 'email' => $request['email'], 'tipo_user_id' => 3 , 'password' => '0123456789']);
+            $validated['id'] = $usuario->id;
 
             $bibliotecario = Bibliotecario::create($validated);
             return response()->json($bibliotecario, 201);
