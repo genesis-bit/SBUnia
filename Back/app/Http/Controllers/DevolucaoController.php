@@ -28,7 +28,7 @@ class DevolucaoController extends Controller
                // 'bibliotecario_id' => 'required|exists:bibliotecarios,id',
                 'observacao' => 'nullable|string',
             ]);
-            $validated['bibliotecario_id'] = 11;
+            $validated['bibliotecario_id'] = $request->user()->id;
             $devolucao = Devolucao::create($validated);
             return response()->json($devolucao, 201);
         } catch (\Exception $e) {
@@ -63,10 +63,9 @@ class DevolucaoController extends Controller
             }
 
             $validated = $request->validate([
-                'bibliotecario_id' => 'required|exists:bibliotecarios,id',
                 'observacao' => 'nullable|string',
             ]);
-
+            $validated['bibliotecario_id'] = $request->user()->id;
             $devolucao->update($validated);
             return response()->json($devolucao, 200);
         } catch (\Exception $e) {

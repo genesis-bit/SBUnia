@@ -251,7 +251,7 @@
               <select class="form-select" id="floatingSelectGrid"
                 [ngClass]="{'is-invalid': submitted && form['acervo_id'].errors}" [(ngModel)]="emprestimo.acervo_id"
                 formControlName="acervo_id" aria-label="Floating label select example" (change)="showDetalhes()">
-                <option *ngFor="let data of acervos" value="{{data?.id}}">{{data?.titulo}}</option>
+                <option *ngFor="let data of acervos" value="{{data?.acervo?.id}}">{{data?.acervo?.titulo}}</option>
               </select>
               <label for="floatingSelectGrid">Acervo</label>
               <div *ngIf="form['acervo_id'].errors && submitted" class="invalid-tooltip">

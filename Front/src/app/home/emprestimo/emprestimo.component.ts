@@ -144,9 +144,10 @@ export class EmprestimoComponent implements OnInit{
   }
 
   ListaAcervo() {
-    this.generalService.execute('acervos', GeneralConstants.CRUD_OPERATIONS.READ).
+    this.generalService.execute('prateleira-acervos', GeneralConstants.CRUD_OPERATIONS.READ).
       subscribe((data: any) => {
         this.acervos = data.data;
+        console.log(this.acervos)
       });
   }
   
@@ -204,11 +205,11 @@ export class EmprestimoComponent implements OnInit{
   }
 
   showDetalhes(){
-    let data = this.acervos.filter((data)=>data.id == this.emprestimo.acervo_id)[0];
-    this.acervoSelected.ano = data?.ano_edicao;
-    this.acervoSelected.autor = data?.ator;
+    let data = this.acervos.filter((data)=>data.acervo_id == this.emprestimo.acervo_id)[0];
+    this.acervoSelected.ano = data?.acervo?.ano_edicao;
+    this.acervoSelected.autor = data?.acervo?.ator;
     this.acervoSelected.categoria = data?.categoria?.descricao;
-    this.acervoSelected.editora = data?.editora;
+    this.acervoSelected.editora = data?.acervo?.editora;
   }
 
 

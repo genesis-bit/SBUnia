@@ -35,6 +35,18 @@ class PrateleiraAcervo extends Model
         {
             return $this->belongsTo(Acervo::class);
         }
+
+        public function categoria()
+        {
+            return $this->hasOneThrough(
+                Categoria::class,
+                Acervo::class,
+                'id',         // Chave estrangeira no PrateleiraAcervo
+                'id',         // Chave estrangeira no Acervo
+                'acervo_id',  // Chave local em Emprestimo
+                'categoria_id'   // Chave local em PrateleiraAcervo
+            );
+        }
     
         /**
          * Relação com o modelo Bibliotecario (um bibliotecário é responsável pela prateleira_acervo).

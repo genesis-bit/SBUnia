@@ -28,7 +28,7 @@ class EmprestimoController extends Controller
                 'cliente_id' => 'required|exists:clientes,id',
                 'dataPrevistaEntrega' => 'required|date',
             ]);
-            $validated['bibliotecario_id'] = 11;
+            $validated['bibliotecario_id'] = $request->user()->id;
             $emprestimo = Emprestimo::create($validated);
             return response()->json($emprestimo, 201);
         } catch (\Exception $e) {

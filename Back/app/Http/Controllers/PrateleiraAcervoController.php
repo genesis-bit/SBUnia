@@ -12,7 +12,7 @@ class PrateleiraAcervoController extends Controller
     public function index()
     {
         try {
-            $prateleiraAcervos = PrateleiraAcervo::with(['prateleira', 'acervo', 'bibliotecario'])->paginate();
+            $prateleiraAcervos = PrateleiraAcervo::with(['prateleira', 'acervo', 'bibliotecario','categoria'])->paginate();
             return response()->json($prateleiraAcervos, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleira_acervos', 'error' => $e->getMessage()], 500);
@@ -30,7 +30,7 @@ class PrateleiraAcervoController extends Controller
                 'posicao1' => 'required|string|max:30',
                 'posicao2' => 'nullable|string|max:30',
             ]);
-            $validated['bibliotecario_id'] = 11;
+            $validated['bibliotecario_id'] = $request->user()->id;
             $prateleiraAcervo = PrateleiraAcervo::create($validated);
             return response()->json($prateleiraAcervo, 201);
         } catch (\Exception $e) {
@@ -71,7 +71,7 @@ class PrateleiraAcervoController extends Controller
                 'posicao1' => 'required|string|max:30',
                 'posicao2' => 'nullable|string|max:30',
             ]);
-            $validated['bibliotecario_id'] = 11;
+            $validated['bibliotecario_id'] = $request->user()->id;
             $prateleiraAcervo->update($validated);
             return response()->json($prateleiraAcervo, 200);
         } catch (\Exception $e) {
