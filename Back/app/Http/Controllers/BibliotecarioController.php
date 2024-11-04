@@ -30,11 +30,17 @@ class BibliotecarioController extends Controller
                 'ndi' => 'required|string|max:20|unique:bibliotecarios,ndi',
                 'telefone' => 'nullable|string|max:30',
                 'genero_id' => 'required|exists:generos,id',
-                'email' => 'required|email|unique:users,email'
+                'email' => 'required|email|unique:users,email',
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
+
+            if ($request->hasFile('image')) {  
+                $validated['foto'] = $request->file('image')->store('images', 'public');
+            }
+           
             $usuario = RegisterController::usuario(['name' => $request['nome'], 'email' => $request['email'], 'tipo_user_id' => 3 , 'password' => '0123456789']);
             $validated['id'] = $usuario->id;
-
+          
             $bibliotecario = Bibliotecario::create($validated);
             return response()->json($bibliotecario, 201);
         } catch (\Exception $e) {
@@ -99,5 +105,19 @@ class BibliotecarioController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar bibliotecário', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->file('image')->isValid()) {
+            $path = $request->file('image')->store('images', 'public');
+            return response()->json(['path' => $path], 201);
+        }
+
+        return response()->json(['error' => 'File upload failed'], 500);
     }
 }

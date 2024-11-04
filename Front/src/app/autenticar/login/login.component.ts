@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { AuthfakeauthenticationService } from 'src/app/core/services/authfake.service';
-import { login } from 'src/app/store/Authentication/authentication.actions';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 
 import { GeneralService } from 'src/app/core/services/general.service';
@@ -12,7 +9,7 @@ import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
 import { Auth2Service } from 'src/app/core/services/auth2.service';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,8 +20,7 @@ export class LoginComponent {
 
   constructor(private formBuilder: UntypedFormBuilder,private authService: Auth2Service,
     private generalService: GeneralService,private token: TokenStorageService,
-     private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService,
-    private authFackservice: AuthfakeauthenticationService, public store: Store) { }
+     private router: Router, private authFackservice: AuthfakeauthenticationService) { }
 
   loginForm: UntypedFormGroup;
   submitted: any = false;
@@ -72,17 +68,24 @@ export class LoginComponent {
   }
 
   login(data: any) { 
-    this.generalService.execute('login', GeneralConstants.CRUD_OPERATIONS.INSERT, data)
+    this.generalService.execute('login', GeneralConstants.CRUD_OPERATIONS.INSERT,data)
       .subscribe((res: any) => {
         let data_user = res;
-        console.log(res)
-        console.log(data_user)
         if (data_user?.access_token) {
           this.authService.setLogin(data_user.access_token, data_user.user.name, data_user.user.email, data_user.user.tipo_user, '');
           this.authService.setcurrentUser(data_user)
           this.token.saveToken(data_user.access_token)
           this.token.saveUser(data_user.user)
           this.router.navigate(['home']);
+        }
+        else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: res.message,
+            showConfirmButton: false,
+            timer: 2000
+          });
         }
       });
       

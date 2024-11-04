@@ -19,6 +19,7 @@ class Bibliotecario extends Model
         'ndi',
         'telefone',
         'genero_id',
+        'foto'
     ];
 
     /**

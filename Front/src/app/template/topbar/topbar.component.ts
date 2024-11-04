@@ -120,9 +120,8 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-
     this.auth2Service.logout()
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/autenticar/login']);
   }
 
   /**

@@ -22,7 +22,7 @@ import { dataTool } from 'echarts';
   templateUrl: './emprestimo.component.html',
   styleUrls: ['./emprestimo.component.css']
 })
-export class EmprestimoComponent implements OnInit{
+export class EmprestimoComponent implements OnInit {
 
   searchTerm: any;
   modalRef?: BsModalRef;
@@ -44,12 +44,12 @@ export class EmprestimoComponent implements OnInit{
 
   emprestimo = new Emprestimo();
   devolucao = new Devolucao();
-  bilhete? : string;// guarda o valor do bilhete selecionado
-  acervoSelected ={categoria:'', autor:'',ano:'',editora:''};
+  bilhete?: string;// guarda o valor do bilhete selecionado
+  acervoSelected = { categoria: '', autor: '', ano: '', editora: '' };
   emprestimos: any;
   clientes: any;
   acervos: any;
-  hoje = new Date().toISOString().substring(0,10);
+  hoje = new Date().toISOString().substring(0, 10);
 
   validacao() {
     this.momentForm = new FormGroup({
@@ -75,12 +75,12 @@ export class EmprestimoComponent implements OnInit{
         next: (data: any) => {
           console.log("resposta", data)
           this.mensagem(this.emprestimo.id ? 'Solicitação Editado com sucesso' : 'Solicitação Adicionado com sucesso')
-          
+
           this.emprestimo = new Emprestimo();
           this.modalService.hide();
           this.ListaEmprestimo();
         },
-        error: (erro) => { console.log("erro", erro)}
+        error: (erro) => { console.log("erro", erro) }
       });
     this.submitted = false;
   }
@@ -123,8 +123,8 @@ export class EmprestimoComponent implements OnInit{
     this.modalRef = this.modalService.show(content);
   }
 
-  UpdateBilhete(){
-    let bilhete = this.clientes.filter((data)=>data.id == this.emprestimo.cliente_id)[0].bilhete;
+  UpdateBilhete() {
+    let bilhete = this.clientes.filter((data) => data.id == this.emprestimo.cliente_id)[0].bilhete;
     this.bilhete = bilhete;
   }
 
@@ -150,7 +150,7 @@ export class EmprestimoComponent implements OnInit{
         console.log(this.acervos)
       });
   }
-  
+
 
   // The master checkbox will check/ uncheck all items
   checkUncheckAll(ev: any) {
@@ -169,9 +169,9 @@ export class EmprestimoComponent implements OnInit{
 
     swalWithBootstrapButtons
       .fire({
-        title: 'Devolução '+data?.acervo?.titulo,
-        input:'textarea',
-        inputPlaceholder:'Observação...',
+        title: 'Devolução ' + data?.acervo?.titulo,
+        input: 'textarea',
+        inputPlaceholder: 'Observação...',
         //text: 'You won\'t be able to revert this!',
         //icon: 'warning',
         confirmButtonText: 'Confirmar Devolução!',
@@ -183,10 +183,10 @@ export class EmprestimoComponent implements OnInit{
           this.devolucao.id = data.id;
           this.devolucao.observacao = result.value;
           this.generalService.execute("devolucoes", GeneralConstants.CRUD_OPERATIONS.INSERT, this.devolucao)
-          .subscribe((res)=>{
-            this.ListaEmprestimo();
-          });
-        }         
+            .subscribe((res) => {
+              this.ListaEmprestimo();
+            });
+        }
       });
   }
 
@@ -204,8 +204,8 @@ export class EmprestimoComponent implements OnInit{
     this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
   }
 
-  showDetalhes(){
-    let data = this.acervos.filter((data)=>data.acervo_id == this.emprestimo.acervo_id)[0];
+  showDetalhes() {
+    let data = this.acervos.filter((data) => data.acervo_id == this.emprestimo.acervo_id)[0];
     this.acervoSelected.ano = data?.acervo?.ano_edicao;
     this.acervoSelected.autor = data?.acervo?.ator;
     this.acervoSelected.categoria = data?.categoria?.descricao;
