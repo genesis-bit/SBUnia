@@ -95,7 +95,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
       this.authFackservice.logout();
     }
     */
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/autenticar/login']);
   }
 
   /**

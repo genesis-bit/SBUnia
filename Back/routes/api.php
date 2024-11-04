@@ -17,7 +17,7 @@ use App\Http\Controllers\PrateleiraAcervoController;
 use App\Http\Controllers\EmprestimoController;
 use App\Http\Controllers\DevolucaoController;
 use App\Http\Controllers\TipoAcervoController;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,22 +29,27 @@ use App\Http\Controllers\TipoAcervoController;
 |
 */
 
+
+Route::post('/login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('tipo-users', TipoUserController::class);
-Route::apiResource('categorias', CategoriaController::class);
-Route::apiResource('generos', GeneroController::class);
-Route::apiResource('cursos', CursoController::class);
-Route::apiResource('universidades', UniversidadeController::class);
-Route::apiResource('tipo-clientes', TipoClienteController::class);
-Route::apiResource('tipo-acervos', TipoAcervoController::class);
-Route::apiResource('clientes', ClienteController::class);
-Route::apiResource('bibliotecarios', BibliotecarioController::class);
-Route::apiResource('prateleiras', PrateleiraController::class);
-Route::apiResource('acervos', AcervoController::class);
-Route::apiResource('prateleira-acervos', PrateleiraAcervoController::class);
-Route::apiResource('emprestimos', EmprestimoController::class);
-Route::apiResource('devolucoes', DevolucaoController::class);
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('tipo-users', TipoUserController::class);
+    Route::apiResource('categorias', CategoriaController::class);
+    Route::apiResource('generos', GeneroController::class);
+    Route::apiResource('cursos', CursoController::class);
+    Route::apiResource('universidades', UniversidadeController::class);
+    Route::apiResource('tipo-clientes', TipoClienteController::class);
+    Route::apiResource('tipo-acervos', TipoAcervoController::class);
+    Route::apiResource('clientes', ClienteController::class);
+    Route::apiResource('bibliotecarios', BibliotecarioController::class);
+    Route::apiResource('prateleiras', PrateleiraController::class);
+    Route::apiResource('acervos', AcervoController::class);
+    Route::apiResource('prateleira-acervos', PrateleiraAcervoController::class);
+    Route::apiResource('emprestimos', EmprestimoController::class);
+    Route::apiResource('devolucoes', DevolucaoController::class);
+});

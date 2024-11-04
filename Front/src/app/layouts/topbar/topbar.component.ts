@@ -13,6 +13,8 @@ import { changesLayout } from 'src/app/store/layouts/layout.actions';
 import { getLayoutMode } from 'src/app/store/layouts/layout.selector';
 import { RootReducerState } from 'src/app/store';
 import { Auth2Service } from 'src/app/core/services/auth2.service';
+import { GeneralService } from 'src/app/core/services/general.service';
+import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
 
 @Component({
   selector: 'app-topbar',
@@ -46,7 +48,7 @@ export class TopbarComponent implements OnInit {
     public languageService: LanguageService,
     public translate: TranslateService,
     private auth2Service: Auth2Service,
-
+    private generalService: GeneralService,
     public _cookiesService: CookieService, public store: Store<RootReducerState>) {
 
   }
@@ -91,7 +93,7 @@ export class TopbarComponent implements OnInit {
     {
       this.user_foto = environment.baseUrl +"/img-user/"+ this.auth2Service.getCurrentFotoPerfil()   
 
-   this.   user_foto =this.auth2Service.getCurrentFotoPerfil()   
+   this.user_foto =this.auth2Service.getCurrentFotoPerfil()   
     }  
 
  
@@ -123,7 +125,7 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-
+    this.generalService.execute('logout', GeneralConstants.CRUD_OPERATIONS.INSERT,{}).subscribe(()=>{console.log("logout efetuado com sucesso")})
     this.auth2Service.logout()
    // this.authService.logout();
    // this.authFackservice.logout();

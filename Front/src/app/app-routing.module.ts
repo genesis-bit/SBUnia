@@ -26,7 +26,7 @@ const routes: Routes = [
     //component: LayoutComponent,
     loadChildren: () =>
       import("./autenticar/autenticar.module").then((m) => m.AutenticarModule),
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
   },
   {
     path: "home",
@@ -54,49 +54,6 @@ const routes: Routes = [
     component: LayoutComponent,
     loadChildren: () =>
       import("./admin/admin.module").then((m) => m.AdminModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "roval",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./roval/roval.module").then((m) => m.rovalModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "gd",
-    component: LayoutComponent,
-    loadChildren: () => import("./gd/gd.module").then((m) => m.GdModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "inema",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./inema/inema.module").then((m) => m.InemaModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "funcionarios",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./funcionarios/funcionarios.module").then(
-        (m) => m.FuncionariosModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "actividade",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./actividade/actividade.module").then((m) => m.ActividadeModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "ocorrencia",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./ocorrencia/ocorrencia.module").then((m) => m.OcorrenciaModule),
     canActivate: [AuthGuard],
   },
   { path: "**", component: Page404Component },

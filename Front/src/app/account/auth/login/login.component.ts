@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(private formBuilder: UntypedFormBuilder,
-
     private token: TokenStorageService,
     private route: ActivatedRoute, private router: Router, private authenticationService: AuthenticationService, private store: Store,
     private authFackservice: AuthfakeauthenticationService, private generalService: GeneralService, private GeneralConstants: GeneralConstants,
