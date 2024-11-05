@@ -18,15 +18,13 @@ const routes: Routes = [
     path: "",
     component: LayoutComponent,
     loadChildren: () =>
-      import("./pages/pages.module").then((m) => m.PagesModule),
+      import("./home/home.module").then((m) => m.HomeModule),
     canActivate: [AuthGuard],
   },
   {
     path: "autenticar",
-    //component: LayoutComponent,
     loadChildren: () =>
       import("./autenticar/autenticar.module").then((m) => m.AutenticarModule),
-    //canActivate: [AuthGuard],
   },
   {
     path: "home",

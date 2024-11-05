@@ -45,6 +45,7 @@ export class EstudanteComponent implements OnInit {
 
   openModal(content: any) {
     this.submitted = false;
+    this.momentForm.get('email').enable();
     this.labelEstudante = 'Adicionar Estudante';
     this.estudante = new Estudante();
     this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });

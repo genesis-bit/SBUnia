@@ -21,6 +21,9 @@ export class BibliotecarioComponent implements OnInit {
   bibliotecario = new Bibliotecario();
   bibliotecarios: any;
   generos: any;
+  url = '';
+
+  labelBibliotecario='Adicionar Bibliotecário';
 
   submitted = false;
 
@@ -28,11 +31,16 @@ export class BibliotecarioComponent implements OnInit {
 
   ngOnInit() {
     this.breadCrumbItems = [{ label: 'Home' }, { label: 'Bibliotecarios', active: true }];
-
-
     this.validacao();
     this.ListaGenero();
     this.ListaBibliotecario();
+    this.getRotaBase();
+  }
+
+  //Rota para buscar url das fotos
+  getRotaBase(){ 
+    this.generalService.execute('url_base', GeneralConstants.CRUD_OPERATIONS.READ)
+    .subscribe((rota)=>{ this.url = rota.url;});
   }
 
   validacao() {
@@ -52,6 +60,7 @@ export class BibliotecarioComponent implements OnInit {
     this.generalService.execute('bibliotecarios', GeneralConstants.CRUD_OPERATIONS.READ).
       subscribe((data: any) => {
         this.bibliotecarios = data.data;
+        console.log("lista bibliotecario", this.bibliotecarios)
       });
   }
 
@@ -64,17 +73,35 @@ export class BibliotecarioComponent implements OnInit {
     if (this.momentForm.invalid) {
       return;
     }
-    this.generalService.execute('bibliotecarios', this.bibliotecario.id ? GeneralConstants.CRUD_OPERATIONS.UPDATE : GeneralConstants.CRUD_OPERATIONS.INSERT, this.bibliotecario).
+    let SendDate: any = this.bibliotecario;
+    if(this.foto != null){
+        SendDate = this.PreencherFormData();
+    }
+    this.generalService.execute('bibliotecarios', this.bibliotecario.id ? GeneralConstants.CRUD_OPERATIONS.UPDATE : GeneralConstants.CRUD_OPERATIONS.INSERT, SendDate).
       subscribe({
         next: (data: any) => {
           this.mensagem(this.bibliotecario.id ? 'Bibliotecario Editado com sucesso' : 'Bibliotecário Adicionado com sucesso')
           this.bibliotecario = new Bibliotecario();
           this.ListaBibliotecario();
+          this.foto = null;
           this.modalService.hide();
         },
         error: (erro) => { console.log("erro", erro) }
       });
     this.submitted = false;
+  }
+
+  PreencherFormData(){
+    const formData = new FormData();
+    formData.append('foto', this.foto);    
+    formData.append('id', this.bibliotecario.id+'');
+    formData.append('email', this.bibliotecario.email);
+    formData.append('nome', this.bibliotecario.nome);
+    formData.append('bilhete', this.bibliotecario.bilhete);
+    formData.append('ndi', this.bibliotecario.ndi);
+    formData.append('telefone', this.bibliotecario.telefone);
+    formData.append('genero_id', this.bibliotecario.genero_id+'');
+    return formData;
   }
 
   mensagem(sms: string) {
@@ -95,24 +122,38 @@ export class BibliotecarioComponent implements OnInit {
   }
 
   openModal(content) {
+    this.foto = null;
+    this.momentForm.get('email').enable();
+    this.labelBibliotecario='Adicionar Bibliotecário';
     this.bibliotecario = new Bibliotecario();
     this.submitted = false;
     this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
   }
 
+  editarModal(data, content){
+    this.labelBibliotecario='Editar Bibliotecário';
+    this.momentForm.get('email').disable();
+    this.bibliotecario = data;
+    this.modalRef = this.modalService.show(content, { class: 'modal-lg modal-dialog-centered' });
+  }
+
   // File Upload
+  foto: File | null = null;
   imageURL: string | undefined;
   fileChange(event: any) {
     let fileList: any = event.target as HTMLInputElement;
-    let file: File = fileList.files[0];
+    this.foto = fileList.files[0];
+    //Mostrando a imagem no front
     const reader = new FileReader();
     reader.onload = () => {
       this.imageURL = reader.result as string;
       document.querySelectorAll("#member-img").forEach((element: any) => {
         element.src = this.imageURL;
       });
-      //this.createContactForm.controls["profile"].setValue(this.imageURL);
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(this.foto);
+
+
+
   }
 }

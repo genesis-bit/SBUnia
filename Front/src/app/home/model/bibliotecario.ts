@@ -6,4 +6,5 @@ export class Bibliotecario {
   ndi?: string;
   telefone?: string;
   genero_id?: number;
+  foto?: string;
 }

@@ -37,7 +37,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/upload', [BibliotecarioController::class, 'upload']);
+    Route::get('/url_base', [BibliotecarioController::class, 'url']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('tipo-users', TipoUserController::class);
     Route::apiResource('categorias', CategoriaController::class);

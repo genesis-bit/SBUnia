@@ -31,11 +31,11 @@ class BibliotecarioController extends Controller
                 'telefone' => 'nullable|string|max:30',
                 'genero_id' => 'required|exists:generos,id',
                 'email' => 'required|email|unique:users,email',
-                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            if ($request->hasFile('image')) {  
-                $validated['foto'] = $request->file('image')->store('images', 'public');
+            if ($request->hasFile('foto')) {  
+                $validated['foto'] = $request->file('foto')->store('images', 'public');
             }
            
             $usuario = RegisterController::usuario(['name' => $request['nome'], 'email' => $request['email'], 'tipo_user_id' => 3 , 'password' => '0123456789']);
@@ -107,17 +107,9 @@ class BibliotecarioController extends Controller
         }
     }
 
-    public function upload(Request $request)
+    public function url()
     {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($request->file('image')->isValid()) {
-            $path = $request->file('image')->store('images', 'public');
-            return response()->json(['path' => $path], 201);
-        }
-
-        return response()->json(['error' => 'File upload failed'], 500);
+        $url = asset('storage/');
+        return response()->json(["url"=>$url]);        
     }
 }

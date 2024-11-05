@@ -25,8 +25,8 @@
             <div class="row">
               <div class="col-lg-4">
                 <div class="text-lg-center">
-                  @if(list?.image){
-                  <img src="{{list.image}}"
+                  @if(list?.foto){
+                  <img src="{{url}}/{{list.foto}}"
                     class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none rounded-circle" alt="img">
                   }@else{
                   <div class="avatar-sm me-3 mx-lg-auto mb-3 mt-1 float-start float-lg-none">
@@ -42,7 +42,7 @@
 
               <div class="col-lg-8">
                 <div>
-                  <a routerLink="/invoices/detail" class="d-block text-primary text-decoration-underline mb-2">Editar</a>
+                  <a href="javascript:void(0);" (click)="editarModal(list,EstudanteModal)" class="d-block text-primary text-decoration-underline mb-2">Editar</a>
                   <h5 class="text-truncate mb-4 mb-lg-5">{{ list?.nome }}</h5>
                   <ul class="list-inline mb-0">
                     <li class="list-inline-item me-3">
@@ -76,7 +76,7 @@
 
   <ng-template #EstudanteModal role="document" let-modal>
     <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Adicionar Bibliotecário</h5>
+      <h5 class="modal-title" id="exampleModalLabel">{{labelBibliotecario}}</h5>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
         (click)="modalRef?.hide()"></button>
     </div>
