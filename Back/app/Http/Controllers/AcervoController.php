@@ -19,7 +19,7 @@ class AcervoController extends Controller
         }
     }
 
-    
+
     // Criar um novo acervo
     public function store(Request $request)
     {
@@ -98,6 +98,16 @@ class AcervoController extends Controller
             return response()->json(['message' => 'Acervo deletado com sucesso'], 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao deletar acervo', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function AcervoOut() //busca os acervos sem prateleiras
+    {
+        try {
+            $acervosSemPrateleira = Acervo::doesntHave('prateleiras')->paginate();
+            return response()->json($acervosSemPrateleira, 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao buscar acervo sem prateleiras', 'error' => $e->getMessage()], 500);
         }
     }
 }

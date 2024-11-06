@@ -5,6 +5,11 @@ import { Store } from '@ngrx/store';
 import { ConfigService } from 'src/app/core/services/config.service';
 import { fetchchatdata } from 'src/app/store/Chat/chat.action';
 
+
+ import { GeneralService } from 'src/app/core/services/general.service';
+ import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
+import { Auth2Service } from 'src/app/core/services/auth2.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,7 +25,14 @@ export class HomeComponent {
  
   sassTopSelling: any;
 
-  constructor(private configService: ConfigService, public store: Store) { }
+
+  username = this.authService.getCurrentUser();
+  foto = this.authService.getCurrentFotoPerfil();
+  acervos: any;
+  estudantes: any;
+  prateleiras: any;
+
+  constructor(private authService: Auth2Service,private configService: ConfigService, public store: Store, private generalService: GeneralService) { }
 
   ngOnInit(): void {
     this.breadCrumbItems = [{ label: 'Dashboards' }, { label: 'Saas', active: true }];
@@ -31,8 +43,37 @@ export class HomeComponent {
     this.configService.getConfig().subscribe(response => {
       this.sassEarning = response.sassEarning;
       this.sassTopSelling = response.sassTopSelling;
-
     });
+
+    this.carregarListas();
+  }
+
+  ListaAcervo() {
+    this.generalService.execute('acervos', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.acervos = data.data;
+        console.log("ACervos", this.acervos)
+      });
+  }
+
+  ListaEstudante() {
+    this.generalService.execute('clientes', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.estudantes = data.data;
+      });
+  }
+
+  ListaPrateleira() {
+    this.generalService.execute('prateleiras', GeneralConstants.CRUD_OPERATIONS.READ).
+      subscribe((data: any) => {
+        this.prateleiras = data.data;
+      });
+  }
+
+  carregarListas(){
+    this.ListaAcervo();
+    this.ListaEstudante();
+    this.ListaPrateleira();
   }
 
   selectMonth(value: any) {

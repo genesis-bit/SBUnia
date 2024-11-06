@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/url_base', [BibliotecarioController::class, 'url']);
+    Route::get('/acervo-out-prateleira', [AcervoController::class, 'AcervoOut']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('tipo-users', TipoUserController::class);
     Route::apiResource('categorias', CategoriaController::class);

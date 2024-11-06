@@ -26,6 +26,7 @@ export class LoginComponent {
   submitted: any = false;
   error: any = '';
   returnUrl: string;
+  fieldTextType!:boolean;
 
   // set the currenr year
   year: number = new Date().getFullYear();
@@ -67,12 +68,16 @@ export class LoginComponent {
     this.login({ email: email, password: password })
   }
 
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
   login(data: any) { 
     this.generalService.execute('login', GeneralConstants.CRUD_OPERATIONS.INSERT,data)
       .subscribe((res: any) => {
         let data_user = res;
         if (data_user?.access_token) {
-          this.authService.setLogin(data_user.access_token, data_user.user.name, data_user.user.email, data_user.user.tipo_user, '');
+          this.authService.setLogin(data_user.access_token, data_user.user.name, data_user.user.email,data_user.url_foto+'/'+data_user.user.bibliotecario.foto,data_user.user.tipo_user_id);
           this.authService.setcurrentUser(data_user)
           this.token.saveToken(data_user.access_token)
           this.token.saveUser(data_user.user)

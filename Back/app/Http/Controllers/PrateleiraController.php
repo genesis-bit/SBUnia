@@ -12,7 +12,10 @@ class PrateleiraController extends Controller
     public function index()
     {
         try {
-            $prateleiras = Prateleira::paginate();
+            // $prateleiras = Prateleira::with(['acervos' => function ($query) {
+            //     $query->select('acervos.id', 'acervos.titulo', 'prateleira_acervos.quantidadeAcervos');
+            // }])->get();
+            $prateleiras = Prateleira::with(['acervos'])->paginate();
             return response()->json($prateleiras, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao buscar prateleiras', 'error' => $e->getMessage()], 500);
@@ -90,4 +93,3 @@ class PrateleiraController extends Controller
         }
     }
 }
-

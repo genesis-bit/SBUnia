@@ -7,13 +7,13 @@
                         <div class="col-lg-4">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
-                                    <img src="assets/images/users/avatar-1.jpg" alt=""
+                                    <img src="{{foto}}" alt=""
                                         class="avatar-md rounded-circle img-thumbnail">
                                 </div>
                                 <div class="flex-grow-1 align-self-center">
                                     <div class="text-muted">
                                         <p class="mb-2">Bem Vindo Ao Sistema Bibliotecário da UNIA</p>
-                                        <h5 class="mb-1">Lukenia Franciane</h5>
+                                        <h5 class="mb-1">{{username}}</h5>
                                         <p class="mb-0">Bibliotacaria</p>
                                     </div>
                                 </div>
@@ -81,10 +81,10 @@
                         <h5 class="font-size-14 mb-0">Livros Cadastrados</h5>
                     </div>
                     <div class="text-muted mt-4">
-                        <h4>1,452 <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
-                        <div class="d-flex">
+                        <h4>{{acervos?.length}} <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
+                        <!-- <div class="d-flex">
                             <span class="badge badge-soft-success font-size-12"> + 0.2% </span> <span class="ms-2 text-truncate">From previous period</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -101,10 +101,10 @@
                         <h5 class="font-size-14 mb-0">Estudantes Cadastrados</h5>
                     </div>
                     <div class="text-muted mt-4">
-                        <h4>$ 28,452 <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
-                        <div class="d-flex">
+                        <h4>{{estudantes?.length}} <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
+                        <!-- <div class="d-flex">
                             <span class="badge badge-soft-success font-size-12"> + 0.2% </span> <span class="ms-2 text-truncate">From previous period</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -121,11 +121,11 @@
                         <h5 class="font-size-14 mb-0">Prateleiras</h5>
                     </div>
                     <div class="text-muted mt-4">
-                        <h4>$ 16.2 <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
+                        <h4>{{prateleiras?.length}} <i class="mdi mdi-chevron-up ms-1 text-success"></i></h4>
 
-                        <div class="d-flex">
+                        <!-- <div class="d-flex">
                             <span class="badge badge-soft-warning font-size-12"> 0% </span> <span class="ms-2 text-truncate">From previous period</span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

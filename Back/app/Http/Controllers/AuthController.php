@@ -19,13 +19,15 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $user->Bibliotecario;
         $token = $user->createToken('auth_token')->plainTextToken;
-
+        
         return response()->json([
             'message' => 'Login bem-sucedido',
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => $user,
+            'url_foto' => asset('storage/')
         ]);
     }
     public function logout(Request $request) {

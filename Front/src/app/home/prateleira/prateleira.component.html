@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <app-page-title title="Prateleiras" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+    <div class="row">
+        <div class="col-xl-3 col-md-6" *ngFor="let data of prateleiras">
+            <div class="card jobs-categories">
+                <div class="px-3 py-2 card-title d-block">
+                    {{data?.descricao}}
+                    <a href="javascript:void(0);"  (click)="openModal(content, data?.descricao, data?.id)" class="badge text-bg-success float-end bg-opacity-100">
+                         <i class="bx bx-book-bookmark"></i></a>                    
+                </div>
+                <div class="card-body" >
+                    <a href="javascript:void(0);" *ngFor="let livro of data.acervos" class="px-3 py-2 rounded bg-light bg-opacity-50 d-block mb-2">{{livro.titulo}}<span class="badge text-bg-info float-end bg-opacity-100">{{livro.pivot.quantidadeAcervos}}</span></a>
+                </div>
+            </div>
+        </div>       
+    </div>
+
+</div>
+
+<ng-template #content role="document" let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Prateleira - {{nomeSelected}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+          (click)="modalRef?.hide()"></button>
+      </div>
+      <form [formGroup]="momentForm" (ngSubmit)="salvarPrateleiraAcervo()">
+        <div class="modal-body">            
+          <div class="row mb-1">
+            <div class="col-md-3 p-1">
+                <div class="form-floating">
+                  <select class="form-select" id="floatingSelectGrid"
+                    [ngClass]="{'is-invalid': submitted && form['acervo_id'].errors}" [(ngModel)]="prateleiraAcervo.acervo_id"
+                    formControlName="acervo_id" aria-label="Floating label select example">
+                    <option *ngFor="let data of acervos" value="{{data?.id}}">{{data?.titulo}}</option>
+                  </select>
+                  <label for="floatingSelectGrid">Acervo</label>
+                  <div *ngIf="form['acervo_id'].errors && submitted" class="invalid-tooltip">
+                    <span *ngIf="form['acervo_id'].errors?.['required']">Campo obrigatório.</span>
+                  </div>
+                </div>
+              </div> 
+            <div class="col-md-3 p-1">
+              <div class="form-floating">
+                <input min="1" max="20" type="number" class="form-control form-control-invalid" formControlName="quantidade"
+                  name="quantidade" id="floatingnameInput" placeholder="Digite o quantidade"
+                  [(ngModel)]="prateleiraAcervo.quantidadeAcervos" [ngClass]="{'is-invalid': submitted && form['quantidade'].errors}" />
+                <label for="floatingnameInput">Quantidade</label>
+                <div *ngIf="form['quantidade'].errors && submitted" class="invalid-tooltip">
+                  <span *ngIf="form['quantidade'].errors?.['required']">Campo obrigatório.</span>
+                  <span *ngIf="form['quantidade'].errors?.['min']">
+                    O campo exige no minimo 1
+                  </span>
+                  <span *ngIf="form['quantidade'].errors?.['max']">
+                    O campo exige no maximo 20
+                  </span>
+                </div>
+              </div>
+            </div>   
+            <div class="col-md-3 p-1">
+                <div class="form-floating">
+                  <input type="number" class="form-control form-control-invalid" formControlName="posicao1"
+                    name="posicao1" min="0" id="floatingnameInput" placeholder="Digite o posicao1"
+                    [(ngModel)]="prateleiraAcervo.posicao1" [ngClass]="{'is-invalid': submitted && form['posicao1'].errors}" />
+                  <label for="floatingnameInput">Posição Inicial</label>
+                  <div *ngIf="form['posicao1'].errors && submitted" class="invalid-tooltip">
+                    <span *ngIf="form['posicao1'].errors?.['required']">Campo obrigatório.</span>
+                    <span *ngIf="form['posicao1'].errors?.['min']">
+                        O campo exige no minimo 1
+                      </span>
+                      <span *ngIf="form['posicao1'].errors?.['max']">
+                        O campo exige no maximo 150
+                      </span>
+                  </div>
+                </div>
+              </div> 
+              <div class="col-md-3 p-1">
+                <div class="form-floating">
+                  <input type="number" min="0" class="form-control form-control-invalid" formControlName="posicao2"
+                    name="posicao2" id="floatingnameInput" placeholder="Digite o posicao2"
+                    [(ngModel)]="prateleiraAcervo.posicao2" [ngClass]="{'is-invalid': submitted && form['posicao2'].errors}" />
+                  <label for="floatingnameInput">Posição Final</label>
+                  <div *ngIf="form['posicao2'].errors && submitted" class="invalid-tooltip">
+                    <span *ngIf="form['posicao2'].errors?.['required']">Campo obrigatório.</span>
+                    <span *ngIf="form['posicao2'].errors?.['min']">
+                        O campo exige no minimo 1
+                      </span>
+                      <span *ngIf="form['posicao2'].errors?.['max']">
+                        O campo exige no maximo 150
+                      </span>
+                  </div>
+                </div>
+              </div>         
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="hstack gap-2 justify-content-end">
+            <button type="submit" class="btn btn-primary w-md">Salvar</button>
+            <button type="button" class="btn btn-danger w-md mx-1" (click)="modalRef?.hide()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+</ng-template>

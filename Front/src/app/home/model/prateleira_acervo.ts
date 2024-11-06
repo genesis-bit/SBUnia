@@ -3,6 +3,6 @@ export class PrateleiraAcervo {
   prateleira_id?: number;
   acervo_id?: number;
   quantidadeAcervos?: number;
-  posicao1?: number;
-  posicao2?: number;
+  posicao1?: string;
+  posicao2?: string;
 }

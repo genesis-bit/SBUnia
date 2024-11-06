@@ -43,6 +43,12 @@ export const MENU: MenuItem[] = [
                 link: '/home/emprestimo',
                 parentId: 140
             },
+            {
+                id: 143,
+                label: 'MENUITEMS.BIBLIOTECA.LIST.FAQS',
+                link: '/home/prateleira',
+                parentId: 140
+            },
            
         ]
     },

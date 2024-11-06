@@ -15,4 +15,11 @@ class Prateleira extends Model
         'descricao',
         'observacao'
     ];
+
+    // Prateleira.php
+    public function acervos()
+    {
+        return $this->belongsToMany(Acervo::class, 'prateleira_acervos')
+            ->withPivot('quantidadeAcervos');
+    }
 }

@@ -37,4 +37,10 @@ class Acervo extends Model
     {
         return $this->belongsTo(TipoAcervo::class);
     }
+
+    public function prateleiras()
+{
+    return $this->belongsToMany(Prateleira::class, 'prateleira_acervos');
+}
+
 }

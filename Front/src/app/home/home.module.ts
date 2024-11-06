@@ -33,9 +33,10 @@ import { LivroComponent } from './livro/livro.component';
 import { BibliotecarioComponent } from './bibliotecario/bibliotecario.component';
 
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { PrateleiraComponent } from './prateleira/prateleira.component';
 
 @NgModule({  
-  declarations: [HomeComponent, FerramentasComponent, EstudanteComponent, EmprestimoComponent, LivroComponent, BibliotecarioComponent],
+  declarations: [HomeComponent, FerramentasComponent, EstudanteComponent, EmprestimoComponent, LivroComponent, BibliotecarioComponent, PrateleiraComponent],
   imports: [
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),

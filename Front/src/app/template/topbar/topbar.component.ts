@@ -28,7 +28,7 @@ export class TopbarComponent implements OnInit {
 
   user_bi: any
   user_email: any
-  user_foto: any 
+  user_foto: any
 
   mode: any
   element: any;
@@ -87,14 +87,11 @@ export class TopbarComponent implements OnInit {
     if (this.auth2Service.getUserBI())
       this.user_bi = this.auth2Service.getUserBI()
 
-    if (this.auth2Service.getCurrentFotoPerfil())
-    {
-      this.user_foto = environment.baseUrl +"/img-user/"+ this.auth2Service.getCurrentFotoPerfil()   
+    if (this.auth2Service.getCurrentFotoPerfil()) {
+      this.user_foto = this.auth2Service.getCurrentFotoPerfil()
+    }
 
-   this.   user_foto =this.auth2Service.getCurrentFotoPerfil()   
-    }  
 
- 
   }
 
   setLanguage(text: string, lang: string, flag: string) {
@@ -107,7 +104,7 @@ export class TopbarComponent implements OnInit {
   /**
    * Toggles the right sidebar
    */
- 
+
   /**
    * Toggle the menu bar when having mobile screen
    */

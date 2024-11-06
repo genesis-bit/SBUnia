@@ -43,13 +43,13 @@ export class Auth2Service {
   }
 
 
-  setLogin(userToken: string, id: string, userName: string, bi: string, foto: string) {
+  setLogin(userToken: string, userName: string, email: string, foto: string, user_tipo: string) {
 
     localStorage.setItem(GeneralConstants.USER_AUTH.TOKEN_KEY, userToken);
-    localStorage.setItem(GeneralConstants.USER_AUTH.USERID_KEY, id);
     localStorage.setItem(GeneralConstants.USER_AUTH.USERNAME_KEY, userName);
-    localStorage.setItem(GeneralConstants.USER_AUTH.USER_BI, bi);
+    localStorage.setItem(GeneralConstants.USER_AUTH.USER_BI, email);
     localStorage.setItem(GeneralConstants.USER_AUTH.USER_FOTO, foto);
+    localStorage.setItem(GeneralConstants.USER_AUTH.USERID_KEY, user_tipo);
     this.isUserLoged.next(true);
   }
 
@@ -117,4 +117,5 @@ export class Auth2Service {
   getCurrentFotoPerfil() {
     return localStorage.getItem(GeneralConstants.USER_AUTH.USER_FOTO);
   }
+
 }

@@ -27,14 +27,14 @@ class PrateleiraAcervoController extends Controller
                 'prateleira_id' => 'required|exists:prateleiras,id',
                 'acervo_id' => 'required|exists:acervos,id',
                 'quantidadeAcervos' => 'required|integer|min:1',
-                'posicao1' => 'required|string|max:30',
-                'posicao2' => 'nullable|string|max:30',
+                'posicao1' => 'required|max:30',
+                'posicao2' => 'nullable|max:30',
             ]);
             $validated['bibliotecario_id'] = $request->user()->id;
             $prateleiraAcervo = PrateleiraAcervo::create($validated);
             return response()->json($prateleiraAcervo, 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao criar prateleira_acervo', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Erro ao Adicionar acervo na prateleira', 'error' => $e->getMessage()], 500);
         }
     }
 
@@ -75,7 +75,7 @@ class PrateleiraAcervoController extends Controller
             $prateleiraAcervo->update($validated);
             return response()->json($prateleiraAcervo, 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Erro ao atualizar prateleira_acervo', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Erro ao atualizar acervo na prateleira', 'error' => $e->getMessage()], 500);
         }
     }
 

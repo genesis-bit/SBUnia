@@ -1,156 +1,90 @@
-<div class="container-fluid p-0">
-    <div class="row g-0">
+<div class="account-pages my-5 pt-sm-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+          <div class="card overflow-hidden">
+            <div class="bg-primary-subtle">
+              <div class="row">
+                <div class="col-7">
+                  <div class="text-primary p-4">
+                    <h5 class="text-primary">Bem Vindo  !</h5>
+                    <p class="text-muted">Gestão Bibliotecário da UNIA</p>
+                  </div>
+                </div>
+                <div class="col-5 align-self-end">
+                  <img src="assets/images/unia.png" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div>
+                <a >
+                  <div class="avatar-md profile-user-wid mb-4">
+                    <span class="avatar-title rounded-circle bg-light">
+                      <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
+                    </span>
+                  </div>
+                </a>
+              </div>
+              <div class="p-2">
+               <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <div class="col-xl-9">
-            <div class="auth-full-bg pt-lg-5 p-4">
-                <div class="w-100">
-                    <div class="bg-overlay"></div>
-                    <div class="d-flex h-100 flex-column" style="background-image: url('assets/images/unia.png');">
+                    <div class="mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="Enter email">
+                        @if(submitted && f.password.errors){
+                        <div class="invalid-feedback">
+                            @if(f.email.errors.required){
+                            <div>Email é obrigatório</div>
+                            }
+                            @if(f.email.errors.email){
+                            <div>Email deve ser valido! 
+                            </div>}
+                        </div>}
+                    </div>
 
-                        <div class="p-4 mt-auto">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-7">
-                                    <div class="text-center">
-                                        <h4 class="mb-3"><i class="bx bxs-quote-alt-left text-primary h1 align-middle me-3"></i><span class="text-primary">5k</span>+ Satisfied clients</h4>
-
-                                        <div dir="ltr">
-                                            <ngx-slick-carousel dir="ltr" class="owl-theme auth-review-carousel" [config]="slideConfig">
-                                                <div class="item" ngxSlickItem>
-                                                    <div class="py-3">
-                                                        <p class="font-size-16 mb-4">" Sistemas Bibliotecários Para 
-                                                            Universidade Independente de Angola (UNIA). "
-                                                        </p>
-
-                                                        <div>
-                                                            <h4 class="font-size-16 text-primary">Abs1981</h4>
-                                                            <p class="font-size-14 mb-0">- Skote User</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="item" ngxSlickItem>
-                                                    <div class="py-3">
-                                                        <p class="font-size-16 mb-4">" If Every Vendor on Envato
-                                                            are
-                                                            as supportive as Themesbrand, Development with be a
-                                                            nice
-                                                            experience. You guys are Wonderful. Keep us the good
-                                                            work. "</p>
-
-                                                        <div>
-                                                            <h4 class="font-size-16 text-primary">nezerious</h4>
-                                                            <p class="font-size-14 mb-0">- Skote User</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </ngx-slick-carousel>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="mb-3">
+                        <div class="float-end">
+                            <a routerLink="/auth/recoverpwd-2" class="text-muted">Recuperar
+                                Palavra Passe?</a>
+                        </div>
+                        <label for="userpassword">Palavra-Passe</label>
+                        <div class="input-group auth-pass-inputgroup">
+                            <input [type]="fieldTextType ? 'text' : 'password'" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
+                            <button class="btn btn-light ms-0" type="button" id="password-addon">
+                                <i class="mdi mdi-eye-outline" [ngClass]="{'mdi-eye-off-outline': !fieldTextType, 'mdi-eye-outline': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                            </button>
+                            @if(submitted && f.password.errors){
+                            <div class="invalid-feedback">
+                                @if(f.password.errors.required){
+                                <span>PalaVra Passe é obrigatório</span>
+                                }
+                                @if(f.password.errors.minLength){
+                                    <span>Palavra Passe requer no minimo 4 digitos</span>
+                                    }
+                            </div>}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <!-- end col -->
 
-        <div class="col-xl-3">
-            <div class="auth-full-page-content p-md-5 p-4">
-                <div class="w-100">
-
-                    <div class="d-flex flex-column h-100">
-                        <div class="mb-4 mb-md-5">
-                            <a class="d-block auth-logo">
-                                <img src="assets/images/unia.png" alt="" height="50" >
-                            </a>
-                        </div>
-                        <div class="my-auto">
-
-                            <div>
-                                <h5 class="text-primary">Bem Vindo  !</h5>
-                                <p class="text-muted">Gestão Bibliotecário da UNIA</p>
-                            </div>
-
-                            <div class="mt-4">
-                                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-                                    <div class="mb-3">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" placeholder="Enter email">
-                                        @if(submitted && f.password.errors){
-                                        <div class="invalid-feedback">
-                                            @if(f.email.errors.required){
-                                            <div>Email é obrigatório</div>
-                                            }
-                                            @if(f.email.errors.email){
-                                            <div>Email deve ser valido! 
-                                            </div>}
-                                        </div>}
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="float-end">
-                                            <a routerLink="/auth/recoverpwd-2" class="text-muted">Recuperar
-                                                Palavra Passe?</a>
-                                        </div>
-                                        <label for="userpassword">Palavra-Passe</label>
-                                        <div class="input-group auth-pass-inputgroup">
-                                            <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
-                                            <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
-                                            @if(submitted && f.password.errors){
-                                            <div class="invalid-feedback">
-                                                @if(f.password.errors.required){
-                                                <span>PalaVra Passe é obrigatório</span>
-                                                }
-                                                @if(f.password.errors.minLength){
-                                                    <span>Palavra Passe requer no minimo 4 digitos</span>
-                                                    }
-                                            </div>}
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-3 d-grid">
-                                        <button class="btn btn-primary btn-block" type="submit">Logar</button>
-                                    </div>
-
-
-                                    <!-- <div class="mt-4 text-center">
-                                        <h5 class="font-size-14 mb-3">Sign in with</h5>
-
-                                        <ul class="list-inline">
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()" class="social-list-item bg-primary text-white border-primary">
-                                                    <i class="mdi mdi-facebook"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()" class="social-list-item bg-info text-white border-info">
-                                                    <i class="mdi mdi-twitter"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()" class="social-list-item bg-danger text-white border-danger">
-                                                    <i class="mdi mdi-google"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div> -->
-
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 mt-md-5 text-center">
-                            <p class="mb-0">©
-                                {{year}} Skote. Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                                GlobalNext</p>
-                        </div>
+                    <div class="mt-3 d-grid">
+                        <button class="btn btn-primary btn-block" type="submit">Logar</button>
                     </div>
-                </div>
+
+                </form>
+              </div>
+  
             </div>
+          </div>
+          <div class="mt-5 text-center">
+            <p class="mb-0">©
+                {{year}} Skote. Criado por <i class="mdi mdi-heart text-danger"></i>
+                GlobalNext</p>
+          </div>
+  
         </div>
-        <!-- end col -->
+      </div>
     </div>
-    <!-- end row -->
-</div>
-<!-- end container-fluid -->
+  
+    <!-- end container -->
+  </div>
+  <!-- end page -->

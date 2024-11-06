@@ -1,9 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { fetchJobgridData } from 'src/app/store/Job/job.action';
-import { selecDatagrid } from 'src/app/store/Job/job-selector';
-
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { GeneralService } from 'src/app/core/services/general.service';
 import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
@@ -104,13 +101,12 @@ export class LivroComponent implements OnInit {
   }
 
   salvarPrateleiraAcervo() {
-   console.log("PRAT_ACER", this.prateleiraAcervo)
     this.generalService.execute('prateleira-acervos', this.prateleiraAcervo.id ? GeneralConstants.CRUD_OPERATIONS.UPDATE : GeneralConstants.CRUD_OPERATIONS.INSERT, this.prateleiraAcervo).
       subscribe({
         next: (data: any) => {          
-          //this.mensagem(this.acervo.titulo+' Adicionado na prateleira')
+          this.mensagem(this.acervo.titulo+' Adicionado na prateleira')
         },
-        error: (erro) => { console.log("erro", erro) }
+        error: (erro) => {  }
       });
     this.submitted = false;
   }
@@ -131,7 +127,6 @@ export class LivroComponent implements OnInit {
     this.generalService.execute('acervos', GeneralConstants.CRUD_OPERATIONS.READ).
       subscribe((data: any) => {
         this.acervos = data.data;
-        console.log("ACervos", this.acervos)
       });
   }
 

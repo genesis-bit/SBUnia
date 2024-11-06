@@ -6,6 +6,7 @@ import { EmprestimoComponent } from './emprestimo/emprestimo.component';
 import { LivroComponent } from './livro/livro.component';
 import { BibliotecarioComponent } from './bibliotecario/bibliotecario.component';
 import { EstudanteComponent } from './estudante/estudante.component';
+import { PrateleiraComponent } from './prateleira/prateleira.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: "livro", component: LivroComponent },
   { path: "bibliotecario", component: BibliotecarioComponent },
   { path: "estudante", component: EstudanteComponent },
+  { path: "prateleira", component: PrateleiraComponent },
 ];
 
 @NgModule({
