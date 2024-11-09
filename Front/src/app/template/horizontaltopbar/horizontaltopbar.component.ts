@@ -46,7 +46,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line: max-line-length
   constructor(@Inject(DOCUMENT) private document: any,
-  private auth2Service: Auth2Service, private router: Router, private eventService: EventService, private authService: AuthenticationService,
+    private auth2Service: Auth2Service, private router: Router, private eventService: EventService, private authService: AuthenticationService,
     private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
     // tslint:disable-next-line: variable-name
@@ -61,6 +61,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
     });
   }
 
+  tipo_user = this.auth2Service.getUserId();
   ngOnInit(): void {
     this.element = document.documentElement;
 
@@ -95,7 +96,7 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
       this.authFackservice.logout();
     }
     */
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/login']);
   }
 
   /**
@@ -281,7 +282,12 @@ export class HorizontaltopbarComponent implements OnInit, AfterViewInit {
    * Initialize
    */
   initialize(): void {
-    this.menuItems = MENU;
+    if (this.tipo_user == '3') {
+      this.menuItems = MENU.filter((res) => res.show > 2)
+    }
+    else {
+      this.menuItems = MENU;
+    }
   }
 
   /**

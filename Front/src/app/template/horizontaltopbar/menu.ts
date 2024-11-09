@@ -5,43 +5,50 @@ export const MENU: MenuItem[] = [
         id: 146,
         label: 'Home',
         icon: 'bx bxs-home',
-        link: '/home'
+        link: '/home',
+        show: 3
     },    
     {
         id: 144,
         label: 'Estudantes',
         icon: 'bx bxs-group',
-        link: '/home/estudante'
+        link: '/home/estudante',
+        show: 3
     },
     {
         id: 143,
         label: 'Bibliotecario',
         icon: 'bx bx-user',
         link: '/home/bibliotecario',
+        show: 2
     },
     {
         id: 142,
         label: 'Livro',
         icon: 'bx bx-book',
-        link: '/home/livro'
+        link: '/home/livro',
+        show: 3
     },
     {
         id: 141,
         label: 'Solicitação',
         icon: 'bx bx-folder-open',
-        link: '/home/emprestimo'
+        link: '/home/emprestimo',
+        show: 3
     },
     {
         id: 143,
         label: 'Prateleiras',
         icon: 'bx-file',
-        link: '/home/prateleira'
+        link: '/home/prateleira',
+        show: 3
     },
     {
         id: 145,
         label: 'Configurações',
         icon: 'bx bxs-wrench',
-        link: '/home/ferramenta'
+        link: '/home/ferramenta',
+        show: 2
     },
     // {
     //     id: 140,
