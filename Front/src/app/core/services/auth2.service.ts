@@ -43,13 +43,16 @@ export class Auth2Service {
   }
 
 
-  setLogin(userToken: string, userName: string, email: string, foto: string, user_tipo: string) {
+  setLogin(userToken: string, userName: string, email: string, foto: string, nbi: string, user_tipo: string, telefone: string) {
 
     localStorage.setItem(GeneralConstants.USER_AUTH.TOKEN_KEY, userToken);
     localStorage.setItem(GeneralConstants.USER_AUTH.USERNAME_KEY, userName);
     localStorage.setItem(GeneralConstants.USER_AUTH.USER_BI, email);
     localStorage.setItem(GeneralConstants.USER_AUTH.USER_FOTO, foto);
+    localStorage.setItem(GeneralConstants.USER_AUTH.USERPROFILE_KEY, nbi);
     localStorage.setItem(GeneralConstants.USER_AUTH.USERID_KEY, user_tipo);
+    localStorage.setItem(GeneralConstants.USER_AUTH.USERPRINT, telefone);
+
     this.isUserLoged.next(true);
   }
 
@@ -60,6 +63,7 @@ export class Auth2Service {
     localStorage.removeItem(GeneralConstants.USER_AUTH.USERPROFILE_KEY);
     localStorage.removeItem(GeneralConstants.USER_AUTH.USER_FOTO);
     localStorage.removeItem(GeneralConstants.USER_AUTH.USER_BI);
+    localStorage.removeItem(GeneralConstants.USER_AUTH.USERPRINT);
     this.isUserLoged.next(false);
     localStorage.removeItem('isLoggedin');
 
@@ -67,7 +71,7 @@ export class Auth2Service {
     this.currentUserSubject.next(null);
 
     if (!localStorage.getItem('isLoggedin')) {
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/login']);
     }
   }
 
@@ -106,12 +110,20 @@ export class Auth2Service {
     return localStorage.getItem(GeneralConstants.USER_AUTH.USERID_KEY);
   }
 
+  getBI() {
+    return localStorage.getItem(GeneralConstants.USER_AUTH.USERPROFILE_KEY);
+  }
+
   getCurrentUser() {
     return localStorage.getItem(GeneralConstants.USER_AUTH.USERNAME_KEY);
   }
 
   getUserBI() {
     return localStorage.getItem(GeneralConstants.USER_AUTH.USER_BI);
+  }
+
+  getTelefone() {
+    return localStorage.getItem(GeneralConstants.USER_AUTH.USERPRINT);
   }
 
   getCurrentFotoPerfil() {

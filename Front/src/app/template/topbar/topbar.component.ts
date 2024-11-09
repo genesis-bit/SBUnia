@@ -14,6 +14,12 @@ import { getLayoutMode } from 'src/app/store/layouts/layout.selector';
 import { RootReducerState } from 'src/app/store';
 import { Auth2Service } from 'src/app/core/services/auth2.service';
 
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { GeneralService } from 'src/app/core/services/general.service';
+import { GeneralConstants } from 'src/app/core/constants/GeneralConstants';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
@@ -26,9 +32,11 @@ import { Auth2Service } from 'src/app/core/services/auth2.service';
 export class TopbarComponent implements OnInit {
 
 
-  user_bi: any
   user_email: any
+  user_name: any
   user_foto: any
+  user_bi: any;
+  user_telefone: any;
 
   mode: any
   element: any;
@@ -41,14 +49,25 @@ export class TopbarComponent implements OnInit {
   dataLayout$: Observable<string>;
   // Define layoutMode as a property
 
+  modalRef?: BsModalRef;
+
   constructor(@Inject(DOCUMENT) private document: any, private router: Router, private authService: AuthenticationService,
     private authFackservice: AuthfakeauthenticationService,
     public languageService: LanguageService,
+    private generalService: GeneralService,
     public translate: TranslateService,
     private auth2Service: Auth2Service,
-
+    private modalService: BsModalService,
     public _cookiesService: CookieService, public store: Store<RootReducerState>) {
 
+  }
+
+  passwordForm: FormGroup;
+  submitted = false;
+  perfilModal(content: any) {
+    this.submitted = false;
+    this.passwordForm.reset();
+    this.modalRef = this.modalService.show(content, { class: 'modal-lg' });
   }
 
   listLang: any = [
@@ -65,6 +84,12 @@ export class TopbarComponent implements OnInit {
   @Output() mobileMenuButtonClicked = new EventEmitter();
 
   ngOnInit() {
+
+    this.passwordForm = new FormGroup({
+      senha_atual: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      nova_senha: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      nova_senha_confirmation: new FormControl("", [Validators.required, Validators.minLength(4)])
+    });
     // this.initialAppState = initialState;
     this.store.select('layout').subscribe((data) => {
       this.theme = data.DATA_LAYOUT;
@@ -82,17 +107,27 @@ export class TopbarComponent implements OnInit {
     }
 
     if (this.auth2Service.getCurrentUser())
-      this.user_email = this.auth2Service.getCurrentUser()
+      this.user_name = this.auth2Service.getCurrentUser()
 
     if (this.auth2Service.getUserBI())
-      this.user_bi = this.auth2Service.getUserBI()
+      this.user_email = this.auth2Service.getUserBI()
 
     if (this.auth2Service.getCurrentFotoPerfil()) {
       this.user_foto = this.auth2Service.getCurrentFotoPerfil()
     }
 
+    if (this.auth2Service.getBI()) {
+      this.user_bi = this.auth2Service.getBI()
+    }
+    
+    if (this.auth2Service.getTelefone()) {
+      this.user_telefone = this.auth2Service.getTelefone()
+    }
+
 
   }
+
+  get form() { return this.passwordForm.controls; }
 
   setLanguage(text: string, lang: string, flag: string) {
     this.countryName = text;
@@ -101,13 +136,7 @@ export class TopbarComponent implements OnInit {
     this.languageService.setLanguage(lang);
   }
 
-  /**
-   * Toggles the right sidebar
-   */
 
-  /**
-   * Toggle the menu bar when having mobile screen
-   */
   toggleMobileMenu(event: any) {
     event.preventDefault();
     this.mobileMenuButtonClicked.emit();
@@ -117,8 +146,9 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
+    this.generalService.execute('logout', GeneralConstants.CRUD_OPERATIONS.INSERT,).subscribe(() => { });
     this.auth2Service.logout()
-    this.router.navigate(['/autenticar/login']);
+    this.router.navigate(['/login']);
   }
 
   /**
@@ -155,6 +185,39 @@ export class TopbarComponent implements OnInit {
         this.document.msExitFullscreen();
       }
     }
+  }
+  ok = false;
+  updatePassword() {
+    this.ok = false;
+    this.submitted = true;
+    if (this.passwordForm.invalid) {
+      return;
+    }
+    if (this.form['nova_senha'].value != this.form['nova_senha_confirmation'].value) {
+      this.ok = true;
+      return;
+    }
+    let dados = {
+      'nova_senha': this.form['nova_senha'].value,
+      'senha_atual': this.form['senha_atual'].value,
+      nova_senha_confirmation: this.form['nova_senha_confirmation'].value
+    };
+    this.generalService.execute('updatePassword', GeneralConstants.CRUD_OPERATIONS.INSERT, dados).
+    subscribe(
+      (res)=>{         
+            Swal.fire({
+              position: 'top-end',
+              icon: res.data?'success':'error',
+              title: res.message,
+              showConfirmButton: false,
+              timer: 2000
+            });    
+            if(res.data){
+              this.passwordForm.reset();
+            }     
+      }
+    );
+
   }
 
   changeLayout(layoutMode: string) {

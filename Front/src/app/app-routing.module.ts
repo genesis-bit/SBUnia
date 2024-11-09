@@ -6,26 +6,33 @@ import { LayoutComponent } from "./layouts/layout.component";
 import { TemplateComponent } from "./template/template.component";
 import { CyptolandingComponent } from "./cyptolanding/cyptolanding.component";
 import { Page404Component } from "./extrapages/page404/page404.component";
+import { LoginComponent } from "./autenticar/login/login.component";
 
 // import { LayoutState } from '../store/layouts/layouts.reducer'; layout state inicial
 const routes: Routes = [
+  // {
+  //   path: "auth",
+  //   loadChildren: () =>
+  //     import("./account/account.module").then((m) => m.AccountModule),
+  // },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '/', redirectTo: '/home', pathMatch: 'full' },
   {
-    path: "auth",
-    loadChildren: () =>
-      import("./account/account.module").then((m) => m.AccountModule),
+    path:"login", component: LoginComponent
   },
-  {
-    path: "",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./home/home.module").then((m) => m.HomeModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "autenticar",
-    loadChildren: () =>
-      import("./autenticar/autenticar.module").then((m) => m.AutenticarModule),
-  },
+
+  //   {
+  //   path: "",
+  //   component: LayoutComponent,
+  //   loadChildren: () =>
+  //     import("./autenticar/autenticar.module").then((m) => m.AutenticarModule),
+  //   canActivate: [AuthGuard],
+  // },
+  // {
+  //   path: "autenticar",
+  //   loadChildren: () =>
+  //     import("./autenticar/autenticar.module").then((m) => m.AutenticarModule),
+  // },
   {
     path: "home",
     component: TemplateComponent,
@@ -33,29 +40,28 @@ const routes: Routes = [
       import("./home/home.module").then((m) => m.HomeModule),
     canActivate: [AuthGuard],
   },  
-  {
-    path: "dashboard",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./dashboards/dashboard.module").then((m) => m.DashboardModule),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: "pages",
-    loadChildren: () =>
-      import("./extrapages/extrapages.module").then((m) => m.ExtrapagesModule),
-    canActivate: [AuthGuard],
-  },
-  { path: "crypto-ico-landing", component: CyptolandingComponent },
-  {
-    path: "admin",
-    component: LayoutComponent,
-    loadChildren: () =>
-      import("./admin/admin.module").then((m) => m.AdminModule),
-    canActivate: [AuthGuard],
-  },
-  { path: "**", component: Page404Component },
-  
+  // {
+  //   path: "dashboard",
+  //   component: LayoutComponent,
+  //   loadChildren: () =>
+  //     import("./dashboards/dashboard.module").then((m) => m.DashboardModule),
+  //   canActivate: [AuthGuard],
+  // },
+  // {
+  //   path: "pages",
+  //   loadChildren: () =>
+  //     import("./extrapages/extrapages.module").then((m) => m.ExtrapagesModule),
+  //   canActivate: [AuthGuard],
+  // },
+  // { path: "crypto-ico-landing", component: CyptolandingComponent },
+  // {
+  //   path: "admin",
+  //   component: LayoutComponent,
+  //   loadChildren: () =>
+  //     import("./admin/admin.module").then((m) => m.AdminModule),
+  //   canActivate: [AuthGuard],
+  // },
+  { path: "**", component: Page404Component },  
 ];
 
 @NgModule({

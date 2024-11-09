@@ -5,21 +5,24 @@
         <ul class="navbar-nav">
           @for (item of menuItems; track $index) {
           <ng-container>
-            <li class="nav-item dropdown">
-              @if(item.subItems){
+            <li class="nav-item">
+              <a class="nav-link arrow-none" href="javascript: void(0);" id="topnav-components" [routerLink]="item.link" role="button">
+                <i class="bx {{item.icon}} me-2"></i>{{ item.label | translate }}
+              </a>
+              <!-- @if(item.subItems){
               <a class="nav-link dropdown-toggle arrow-none" (click)="onMenuClick(item.parentId,item)" href="javascript: void(0);" id="topnav-components" role="button">
                 <i class="bx {{item.icon}} me-1"></i>
                 {{item.label| translate }}
                 <div class="arrow-down"></div>
               </a>
               }@else{
-              <a class="nav-link dropdown-toggle arrow-none" href="javascript: void(0);" id="topnav-components" [routerLink]="item.link" role="button">
+              <a class="nav-link dropdown-toggle arrow-none text-success" href="javascript: void(0);" id="topnav-components" [routerLink]="item.link" role="button">
                 @if(hasItems(item)){
                 <i class="bx {{item.icon}} me-2"></i>{{ item.label | translate }} <div class="arrow-down"></div>
                 }
               </a>
-              }
-              @if(hasItems(item)){
+              } -->
+              <!-- @if(hasItems(item)){
               <div class="dropdown-menu" [ngClass]="{'dropdown-mega-menu-xl px-2':  item.subItems.length > 11 , 'show':item.isCollapsed}" aria-labelledby="topnav-dashboard">
                 <ng-template ngFor let-i="index" let-subitem [ngForOf]="item.subItems">
                   @if(item.subItems.length < 11 && !hasItems(subitem)){ <a class="col dropdown-item side-nav-link-ref" [routerLink]="subitem.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -69,7 +72,7 @@
                     </div>}
                 </ng-template>
               </div>
-              }
+              } -->
             </li>
           </ng-container>}
         </ul>

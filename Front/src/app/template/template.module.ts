@@ -16,8 +16,10 @@ import { HorizontaltopbarComponent } from './horizontaltopbar/horizontaltopbar.c
 import { LanguageService } from '../core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { TemplateComponent } from './template.component';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgStepperModule } from 'angular-ng-stepper';
 
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
  // tslint:disable-next-line: max-line-length
@@ -28,7 +30,11 @@ import { TemplateComponent } from './template.component';
    RouterModule,
    BsDropdownModule.forRoot(),
    // UIModule,
-   SimplebarAngularModule
+   SimplebarAngularModule,
+
+   ReactiveFormsModule,
+   CdkStepperModule,
+   NgStepperModule,
  ],
  providers: [LanguageService]
 })

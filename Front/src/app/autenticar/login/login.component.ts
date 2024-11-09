@@ -77,11 +77,13 @@ export class LoginComponent {
       .subscribe((res: any) => {
         let data_user = res;
         if (data_user?.access_token) {
-          this.authService.setLogin(data_user.access_token, data_user.user.name, data_user.user.email,data_user.url_foto+'/'+data_user.user.bibliotecario.foto,data_user.user.tipo_user_id);
+          this.authService.setLogin(data_user.access_token, data_user.user.name, data_user.user.email,
+            data_user.url_foto+'/'+data_user.user.bibliotecario.foto,data_user.user.bibliotecario.bilhete,
+            data_user.user.tipo_user_id, data_user.user.bibliotecario.telefone);
           this.authService.setcurrentUser(data_user)
           this.token.saveToken(data_user.access_token)
           this.token.saveUser(data_user.user)
-          this.router.navigate(['home']);
+          this.router.navigate(['/home']);
         }
         else{
           Swal.fire({

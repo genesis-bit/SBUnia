@@ -35,7 +35,7 @@
         </div>
       </form>
 
-  
+
     </div>
 
     <div class="d-flex">
@@ -58,9 +58,9 @@
           </form>
         </div>
       </div>
- 
 
-    
+
+
 
       <div class="dropdown d-none d-lg-inline-block ms-1">
         <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen"
@@ -162,21 +162,133 @@
       <div class="dropdown d-inline-block" dropdown>
         <button type="button" class="btn header-item" dropdownToggle id="page-header-user-dropdown">
           <img class="rounded-circle header-profile-user" src="{{user_foto}}" alt="Header Avatar">
-          <span class="d-none d-xl-inline-block ms-1">{{user_email.substring(0,10)}} </span>
+          <span class="d-none d-xl-inline-block ms-1">{{user_name.substring(0,10)}} </span>
           <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
         </button>
         <div class="dropdown-menu dropdown-menu-end" *dropdownMenu>
-        
-          <!-- <a class="dropdown-item" routerLink="/pages/lock-screen-1"  (click)="logout()"><i
-              class="bx bx-lock-open font-size-16 align-middle me-1"></i>
-            Bloquear</a> -->
+
+          <a class="dropdown-item" href="javascript: void(0);" (click)="perfilModal(content)"><i
+              class="bx bx-id-card font-size-16 align-middle me-1"></i>
+            Perfil</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item text-danger" href="javascript: void(0);" (click)="logout()"><i
               class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>
-             Sair </a>
+            Sair </a>
         </div>
       </div>
 
     </div>
   </div>
 </header>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">Meu Perfil</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()">
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-stepper #cdkStepper [linear]="true" class="wizard">
+
+      <cdk-step [optional]="false">
+        <ng-template cdkStepLabel>
+          <span class="number">1.</span>
+          <span>Informações</span>
+        </ng-template>
+        @if(cdkStepper.selectedIndex === 0){
+        <section>
+          <div class="kyc-tab-content">
+            <form>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="kycfirstname-input">Nome</label>
+                    <input type="text" [value]="user_name" readonly class="form-control" id="kycfirstname-input" placeholder="Enter First name">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="kyclastname-input">Email</label>
+                    <input type="text" [value]="user_email" class="form-control" id="kyclastname-input" placeholder="Enter Last name">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="kycphoneno-input">Numero do Bilhete</label>
+                    <input type="text" [value]="user_bi" readonly class="form-control" id="kycphoneno-input" placeholder="Enter Phone number">
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="mb-3">
+                    <label for="kycphoneno-input">Telefone</label>
+                    <input type="text" [value]="user_telefone" readonly class="form-control" id="kycphoneno-input" placeholder="Enter Phone number">
+                  </div>
+                </div>
+               
+              </div>
+             
+            </form>
+          </div>
+        </section>
+        }
+      </cdk-step>
+
+      <cdk-step [optional]="true">
+        <ng-template cdkStepLabel>
+          <span class="number">2.</span>
+          <span>Alterar Palavra Passe</span>
+        </ng-template>
+        <div class="kyc-tab-content">
+          <form [formGroup]="passwordForm">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="form-floating mb-2">
+                  <input type="password" class="form-control form-control-invalid" id="senha_atual" name="senha_atual"
+                    placeholder="Digite o nome" formControlName="senha_atual" 
+                    [ngClass]="{ 'is-invalid': submitted && form['senha_atual'].errors }" />
+                  <label for="senha_atual">Palavra Passe antiga</label>
+                  <div *ngIf="form['senha_atual'].errors && submitted" class="invalid-tooltip">
+                    <span *ngIf="form['senha_atual'].errors?.['required']">Campo obrigatório.</span>
+                    <span *ngIf="form['senha_atual'].errors?.['minlength']">O campo deve conter no minimo 4 caracteres</span>
+                  </div>
+                </div>
+                <div class="form-floating mb-2">
+                  <input type="password" class="form-control form-control-invalid" id="nova_senha" name="nova_senha"
+                    placeholder="Digite o nome" formControlName="nova_senha"
+                    [ngClass]="{ 'is-invalid': submitted && form['nova_senha'].errors || ok }" />
+                  <label for="nova_senha">Palavra Passe Nova</label>
+                  <div *ngIf="form['nova_senha'].errors && submitted" class="invalid-tooltip">
+                    <span *ngIf="form['nova_senha'].errors?.['required']">Campo obrigatório.</span>
+                    <span *ngIf="form['nova_senha'].errors?.['minlength']">O campo deve conter no minimo 4 caracteres</span>
+                  </div>
+                </div>
+                <div class="form-floating mb-2">
+                  <input type="password" class="form-control form-control-invalid" id="nova_senha_confirmation" name="nova_senha_confirmation"
+                    placeholder="Digite o nome" formControlName="nova_senha_confirmation"
+                    [ngClass]="{ 'is-invalid': submitted && form['nova_senha_confirmation'].errors || ok }" />
+                  <label for="nova_senha_confirmation">Confirmar Palavra Passe Nova</label> 
+                  <div class="invalid-tooltip">
+                      <span *ngIf="ok">Palavra passe de confirmação não correspondente a Palavra Passe Nova</span>
+                  </div>                
+                  <div *ngIf="form['nova_senha_confirmation'].errors && submitted" class="invalid-tooltip">                   
+                    <span *ngIf="form['nova_senha_confirmation'].errors?.['required']">Campo obrigatório.</span>
+                    <span *ngIf="form['nova_senha_confirmation'].errors?.['minlength']">O campo deve conter no minimo 4 caracteres</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul class="list-inline wizard mb-0">
+          <li class="next list-inline-item float-end"><button type="button" class="btn btn-primary"
+              (click)="updatePassword()">Salvar</button>
+          </li>
+        </ul>
+      </cdk-step>
+
+    </ng-stepper>
+  </div>
+</ng-template>

@@ -18,7 +18,6 @@ import { AutenticarRoutingModule } from './autenticar-routing.module';
   imports: [
     AutenticarRoutingModule,
     CommonModule,
-    CommonModule,
     ReactiveFormsModule,
     FormsModule,
     AlertModule.forRoot(),

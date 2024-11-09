@@ -29,6 +29,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+use App\Http\Controllers\PasswordResetController;
+
+Route::post('/esqueci-senha', [PasswordResetController::class, 'enviarLink']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -40,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/url_base', [BibliotecarioController::class, 'url']);
     Route::get('/acervo-out-prateleira', [AcervoController::class, 'AcervoOut']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/updatePassword', [AuthController::class, 'updatePassword']);
     Route::apiResource('tipo-users', TipoUserController::class);
     Route::apiResource('categorias', CategoriaController::class);
     Route::apiResource('generos', GeneroController::class);
